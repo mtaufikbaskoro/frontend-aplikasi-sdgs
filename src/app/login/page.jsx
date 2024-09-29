@@ -27,7 +27,7 @@ export default function Login () {
             <div className="mt-10 border-2 rounded-md border-first p-12 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-sm font-semibold leading-6 text-black">Username</label>
+                        <label htmlFor="username" className="block text-sm text-green-900 font-bold leading-6 text-black">Username</label>
                         <div className="mt-2">
                             <input {...register("username", { required:true })} className="block w-full border border-gray-400 rounded-sm p-1.5 focus:outline-none" />
                             { errors.username && 
@@ -40,7 +40,7 @@ export default function Login () {
 
                     <div>
                         <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm font-semibold leading-6 text-black">Password</label>
+                        <label htmlFor="password" className="block text-sm text-green-900  font-bold leading-6 text-black">Password</label>
                         </div>
                         <div className="mt-1">
                             <input {...register("password", {required: true, })} type="password" className="block w-full border border-gray-400 rounded-sm p-1.5 focus:outline-none" />
