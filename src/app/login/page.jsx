@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Footer from './component/footer';
 import { useForm } from 'react-hook-form';
 
@@ -27,9 +28,9 @@ export default function Login () {
             <div className="mt-10 border-2 rounded-md border-first p-12 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div>
-                        <label htmlFor="username" className="block text-sm text-green-900 font-bold leading-6 text-black">Username</label>
+                        <label htmlFor="username" className="block text-sm text-green-950 font-bold leading-6 text-black">Username</label>
                         <div className="mt-2">
-                            <input {...register("username", { required:true })} className="block w-full border border-gray-400 rounded-sm p-1.5 focus:outline-none" />
+                            <input {...register("username", { required:true })} placeholder="Masukkan username anda" className="block w-full border border-gray-400 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.username && 
                                 <div className='mt-1'> 
                                     <Alert>Username tidak boleh kosong.</Alert>
@@ -40,10 +41,10 @@ export default function Login () {
 
                     <div>
                         <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm text-green-900  font-bold leading-6 text-black">Password</label>
+                        <label htmlFor="password" className="block text-sm text-green-950 font-bold leading-6 text-black">Password</label>
                         </div>
                         <div className="mt-1">
-                            <input {...register("password", {required: true, })} type="password" className="block w-full border border-gray-400 rounded-sm p-1.5 focus:outline-none" />
+                            <input {...register("password", {required: true, })} type="password" placeholder="Masukkan password anda" className="block w-full border border-gray-400 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.password &&
                                 <div className='mt-2'> 
                                     <Alert>Password tidak boleh kosong.</Alert>
@@ -59,8 +60,8 @@ export default function Login () {
                     </div>
                 </form>
 
-                <p className="mt-3 text-center text-xs text-green-900 font-semibold">
-                    <a href="/" className="font-regular leading-6 hover:underline">Kembali</a>
+                <p className="mt-3 text-center text-xs text-green-950 font-semibold">
+                    <Link href="/" className="font-regular leading-6 hover:underline">Kembali</Link>
                 </p>
             </div>
         </div>
