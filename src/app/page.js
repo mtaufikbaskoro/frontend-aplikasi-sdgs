@@ -34,8 +34,8 @@ export default function Home() {
             goals.map((goal) => {
               return (
                 <div key={goal.id}>
-                  <Link href="/">
-                    <Image className="transition-all ease-out hover:scale-[1.2] hover:ease-in" src={`${goal.img}`} width={320} height={320} alt={goal.name} priority />
+                  <Link href={`/metadata/${goal.name.replace(/\s+/g, '-').toLowerCase()}`}>
+                    <Image className="transition-all ease-out hover:opacity-25 hover:ease-in" src={`/assets/img/sdgs_icons${goal.img}`} width={320} height={320} alt={goal.name} />
                   </Link>
                 </div>
               )

@@ -2,87 +2,89 @@
     {
         "id": 1,
         "name": "Tujuan 1",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-01.jpg"
+        "img": "/E_SDG_PRINT-01.jpg",
+        "color": "#e5243b"
     },
     {
         "id": 2,
         "name": "Tujuan 2",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-02.jpg"
+        "img": "/E_SDG_PRINT-02.jpg",
+        "color": "dda63a"
     },
     {
         "id": 3,
         "name": "Tujuan 3",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-03.jpg" 
+        "img": "/E_SDG_PRINT-03.jpg" 
     },
     {
         "id": 4,
         "name": "Tujuan 4",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-04.jpg" 
+        "img": "/E_SDG_PRINT-04.jpg" 
     },
     {
         "id": 5,
         "name": "Tujuan 5",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-05.jpg" 
+        "img": "/E_SDG_PRINT-05.jpg" 
     },
     {
         "id": 6,
         "name": "Tujuan 6",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-06.jpg" 
+        "img": "/E_SDG_PRINT-06.jpg" 
     },
     {
         "id": 7,
         "name": "Tujuan 7",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-07.jpg" 
+        "img": "/E_SDG_PRINT-07.jpg" 
     },
     {
         "id": 8,
         "name": "Tujuan 8",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-08.jpg" 
+        "img": "/E_SDG_PRINT-08.jpg" 
     },
     {
         "id": 9,
         "name": "Tujuan 9",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-09.jpg" 
+        "img": "/E_SDG_PRINT-09.jpg" 
     },
     {
         "id": 10,
         "name": "Tujuan 10",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-10.jpg" 
+        "img": "/E_SDG_PRINT-10.jpg" 
     },
     {
         "id": 11,
         "name": "Tujuan 11",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-11.jpg" 
+        "img": "/E_SDG_PRINT-11.jpg" 
     },
     {
         "id": 12,
         "name": "Tujuan 12",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-12.jpg" 
+        "img": "/E_SDG_PRINT-12.jpg" 
     },
     {
         "id": 13,
         "name": "Tujuan 13",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-13.jpg" 
+        "img": "/E_SDG_PRINT-13.jpg" 
     },
     {
         "id": 14,
         "name": "Tujuan 14",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-14.jpg" 
+        "img": "/E_SDG_PRINT-14.jpg" 
     },
     {
         "id": 15,
         "name": "Tujuan 15",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-15.jpg" 
+        "img": "/E_SDG_PRINT-15.jpg" 
     },
     {
         "id": 16,
         "name": "Tujuan 16",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-16.jpg" 
+        "img": "/E_SDG_PRINT-16.jpg" 
     },
     {
         "id": 17,
         "name": "Tujuan 17",
-        "img": "/assets/img/sdgs_icons/E_SDG_PRINT-17.jpg" 
+        "img": "/E_SDG_PRINT-17.jpg" 
     }
 ]
 
