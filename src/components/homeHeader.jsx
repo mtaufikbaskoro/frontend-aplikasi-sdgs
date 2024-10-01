@@ -20,7 +20,7 @@ export default function HomeHeader () {
                 </div>
             </div>
             <div className="flex justify-end gap-12 min-w-80">
-                <a className="font-bold hover:underline" href="/">Metadata</a>
+                <a className="font-bold hover:underline" href="#metadata">Metadata</a>
                 <Button href="/login">Masuk</Button>
             </div>
         </nav>

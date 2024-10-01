@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import Link from "next/link";
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import Button from "./ui/button";
@@ -8,9 +9,9 @@ import Button from "./ui/button";
 
 export default function Navbar (props) {
     const { color } = props;
-
+    
     return (
-        <nav className={`flex justify-between px-36 py-6 border-b-4`}>
+        <nav style={{borderColor: color}} className="flex justify-between px-36 py-6 border-b-4">
             <div className="flex justify-center">
                 <div>
                     <Image src={logoPemko} width={24} height={24} alt="logo pemko medan" />
@@ -20,8 +21,8 @@ export default function Navbar (props) {
                 </div>
             </div>
             <div className="flex justify-end items-center gap-12 min-w-80">
-                <a className="font-bold hover:underline" href="/">Beranda</a>
-                <a className="font-bold hover:underline" href="/">Metadata</a>
+                <Link className="font-bold hover:underline" href="/">Beranda</Link>
+                <Link className="font-bold hover:underline" href="/#metadata">Metadata</Link>
                 <Button href="/login">Masuk</Button>
             </div>
         </nav>

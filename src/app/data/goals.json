@@ -1,90 +1,327 @@
 [
     {
         "id": 1,
-        "name": "Tujuan 1",
+        "name": "tanpa kemiskinan",
         "img": "/E_SDG_PRINT-01.jpg",
-        "color": "#e5243b"
+        "color": "#e5243b",
+        "desc": "Mengakhiri kemiskinan dalam segala bentuknya di mana-mana.",
+        "targets": [
+            "/GOAL_1_TARGET_1.1.png",
+            "/GOAL_1_TARGET_1.2.png",
+            "/GOAL_1_TARGET_1.3.png",
+            "/GOAL_1_TARGET_1.4.png",
+            "/GOAL_1_TARGET_1.5.png",
+            "/GOAL_1_TARGET_1.A.png",
+            "/GOAL_1_TARGET_1.B.png"
+        ]
+        
     },
     {
         "id": 2,
-        "name": "Tujuan 2",
+        "name": "tanpa kelaparan",
         "img": "/E_SDG_PRINT-02.jpg",
-        "color": "dda63a"
+        "color": "#dda63a",
+        "desc": "Mengakhiri kelaparan, mencapai ketahanan pangan dan gizi yang baik, serta mempromosikan pertanian berkelanjutan.",
+        "targets": [
+            "/GOAL_2_TARGET_2.1.png",
+            "/GOAL_2_TARGET_2.2.png",
+            "/GOAL_2_TARGET_2.3.png",
+            "/GOAL_2_TARGET_2.4.png",
+            "/GOAL_2_TARGET_2.5.png",
+            "/GOAL_2_TARGET_2.A.png",
+            "/GOAL_2_TARGET_2.B.png",
+            "/GOAL_2_TARGET_2.C.png"
+        ]
     },
     {
         "id": 3,
-        "name": "Tujuan 3",
-        "img": "/E_SDG_PRINT-03.jpg" 
+        "name": "kesehatan yang baik dan sejahtera",
+        "img": "/E_SDG_PRINT-03.jpg",
+        "color": "#4C9F38",
+        "desc": "Menjamin kehidupan yang sehat dan mendorong kesejahteraan untuk semua di segala usia.",
+        "targets": [
+            "/GOAL_3_TARGET_3.1.png",
+            "/GOAL_3_TARGET_3.2.png",
+            "/GOAL_3_TARGET_3.3.png",
+            "/GOAL_3_TARGET_3.4.png",
+            "/GOAL_3_TARGET_3.5.png",
+            "/GOAL_3_TARGET_3.6.png",
+            "/GOAL_3_TARGET_3.7.png",
+            "/GOAL_3_TARGET_3.8.png",
+            "/GOAL_3_TARGET_3.9.png",
+            "/GOAL_3_TARGET_3.A.png",
+            "/GOAL_3_TARGET_3.B.png",
+            "/GOAL_3_TARGET_3.C.png",
+            "/GOAL_3_TARGET_3.D.png"
+        ] 
     },
     {
         "id": 4,
-        "name": "Tujuan 4",
-        "img": "/E_SDG_PRINT-04.jpg" 
+        "name": "pendidikan berkualitas",
+        "img": "/E_SDG_PRINT-04.jpg",
+        "color": "#C5192D",
+        "desc": "Memastikan bahwa semua orang, tanpa terkecuali, memiliki akses terhadap pendidikan yang berkualitas dan inklusif, serta mempromosikan pembelajaran sepanjang hayat.",
+        "targets": [
+            "/GOAL_4_TARGET_4.1.png",
+            "/GOAL_4_TARGET_4.2.png",
+            "/GOAL_4_TARGET_4.3.png",
+            "/GOAL_4_TARGET_4.4.png",
+            "/GOAL_4_TARGET_4.5.png",
+            "/GOAL_4_TARGET_4.6.png",
+            "/GOAL_4_TARGET_4.7.png",
+            "/GOAL_4_TARGET_4.A.png",
+            "/GOAL_4_TARGET_4.B.png",
+            "/GOAL_4_TARGET_4.C.png"
+        ] 
     },
     {
         "id": 5,
-        "name": "Tujuan 5",
-        "img": "/E_SDG_PRINT-05.jpg" 
+        "name": "kesetaraan gender",
+        "img": "/E_SDG_PRINT-05.jpg",
+        "color": "#FF3A21",
+        "desc": "Mencapai kesetaraan gender dan memberdayakan semua perempuan dan anak perempuan.",
+        "targets": [
+            "/GOAL_5_TARGET_5.1.png",
+            "/GOAL_5_TARGET_5.2.png",
+            "/GOAL_5_TARGET_5.3.png",
+            "/GOAL_5_TARGET_5.4.png",
+            "/GOAL_5_TARGET_5.5.png",
+            "/GOAL_5_TARGET_5.6.png",
+            "/GOAL_5_TARGET_5.A.png",
+            "/GOAL_5_TARGET_5.B.png",
+            "/GOAL_5_TARGET_5.C.png"
+        ]  
     },
     {
         "id": 6,
-        "name": "Tujuan 6",
-        "img": "/E_SDG_PRINT-06.jpg" 
+        "name": "Air Bersih dan Sanitasi Layak",
+        "img": "/E_SDG_PRINT-06.jpg",
+        "color": "#26BDE2",
+        "desc": "Menjamin ketersediaan dan pengelolaan air bersih dan sanitasi yang berkelanjutan untuk semua.",
+        "targets": [
+            "/GOAL_6_TARGET_6.1.png",
+            "/GOAL_6_TARGET_6.2.png",
+            "/GOAL_6_TARGET_6.3.png",
+            "/GOAL_6_TARGET_6.4.png",
+            "/GOAL_6_TARGET_6.5.png",
+            "/GOAL_6_TARGET_6.6.png",
+            "/GOAL_6_TARGET_6.A.png",
+            "/GOAL_6_TARGET_6.B.png"
+        ]
+
     },
     {
         "id": 7,
-        "name": "Tujuan 7",
-        "img": "/E_SDG_PRINT-07.jpg" 
+        "name": "Energi Bersih dan Terjangkau",
+        "img": "/E_SDG_PRINT-07.jpg",
+        "color": "#FCC30B",
+        "desc": "Memastikan akses terhadap energi yang terjangkau, andal, berkelanjutan, dan modern untuk semua.",
+        "targets": [
+            "/GOAL_7_TARGET_7.1.png",
+            "/GOAL_7_TARGET_7.2.png",
+            "/GOAL_7_TARGET_7.3.png",
+            "/GOAL_7_TARGET_7.A.png",
+            "/GOAL_7_TARGET_7.B.png"
+        ] 
     },
     {
         "id": 8,
-        "name": "Tujuan 8",
-        "img": "/E_SDG_PRINT-08.jpg" 
+        "name": "Pekerjaan Layak dan Pertumbuhan Ekonomi",
+        "img": "/E_SDG_PRINT-08.jpg",
+        "color": "#A21942",
+        "desc": "Mendorong pertumbuhan ekonomi yang inklusif dan berkelanjutan, serta menciptakan lapangan kerja yang layak untuk semua.",
+        "targets": [
+            "/GOAL_8_TARGET_8.1.png",
+            "/GOAL_8_TARGET_8.2.png",
+            "/GOAL_8_TARGET_8.3.png",
+            "/GOAL_8_TARGET_8.4.png",
+            "/GOAL_8_TARGET_8.5.png",
+            "/GOAL_8_TARGET_8.6.png",
+            "/GOAL_8_TARGET_8.7.png",
+            "/GOAL_8_TARGET_8.8.png",
+            "/GOAL_8_TARGET_8.9.png",
+            "/GOAL_8_TARGET_8.10.png",
+            "/GOAL_8_TARGET_8.A.png",
+            "/GOAL_8_TARGET_8.B.png"
+        ] 
     },
     {
         "id": 9,
-        "name": "Tujuan 9",
-        "img": "/E_SDG_PRINT-09.jpg" 
+        "name": "Industri Inovasi dan Infrastruktur",
+        "img": "/E_SDG_PRINT-09.jpg",
+        "color": "#FD6925",
+        "desc": "Membangun infrastruktur yang tangguh, mempromosikan industrialisasi inklusif dan berkelanjutan, serta mendorong inovasi.",
+        "targets": [
+            "/GOAL_9_TARGET_9.1.png",
+            "/GOAL_9_TARGET_9.2.png",
+            "/GOAL_9_TARGET_9.3.png",
+            "/GOAL_9_TARGET_9.4.png",
+            "/GOAL_9_TARGET_9.5.png",
+            "/GOAL_9_TARGET_9.A.png",
+            "/GOAL_9_TARGET_9.B.png",
+            "/GOAL_9_TARGET_9.C.png"
+        ] 
     },
     {
         "id": 10,
-        "name": "Tujuan 10",
-        "img": "/E_SDG_PRINT-10.jpg" 
+        "name": "Pengurangan Ketimpangan",
+        "img": "/E_SDG_PRINT-10.jpg",
+        "color": "#DD1367",
+        "desc": "Mengurangi ketimpangan dalam dan antar negara.",
+        "targets": [
+            "/GOAL_10_TARGET_10.1.png",
+            "/GOAL_10_TARGET_10.2.png",
+            "/GOAL_10_TARGET_10.3.png",
+            "/GOAL_10_TARGET_10.4.png",
+            "/GOAL_10_TARGET_10.5.png",
+            "/GOAL_10_TARGET_10.6.png",
+            "/GOAL_10_TARGET_10.7.png",
+            "/GOAL_10_TARGET_10.A.png",
+            "/GOAL_10_TARGET_10.B.png",
+            "/GOAL_10_TARGET_10.C.png"
+        ] 
     },
     {
         "id": 11,
-        "name": "Tujuan 11",
-        "img": "/E_SDG_PRINT-11.jpg" 
+        "name": "Kota dan Permukiman yang Berkelanjutan",
+        "img": "/E_SDG_PRINT-11.jpg",
+        "color": "#FD9D24",
+        "desc": "Membuat kota dan permukiman manusia inklusif, aman, tangguh, dan berkelanjutan",
+        "targets": [
+            "/GOAL_11_TARGET_11.1.png",
+            "/GOAL_11_TARGET_11.2.png",
+            "/GOAL_11_TARGET_11.3.png",
+            "/GOAL_11_TARGET_11.4.png",
+            "/GOAL_11_TARGET_11.5.png",
+            "/GOAL_11_TARGET_11.6.png",
+            "/GOAL_11_TARGET_11.7.png",
+            "/GOAL_11_TARGET_11.A.png",
+            "/GOAL_11_TARGET_11.B.png",
+            "/GOAL_11_TARGET_11.C.png"
+        ]  
     },
     {
         "id": 12,
-        "name": "Tujuan 12",
-        "img": "/E_SDG_PRINT-12.jpg" 
+        "name": "Konsumsi dan Produksi yang Bertanggung Jawab",
+        "img": "/E_SDG_PRINT-12.jpg",
+        "color": "#BF8B2E",
+        "desc": "Memastikan pola konsumsi dan produksi yang berkelanjutan.",
+        "targets": [
+            "/GOAL_12_TARGET_12.1.png",
+            "/GOAL_12_TARGET_12.2.png",
+            "/GOAL_12_TARGET_12.3.png",
+            "/GOAL_12_TARGET_12.4.png",
+            "/GOAL_12_TARGET_12.5.png",
+            "/GOAL_12_TARGET_12.6.png",
+            "/GOAL_12_TARGET_12.7.png",
+            "/GOAL_12_TARGET_12.8.png",
+            "/GOAL_12_TARGET_12.A.png",
+            "/GOAL_12_TARGET_12.B.png",
+            "/GOAL_12_TARGET_12.C.png"
+        ] 
     },
     {
         "id": 13,
-        "name": "Tujuan 13",
-        "img": "/E_SDG_PRINT-13.jpg" 
+        "name": "Tindakan untuk Mengatasi Perubahan Iklim",
+        "img": "/E_SDG_PRINT-13.jpg",
+        "color": "#3F7E44",
+        "desc": "Mengambil tindakan mendesak untuk memerangi perubahan iklim dan dampaknya.",
+        "targets": [
+            "/GOAL_13_TARGET_13.1.png",
+            "/GOAL_13_TARGET_13.2.png",
+            "/GOAL_13_TARGET_13.3.png",
+            "/GOAL_13_TARGET_13.A.png",
+            "/GOAL_13_TARGET_13.B.png"
+        ]
     },
     {
         "id": 14,
-        "name": "Tujuan 14",
-        "img": "/E_SDG_PRINT-14.jpg" 
+        "name": "Di Bawah Laut",
+        "img": "/E_SDG_PRINT-14.jpg",
+        "color": "#0A97D9",
+        "desc": "Melestarikan dan menggunakan secara berkelanjutan lautan, sumber daya laut, dan kehidupan di bawah laut.",
+        "targets": [
+            "/GOAL_14_TARGET_14.1.png",
+            "/GOAL_14_TARGET_14.2.png",
+            "/GOAL_14_TARGET_14.3.png",
+            "/GOAL_14_TARGET_14.4.png",
+            "/GOAL_14_TARGET_14.5.png",
+            "/GOAL_14_TARGET_14.6.png",
+            "/GOAL_14_TARGET_14.7.png",
+            "/GOAL_14_TARGET_14.A.png",
+            "/GOAL_14_TARGET_14.B.png",
+            "/GOAL_14_TARGET_14.C.png"
+        ] 
     },
     {
         "id": 15,
-        "name": "Tujuan 15",
-        "img": "/E_SDG_PRINT-15.jpg" 
+        "name": "Ekosistem Daratan",
+        "img": "/E_SDG_PRINT-15.jpg",
+        "color": "#56C02B",
+        "desc": "Melindungi, memulihkan, dan mendorong penggunaan ekosistem daratan secara berkelanjutan, mengelola hutan secara berkelanjutan, memerangi desertifikasi, dan menghentikan serta membalikkan degradasi lahan, serta menghentikan hilangnya keanekaragaman hayati.",
+        "targets": [
+            "/GOAL_15_TARGET_15.1.png",
+            "/GOAL_15_TARGET_15.2.png",
+            "/GOAL_15_TARGET_15.3.png",
+            "/GOAL_15_TARGET_15.4.png",
+            "/GOAL_15_TARGET_15.5.png",
+            "/GOAL_15_TARGET_15.6.png",
+            "/GOAL_15_TARGET_15.7.png",
+            "/GOAL_15_TARGET_15.8.png",
+            "/GOAL_15_TARGET_15.9.png",
+            "/GOAL_15_TARGET_15.A.png",
+            "/GOAL_15_TARGET_15.B.png",
+            "/GOAL_15_TARGET_15.C.png"
+        ]
     },
     {
         "id": 16,
-        "name": "Tujuan 16",
-        "img": "/E_SDG_PRINT-16.jpg" 
+        "name": "Perdamaian Keadilan dan Institusi yang Kuat",
+        "img": "/E_SDG_PRINT-16.jpg",
+        "color": "#00689D",
+        "desc": "Mendorong masyarakat yang damai dan inklusif untuk pembangunan berkelanjutan, memberikan akses kepada keadilan untuk semua, dan membangun institusi yang efektif, akuntabel, dan inklusif di semua tingkatan.",
+        "targets": [
+            "/GOAL_16_TARGET_16.1.png",
+            "/GOAL_16_TARGET_16.2.png",
+            "/GOAL_16_TARGET_16.3.png",
+            "/GOAL_16_TARGET_16.4.png",
+            "/GOAL_16_TARGET_16.5.png",
+            "/GOAL_16_TARGET_16.6.png",
+            "/GOAL_16_TARGET_16.7.png",
+            "/GOAL_16_TARGET_16.8.png",
+            "/GOAL_16_TARGET_16.9.png",
+            "/GOAL_16_TARGET_16.10.png",
+            "/GOAL_16_TARGET_16.A.png",
+            "/GOAL_16_TARGET_16.B.png"
+        ] 
     },
     {
         "id": 17,
-        "name": "Tujuan 17",
-        "img": "/E_SDG_PRINT-17.jpg" 
+        "name": "Kemitraan untuk Mencapai Tujuan",
+        "img": "/E_SDG_PRINT-17.jpg",
+        "color": "#19486A",
+        "desc": "Memperkuat sarana pelaksanaan dan menghidupkan kembali kemitraan global untuk pembangunan berkelanjutan. ",
+        "targets": [
+            "/GOAL_17_TARGET_17.1.png",
+            "/GOAL_17_TARGET_17.2.png",
+            "/GOAL_17_TARGET_17.3.png",
+            "/GOAL_17_TARGET_17.4.png",
+            "/GOAL_17_TARGET_17.5.png",
+            "/GOAL_17_TARGET_17.6.png",
+            "/GOAL_17_TARGET_17.7.png",
+            "/GOAL_17_TARGET_17.8.png",
+            "/GOAL_17_TARGET_17.9.png",
+            "/GOAL_17_TARGET_17.10.png",
+            "/GOAL_17_TARGET_17.11.png",
+            "/GOAL_17_TARGET_17.12.png",
+            "/GOAL_17_TARGET_17.13.png",
+            "/GOAL_17_TARGET_17.14.png",
+            "/GOAL_17_TARGET_17.15.png",
+            "/GOAL_17_TARGET_17.16.png",
+            "/GOAL_17_TARGET_17.17.png",
+            "/GOAL_17_TARGET_17.18.png",
+            "/GOAL_17_TARGET_17.19.png"
+        ]  
     }
 ]
 
