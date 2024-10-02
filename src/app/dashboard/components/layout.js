@@ -5,7 +5,7 @@ import Navbar from './navbar';
 import Sidebar from './sidebar';
 
 export default function DashboardLayout ({children}) {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     return (
         <div>

@@ -41,6 +41,10 @@ export default function Dashboard () {
 
     return (
         <DashboardLayout>
+            <div className='py-12 px-6 bg-green-900 rounded'>
+                <p className='w-[480px] font-bold text-2xl text-white'>Selamat Data di Data Center SDGs Kota Medan</p>
+                <p className='mt-4 w-[560px] text-justify text-white text-sm'>Mohon untuk periksa kembali hasil status data yang telah diinput, data selesai jika status sudah diubah ke “approve”</p>
+            </div>
             <div className='grid grid-cols-4 gap-6'>
                 {
                     statuses.map(status => (

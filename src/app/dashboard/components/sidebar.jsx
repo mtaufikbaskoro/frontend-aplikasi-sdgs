@@ -11,13 +11,13 @@ export default function Sidebar (props) {
             <aside className="py-9">
                 <ul className={`flex flex-col gap-4 ${isOpen ? '' : '-translate-x-[460px] overflow-x-hidden'} transition-all ease-in`}>
                     <li className='px-2 py-3 transition-all ease-in hover:bg-gray-100 hover:ease-out'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
+                        <Link href="/dashboard" className='ml-6 flex gap-10 justify-start items-center'>
                             <FontAwesomeIcon size='lg' icon={faTableColumns} />
                             <span className='text-lg'>Dashboard</span>
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
+                        <Link href="/dashboard/capaian-sdgs" className='ml-6 flex gap-10 justify-start items-center'>
                             <FontAwesomeIcon size='lg' icon={faChartBar} />
                             <span className='text-lg'>Capaian SDGs</span>
                         </Link>
