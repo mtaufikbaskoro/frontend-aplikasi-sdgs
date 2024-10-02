@@ -1,7 +1,7 @@
 
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 
@@ -9,10 +9,15 @@ export default function Navbar (props) {
     const { isOpen, setIsOpen } = props;
 
     return (
-        <nav className={`flex justify-between items-center ${isOpen ? "pl-80" : "pl-16"} transition-all ease-in pr-16 py-6 border-b-4 border-[#333]`}>
-            <div>
+        <nav className={`flex justify-between items-center ${isOpen ? "pl-80" : "pl-16"} transition-all ease-in pr-16 py-6 border-b-4 border-green-900`}>
+            <div className={`${isOpen ? "hidden" : ""}`}>
                 <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-4" : "ml-0"} w-6 h-6 text-white`}>
                     <FontAwesomeIcon icon={faBars} color='black' />
+                </button>
+            </div>
+            <div className={`${isOpen ? "" : "hidden"}`}>
+                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-4" : "ml-0"} w-6 h-6 text-white`}>
+                    <FontAwesomeIcon icon={faClose} color='black' />
                 </button>
             </div>
             <div className="flex justify-center items-center">
