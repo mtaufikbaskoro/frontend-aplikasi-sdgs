@@ -7,7 +7,6 @@ import goals from '@/app/data/goals.json';
 import Footer from '@/components/Footer';
 
 const getGoal = (goalName) => {
-    console.log(goalName);
     return goals.filter((goal) => goalName === goal.name.toLowerCase().replace(/\s+/g, '-'))
 }
 

@@ -3,6 +3,7 @@ import DashboardLayout from "../components/layout";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Table from "../components/table";
+import PageCard from "../components/pageCard";
 
 const TableColumns = ['Nama Tujuan', 'Kode Indikator', 'Status', 'Aksi']
 
@@ -27,9 +28,15 @@ const dummies = [
     },
 ]
 
+const PageCardContent = () => (
+    <>
+        <span className="text-lg font-bold">Indikator</span>
+    </>
+)
+
 export default function CapaianSdgs () {
     return (
-        <DashboardLayout>
+        <DashboardLayout Content={<PageCardContent />}>
             <div class="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
