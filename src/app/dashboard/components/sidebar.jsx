@@ -7,50 +7,50 @@ export default function Sidebar (props) {
     const { isOpen } = props;
 
     return (
-        <div className={`transition-all ease-in ease-out ${isOpen ? "min-w-[320px]" : "shrink w-0"} rounded`}>
-            <aside className="py-9">
-                <ul className={`flex flex-col gap-4 ${isOpen ? '' : '-translate-x-[460px] overflow-x-hidden'} transition-all ease-in`}>
+        <div className={`${isOpen ? "w-[240px]" : "shrink w-0"} rounded transition-all ease-in ease-out`}>
+            <aside className="py-4">
+                <ul className={`flex flex-col gap-2 ${isOpen ? '' : '-translate-x-[460px] overflow-x-hidden'} transition-all ease-in ease-out`}>
                     <li className='px-2 py-3 transition-all ease-in hover:bg-gray-100 hover:ease-out'>
-                        <Link href="/dashboard" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faTableColumns} />
-                            <span className='text-lg'>Dashboard</span>
+                        <Link href="/dashboard" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faTableColumns} />
+                            <span className="sm">Dashboard</span>
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/dashboard/capaian-sdgs" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faChartBar} />
-                            <span className='text-lg'>Capaian SDGs</span>
+                        <Link href="/dashboard/capaian-sdgs" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faChartBar} />
+                            <span className="sm">Capaian SDGs</span>
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faDashboard} />
-                            <span className='text-lg'>Matriks 2</span>
+                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faDashboard} />
+                            <span className="sm">Matriks 2</span>
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faFileAlt} />
-                            <span className='text-lg'>Cetak Matriks</span>
+                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faFileAlt} />
+                            <span className="sm">Cetak Matriks</span>
                         </Link>
                     </li>
                     <div className='mx-6 my-4 border-b-2 border-green-900'></div>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faUsers} />
-                            <span className='text-lg'>Atur Pengguna</span>
+                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faUsers} />
+                            <span className="sm">Atur Pengguna</span>
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faWrench} />
-                            <span className='text-lg'>Atur Peran</span>
+                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faWrench} />
+                            <span className="sm">Atur Peran</span>
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-10 justify-start items-center'>
-                            <FontAwesomeIcon size='lg' icon={faSignOut} />
-                            <span className='text-lg'>Keluar</span>
+                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                            <FontAwesomeIcon size='sm' icon={faSignOut} />
+                            <span className="sm">Keluar</span>
                         </Link>
                     </li>
                 </ul>

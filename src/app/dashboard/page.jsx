@@ -49,7 +49,7 @@ export default function Dashboard () {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <div className='grid grid-cols-4 gap-6'>
+            <div className='grid grid-cols-3 gap-4'>
                 {
                     statuses.map(status => (
                         <Card key={status.id} color={status.color}>
