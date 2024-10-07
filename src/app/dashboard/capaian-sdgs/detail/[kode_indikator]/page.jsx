@@ -24,7 +24,7 @@ export default function Detail({params}) {
         <DashboardLayout Content={<PageCardContent />}>
             <LinkButton icon={faAdd}>Tambah</LinkButton>
             <div className="py-6 px-8 flex flex-col gap-4 border-green-900 border-2 rounded">
-                <div className="font-bold">Tujuan 1: Tanpa Kelaparan</div>
+                <div className="font-bold text-2xl">Tujuan 1: Tanpa Kelaparan</div>
                 <div>
                     <span>Kode Target 1.1 : Pada Tahun 2030, mengentaskan kemiskinan ekstrim bagi semua orang yang saat ini berpendapatan kurang dari 1,25 dolar amerika per hari</span>
                 </div>
