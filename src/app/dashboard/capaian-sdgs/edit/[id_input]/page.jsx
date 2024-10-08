@@ -46,7 +46,7 @@ const Edit = ({params}) => {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-md text-green-900 font-bold leading-6 text-black" htmlFor="file_input">Upload file</label>
+                        <label className="block text-md text-green-900 font-bold leading-6 text-black" htmlFor="file_input">Dokumen Pendukung</label>
                         <input className="block w-full transition-all ease-in ease-out mt-2 file:py-3 file:border-none file:px-2 file:mr-2 file:bg-green-950 file:text-white file:font-medium hover:bg-gray-100 text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 focus:outline-none" id="file_input" type="file" />
                         <p className="mt-2 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                     </div>

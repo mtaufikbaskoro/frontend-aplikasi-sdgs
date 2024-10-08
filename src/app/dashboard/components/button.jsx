@@ -5,11 +5,11 @@ import Link from 'next/link';
 
 
 const LinkButton = (props) => {
-    const { type, icon, children, href } = props;
+    const { color, icon, children, href } = props;
 
     return (
         <div>
-            <Link href={href} className={"flex justify-between items-center px-4 py-2 rounded font-bold text-white bg-blue-500 w-[160px] transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500"}>
+            <Link style={{backgroundColor: color}} href={href} className={"flex justify-between items-center px-4 py-2 rounded font-bold text-white w-[160px] transition-all ease-in ease-out hover:text-black-500 hover:ring-offset-2 hover:ring-2 hover:ring-black"}>
                 <FontAwesomeIcon icon={icon} />
                 <span>{children}</span>
             </Link>

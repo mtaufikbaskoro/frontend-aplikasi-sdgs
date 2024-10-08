@@ -4,7 +4,7 @@ import LinkButton from "@/app/dashboard/components/button";
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faExclamation, faPencil } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 
@@ -22,7 +22,8 @@ export default function Detail({params}) {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <LinkButton href="/dashboard/capaian-sdgs/add" icon={faAdd}>Tambah</LinkButton>
+            <LinkButton color="#3b82f6" href="/dashboard/capaian-sdgs/add" icon={faAdd}>Tambah</LinkButton>
+            <LinkButton color="#facc15" href="/dashboard/capaian-sdgs/validasi" icon={faExclamation}>Periksa Data</LinkButton>
             <div className="py-6 px-8 flex flex-col gap-4 border-green-900 border-2 rounded">
                 <div className="font-bold text-2xl">Tujuan 1: Tanpa Kelaparan</div>
                 <div>
