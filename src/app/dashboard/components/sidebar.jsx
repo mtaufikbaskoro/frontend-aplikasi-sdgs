@@ -36,7 +36,7 @@ export default function Sidebar (props) {
                     </li>
                     <div className='mx-6 my-4 border-b-2 border-green-900'></div>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                        <Link href="/dashboard/pengguna" className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faUsers} />
                             <span className="sm">Atur Pengguna</span>
                         </Link>

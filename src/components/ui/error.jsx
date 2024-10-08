@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Alert ({ children }) {
+export default function Error ({ children }) {
     return (
         <span className='text-red-400 text-sm'>{children}</span>
     )

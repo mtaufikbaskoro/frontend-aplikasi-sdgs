@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import logoSDGs from '@assets/img/logo_sdgs.png';
-import Alert from '@/components/ui/alert';
+import Alert from '@/components/ui/error';
 
 export default function Login () {
     const { register, handleSubmit, formState: { errors }, } = useForm()

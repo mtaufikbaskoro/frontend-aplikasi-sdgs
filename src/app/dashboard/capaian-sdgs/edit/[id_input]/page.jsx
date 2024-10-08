@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import DashboardLayout from "@/app/dashboard/components/layout";
+import Error from "@/components/ui/Error";
 
 const Edit = ({params}) => {
     const {id_input} = params;
@@ -28,7 +29,7 @@ const Edit = ({params}) => {
                             <input {...register("target", { required:true })} type="number" placeholder="Masukkan nilai target" className="block w-full border border-gray-200 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.target && 
                                 <div className='mt-1'> 
-                                    <Alert>Target tidak boleh kosong.</Alert>
+                                    <Error>Target tidak boleh kosong.</Error>
                                 </div>
                             }
                         </div>
@@ -39,7 +40,7 @@ const Edit = ({params}) => {
                             <input {...register("capaian", { required:true })} type="number" placeholder="Masukkan nilai capaian" className="block w-full border border-gray-200 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.capaian && 
                                 <div className='mt-1'> 
-                                    <Alert>capaian tidak boleh kosong.</Alert>
+                                    <Error>capaian tidak boleh kosong.</Error>
                                 </div>
                             }
                         </div>
