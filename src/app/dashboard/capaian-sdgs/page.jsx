@@ -51,7 +51,7 @@ export default function CapaianSdgs () {
                                     {dummy.status}
                                 </td>
                                 <td className="px-6 py-4 flex gap-2">
-                                    <Link className="mx-auto" href="/">
+                                    <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
                                         <FontAwesomeIcon icon={faEye} color="#22d3ee" />
                                     </Link>
                                 </td>

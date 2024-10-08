@@ -1,17 +1,18 @@
 'use client';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from 'next/link';
 
 
 const LinkButton = (props) => {
-    const { type, icon, children } = props;
+    const { type, icon, children, href } = props;
 
     return (
         <div>
-            <button className={"flex justify-between items-center gap-4 px-4 py-2 rounded font-bold text-white bg-blue-500 min-w-[120px] transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500"}>
+            <Link href={href} className={"flex justify-between items-center px-4 py-2 rounded font-bold text-white bg-blue-500 w-[160px] transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500"}>
                 <FontAwesomeIcon icon={icon} />
                 <span>{children}</span>
-            </button>
+            </Link>
         </div>
     )
 }

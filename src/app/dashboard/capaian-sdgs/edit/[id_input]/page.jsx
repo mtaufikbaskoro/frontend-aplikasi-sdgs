@@ -1,19 +1,18 @@
 'use client';
 
 import { useForm } from "react-hook-form";
-import Alert from "@/components/ui/alert";
+import DashboardLayout from "@/app/dashboard/components/layout";
 
-const { default: DashboardLayout } = require("../../components/layout")
-
-const PageCardContent = () => (
-    <>
-        <span className="text-lg font-bold">Indikator {'>'} Tambah</span>
-    </>
-)
-
-const AddCapaianSDGs = () => {
+const Edit = ({params}) => {
+    const {id_input} = params;
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const onSubmit = (data) => console.log(data);
+
+    const PageCardContent = () => (
+        <>
+            <span className="text-lg font-bold">Indikator {'>'} Detail {'>'} {id_input}</span>
+        </>
+    )
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
@@ -48,10 +47,10 @@ const AddCapaianSDGs = () => {
                     <div>
                         <label className="block text-md text-green-900 font-bold leading-6 text-black" htmlFor="file_input">Upload file</label>
                         <input className="block w-full transition-all ease-in ease-out mt-2 file:py-3 file:border-none file:px-2 file:mr-2 file:bg-green-950 file:text-white file:font-medium hover:bg-gray-100 text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 focus:outline-none" id="file_input" type="file" />
-                        <p class="mt-2 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                        <p className="mt-2 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                     </div>
                     <div>
-                        <button className="flex justify-center items-center gap-4 px-4 py-2 mt-12 font-bold text-white bg-blue-500 w-full transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500" type="submit">Masukkan Data</button>
+                        <button className="flex justify-center items-center gap-4 px-4 py-2 mt-12 font-bold text-black bg-yellow-500 w-full transition-all ease-in ease-out hover:bg-white hover:text-yello-500 hover:ring-offset-2 hover:ring-2 hover:ring-yellow-500" type="submit">Ubah Data</button>
                     </div>
                 </form>
             </div> 
@@ -59,4 +58,5 @@ const AddCapaianSDGs = () => {
     )
 }
 
-export default AddCapaianSDGs;
+
+export default Edit;

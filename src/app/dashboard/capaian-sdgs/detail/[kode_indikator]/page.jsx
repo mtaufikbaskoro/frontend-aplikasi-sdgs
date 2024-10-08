@@ -4,7 +4,7 @@ import LinkButton from "@/app/dashboard/components/button";
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 
@@ -22,7 +22,7 @@ export default function Detail({params}) {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <LinkButton icon={faAdd}>Tambah</LinkButton>
+            <LinkButton href="/dashboard/capaian-sdgs/add" icon={faAdd}>Tambah</LinkButton>
             <div className="py-6 px-8 flex flex-col gap-4 border-green-900 border-2 rounded">
                 <div className="font-bold text-2xl">Tujuan 1: Tanpa Kelaparan</div>
                 <div>
@@ -34,11 +34,12 @@ export default function Detail({params}) {
                 <div>
                     <span>Kode Indikator 1.1.1.a : Persentase penduduk yang hidup dibawah garis kemiskinan internasional</span>
                 </div>
-                <div>
-                    <span>Kode Indikator 1.1.1.a : Persentase penduduk yang hidup dibawah garis kemiskinan internasional</span>
-                </div>
+                
                 <div>
                     <span>Sumber Data : Renstra Dinas</span>
+                </div>
+                <div>
+                    <span>Satuan Data : Persen (%)</span>
                 </div>
                 <div>
                     <span>Baseline (2021) : 2,61</span>
@@ -48,13 +49,13 @@ export default function Detail({params}) {
                 </div>
             </div>
             <Table columns={tableColumns}>
-                <tr>
+                <tr className="bg-green-50">
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4">
-                        <Link className="mx-auto" href="/">
-                            <FontAwesomeIcon icon={faEye} color="#22d3ee" />
+                        <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
+                            <FontAwesomeIcon icon={faPencil} color="#333" />
                         </Link>
                     </td>
                 </tr>
