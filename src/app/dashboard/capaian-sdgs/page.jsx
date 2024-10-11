@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DashboardLayout from "../components/layout";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faC, faCheck, faClock, faEye } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Table from "../components/table";
 
@@ -27,13 +27,21 @@ const dummies = [
     },
 ]
 
-const PageCardContent = () => (
-    <>
-        <span className="text-lg font-bold">Indikator Tujuan SDGs</span>
-    </>
-)
-
 export default function CapaianSdgs () {
+    const PageCardContent = () => (
+        <>
+            <span className="text-lg font-bold">Indikator Tujuan SDGs</span>
+        </>
+    )
+
+    const handleStatusIcon = (status) => {
+        if (status == 'pending') {
+            return <FontAwesomeIcon icon={faClock} />;
+        } else if (status == 'approve') {
+            return <FontAwesomeIcon icon={faCheck} />;
+        }
+    }
+
     return (
         <DashboardLayout Content={<PageCardContent />}>
             <div className="overflow-x-auto">
@@ -48,11 +56,11 @@ export default function CapaianSdgs () {
                                     {dummy.kode_indikator}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {dummy.status}
+                                    {handleStatusIcon(dummy.status)}
                                 </td>
                                 <td className="px-6 py-4 flex gap-2">
                                     <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
-                                        <FontAwesomeIcon icon={faEye} color="#22d3ee" />
+                                        <FontAwesomeIcon icon={faEye} color="green" />
                                     </Link>
                                 </td>
                             </tr>
