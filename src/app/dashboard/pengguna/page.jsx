@@ -11,6 +11,7 @@ import Confirmation from '@/components/confirmation';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
+import Badge from '@/components/ui/badge';
 
 const tableColumns = ['No', 'username', 'password', 'status', 'aksi']
 
@@ -88,9 +89,11 @@ const Users = () => {
                                 {dummy.password}
                             </td>
                             <td className="px-6 py-4">
-                                {dummy.status}
+                                <Badge color={ dummy.status == 'aktif' ? 'bg-primary' : 'bg-danger'}>
+                                    {dummy.status}
+                                </Badge>
                             </td>
-                            <td className="px-6 py-4 flex justify-center gap-1">
+                            <td className="px-6 py-4 flex justify-center">
                                 <button onClick={() => handleEditModal(dummy.id)} className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
                                     <FontAwesomeIcon icon={faPencil} color="yellow" />
                                 </button>
