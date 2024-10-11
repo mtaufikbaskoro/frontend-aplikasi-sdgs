@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
 import { useState } from 'react';
+
 import DashboardLayout from "../components/layout";
 import Table from "../components/table";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../components/modal";
 import Add from './form/add';
+import Edit from './form/edit';
+import Confirmation from '@/components/Confirmation';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
 
 const tableColumns = ['No', 'username', 'password', 'status', 'aksi']
 
@@ -28,11 +30,33 @@ const dummies = [
 ]
 
 const Users = () => {
-    const [modal, setModal] = useState(false);
+    const [addModal, setAddModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [confirmModal, setConfirmModal] = useState(false);
+    const [selectedId, setSelectedId] = useState(0);
 
-    const handleModal = () => {
-        setModal(!modal)
+    const handleDeleteModal = (id) => {
+        setConfirmModal(!confirmModal);
+        if (editModal && confirmModal == false) {
+            setSelectedId(0)
+        } else {
+            setSelectedId(id)
+        }
     }
+
+    const handleAddModal = () => {
+        setAddModal(!addModal);
+    }
+
+    const handleEditModal = (id) => {
+        setEditModal(!editModal);
+        if (editModal && confirmModal == false) {
+            setSelectedId(0)
+        } else {
+            setSelectedId(id)
+        }
+    }
+
 
     const PageCardContent = () => (
         <>
@@ -42,15 +66,17 @@ const Users = () => {
 
     return (
         <>
-        <Modal isOpen={modal} setIsOpen={setModal}><Add></Add></Modal>
+        <Modal isOpen={addModal} setIsOpen={setAddModal} id={0}><Add /></Modal>
+        <Modal isOpen={editModal} setIsOpen={setEditModal} id={selectedId}><Edit /></Modal>
         <DashboardLayout Content={<PageCardContent />}>
-            <button type="button" onClick={() => handleModal()} className={"flex justify-between items-center px-4 py-2 rounded font-semubold text-white bg-blue-500 w-[240px] transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500"}>
+            <button type="button" onClick={() => handleAddModal()} className={"flex justify-between items-center px-4 py-2 rounded font-semubold text-white bg-blue-500 w-[240px] transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500"}>
                     <FontAwesomeIcon icon={faAdd} />
                     <span>Tambah Pengguna</span>
             </button>
+            <Confirmation open={confirmModal} setOpen={setConfirmModal} id={selectedId} header="Konfirmasi non-aktifkan akun">Apakah anda yakin akan menonaktifkan akun ?</Confirmation>
             <Table columns={tableColumns}>
                 {
-                    dummies.map((dummy, idx) => (
+                    dummies.map((dummy, idx) => (     
                         <tr key={idx} className="bg-white border-b">
                             <td scope="row" className="font-bold whitespace-nowrap">
                                 {idx+1}
@@ -65,12 +91,12 @@ const Users = () => {
                                 {dummy.status}
                             </td>
                             <td className="px-6 py-4 flex justify-center gap-1">
-                                <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
+                                <button onClick={() => handleEditModal(dummy.id)} className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
                                     <FontAwesomeIcon icon={faPencil} color="yellow" />
-                                </Link>
-                                <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
+                                </button>
+                                <button onClick={() => handleDeleteModal(dummy.id)} className="mx-auto">
                                     <FontAwesomeIcon icon={faTrash} color="red" />
-                                </Link>
+                                </button>
                             </td>
                         </tr>
                     ))
