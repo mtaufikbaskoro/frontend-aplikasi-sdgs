@@ -7,7 +7,7 @@ import Table from "../components/table";
 import Modal from "../components/modal";
 import Add from './form/add';
 import Edit from './form/edit';
-import Confirmation from '@/components/Confirmation';
+import Confirmation from '@/components/confirmation';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
