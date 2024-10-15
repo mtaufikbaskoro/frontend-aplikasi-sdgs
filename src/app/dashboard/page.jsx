@@ -34,8 +34,22 @@ const statuses = [
         'name': 'Catatan Perbaikan',
         'total': null,
         'icon': faFilePen,
-        'color': '#333'
+        'color': '#333333'
     }
+]
+
+const notes = [
+    {
+        id: 1,
+        kode_indikator: '2.a',
+        catatan_perbaikan: 'data tidak sesuai dengan dokumen pendukung',
+    },
+    {
+        id: 2,
+        kode_indikator: '1.1.1.a',
+        catatan_perbaikan: 'tidak ada tanda tangan penanggung jawab data pada dokumen pendukung',
+    },
+
 ]
 
 const PageCardContent = () => (
@@ -49,11 +63,11 @@ export default function Dashboard () {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <div className='grid grid-cols-3 gap-4'>
+            <div className='grid max-w-[1660px] grid-cols-4 gap-x-12 gap-y-4'>
                 {
                     statuses.map(status => (
                         <Card key={status.id} color={status.color}>
-                            <FontAwesomeIcon className='my-auto ml-2' size='2xl' icon={status.icon} />
+                            <FontAwesomeIcon className='my-auto ml-2' size='2xl' icon={status.icon} color={status.color} />
                             <div className='flex flex-col text-right'>
                                 <p className='text-md'>{status.name}</p>
                                 <p className={`${status.total != null ? '' : 'hidden'} text-2xl font-bold mt-2`}>{status.total != null ? status.total : ''}</p>
@@ -62,20 +76,16 @@ export default function Dashboard () {
                     ))
                 }
                 <div className='col-span-3'></div>
-                <div className='border-2 border-[#333] rounded-md'>
+                <div className='border-2 border-[#333] rounded-md h-[480px] overflow-y-auto'>
                     <ul className='py-4 px-6 flex flex-col gap-2'>
-                        <li>
-                            <Link href="/" className='font-bold text-md hover:underline'>Kode Indikator : 12.1.1.a</Link>
-                            <p className='text-sm'>Dokumen pendukung belum menunjukan hasil capaian yang dimasukkan</p>
-                        </li>
-                        <li>
-                            <Link href="/" className='font-bold text-md hover:underline'>Kode Indikator : 12.1.1.a</Link>
-                            <p className='text-sm'>Dokumen pendukung belum menunjukan hasil capaian yang dimasukkan</p>
-                        </li>
-                        <li>
-                            <Link href="/" className='font-bold text-md hover:underline'>Kode Indikator : 12.1.1.a</Link>
-                            <p className='text-sm'>Dokumen pendukung belum menunjukan hasil capaian yang dimasukkan</p>
-                        </li>
+                        {
+                            notes.map((note, idx) => (
+                                <li key={idx}>
+                                    <Link href={`/dashboard/capaian-sdgs/detail/${note.kode_indikator}`} className='font-bold text-md hover:underline'>Kode Indikator : {note.kode_indikator}</Link>
+                                    <p className='text-sm'>{note.catatan_perbaikan}</p>
+                                </li>
+                            ))
+                        }
                     </ul>
                 </div>
             </div>
