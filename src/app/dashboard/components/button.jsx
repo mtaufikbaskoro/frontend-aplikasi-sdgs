@@ -9,9 +9,9 @@ const LinkButton = (props) => {
 
     return (
         <div>
-            <Link style={{backgroundColor: color}} href={href} className="flex justify-between items-center px-4 py-2 rounded font-bold text-white w-[160px] transition-all ease-in ease-out hover:text-black-500 hover:ring-offset-2 hover:ring-2 hover:ring-black">
+            <Link style={{backgroundColor: color}} href={href} className="transition-all ease-in ease-out flex items-center gap-4 px-2 py-2 rounded font-medium text-white hover:ring-offset-2 hover:ring-2 hover:ring-black">
                 <FontAwesomeIcon icon={icon} />
-                <span>{children}</span>
+                <div>{children}</div>
             </Link>
         </div>
     )
