@@ -51,7 +51,7 @@ const Edit = ({params}) => {
                         <p className="mt-2 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                     </div>
                     <div>
-                        <button className="flex justify-center items-center gap-4 px-4 py-2 mt-12 font-bold text-black bg-yellow-500 w-full transition-all ease-in ease-out hover:bg-white hover:text-yello-500 hover:ring-offset-2 hover:ring-2 hover:ring-yellow-500" type="submit">Ubah Data</button>
+                        <button className="flex justify-center items-center gap-4 py-3 mt-12 font-bold text-black bg-yellow-500 w-full transition-all ease-in ease-out hover:bg-white hover:text-yellow-500 hover:ring-offset-2 hover:ring-2 hover:ring-yellow-500" type="submit">Ubah Data</button>
                     </div>
                 </form>
             </div> 

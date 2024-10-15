@@ -22,8 +22,9 @@ export default function Detail({params}) {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
+            <div>Catatan</div>
             <LinkButton color="#3b82f6" href="/dashboard/capaian-sdgs/add" icon={faAdd}>Tambah</LinkButton>
-            <LinkButton color="#facc15" href="/dashboard/capaian-sdgs/validasi" icon={faExclamation}>Periksa Data</LinkButton>
+            <LinkButton color="#facc15" href="/dashboard/capaian-sdgs/validasi/1" icon={faExclamation}>Periksa Data</LinkButton>
             <div className="py-6 px-8 flex flex-col gap-4 border-green-900 border-2 rounded">
                 <div className="font-bold text-2xl">Tujuan 1: Tanpa Kelaparan</div>
                 <div>
@@ -55,7 +56,7 @@ export default function Detail({params}) {
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4">
-                        <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
+                        <Link className="mx-auto" href="/dashboard/capaian-sdgs/edit/1">
                             <FontAwesomeIcon icon={faPencil} color="#333" />
                         </Link>
                     </td>
