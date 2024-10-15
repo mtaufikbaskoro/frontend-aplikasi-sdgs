@@ -9,9 +9,9 @@ export default function Sidebar (props) {
     const { isOpen } = props;
 
     return (
-        <div className={`${isOpen ? "w-[240px]" : "shrink w-0"} rounded transition-all ease-in ease-out`}>
-            <aside className="py-4">
-                <ul className={`flex flex-col gap-2 ${isOpen ? '' : '-translate-x-[460px] overflow-x-hidden'} transition-all ease-in ease-out`}>
+        <div className={`${isOpen ? "w-[240px]" : "shrink w-0"} bg-white rounded transition-all ease-in ease-out`}>
+            <aside className="py-4 fixed left-0 w-[240px]">
+                <ul className={`flex flex-col gap-2 ${isOpen ? '' : 'hidden'} transition-all ease-in ease-out`}>
                     <li className='px-2 py-3 transition-all ease-in hover:bg-gray-100 hover:ease-out'>
                         <Link href="/dashboard" className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faTableColumns} />
