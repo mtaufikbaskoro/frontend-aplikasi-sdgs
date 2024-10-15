@@ -1,8 +1,10 @@
 'use client';
 
+import { useForm } from "react-hook-form";
+
+import Controller from "react-hook-form";
 import { Input, Textarea, Select } from "@headlessui/react";
 import DashboardLayout from "../../../components/layout"
-import { useForm, Controller } from "react-hook-form";
 
 
 export default function Validate ({params}) {

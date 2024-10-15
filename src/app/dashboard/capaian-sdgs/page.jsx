@@ -1,8 +1,11 @@
+
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DashboardLayout from "../components/layout";
-import { faC, faCheck, faClock, faEye } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 import Table from "../components/table";
+
+import { faCheck, faClock, faEye } from "@fortawesome/free-solid-svg-icons";
+
 
 const TableColumns = ['Nama Tujuan', 'Kode Indikator', 'Status', 'Aksi']
 

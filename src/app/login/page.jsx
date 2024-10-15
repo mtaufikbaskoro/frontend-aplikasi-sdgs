@@ -1,14 +1,15 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from './component/footer';
-import { useForm } from 'react-hook-form';
+import Alert from '@/components/ui/error';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import logoSDGs from '@assets/img/logo_sdgs.png';
-import Alert from '@/components/ui/error';
 
 export default function Login () {
     const { register, handleSubmit, formState: { errors }, } = useForm()

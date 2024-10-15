@@ -1,9 +1,10 @@
 'use client';
 
 import { useForm } from "react-hook-form";
-import Alert from "@/components/ui/error";
 
-const { default: DashboardLayout } = require("../../components/layout")
+import Alert from "@/components/ui/error";
+import DashboardLayout from "../../components/layout";
+
 
 const PageCardContent = () => (
     <>

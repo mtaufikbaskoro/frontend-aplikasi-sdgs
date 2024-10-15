@@ -1,11 +1,10 @@
 
-
-import Card from './components/card';
-import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation, faFilePen } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import Card from './components/card';
 import DashboardLayout from './components/layout';
-import PageCard from './components/pageCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation, faFilePen } from '@fortawesome/free-solid-svg-icons';
 
 const statuses = [
     {

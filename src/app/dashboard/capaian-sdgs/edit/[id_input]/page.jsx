@@ -1,8 +1,10 @@
 'use client';
 
 import { useForm } from "react-hook-form";
+
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Error from "@/components/ui/Error";
+
 
 const Edit = ({params}) => {
     const {id_input} = params;

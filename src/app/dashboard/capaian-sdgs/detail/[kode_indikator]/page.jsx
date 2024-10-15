@@ -1,11 +1,12 @@
 'use client';
 
+import Link from "next/link";
 import LinkButton from "@/app/dashboard/components/button";
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { faAdd, faExclamation, faPencil } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 
 
 const tableColumns = ['Target (2022)', 'Capaian (2022)', '%Capaian', 'Status'];

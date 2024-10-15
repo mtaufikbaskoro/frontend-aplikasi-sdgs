@@ -8,10 +8,11 @@ import Modal from "../components/modal";
 import Add from './form/add';
 import Edit from './form/edit';
 import Confirmation from '@/components/confirmation';
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
 import Badge from '@/components/ui/badge';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
+
 
 const tableColumns = ['No', 'username', 'password', 'status', 'aksi']
 
