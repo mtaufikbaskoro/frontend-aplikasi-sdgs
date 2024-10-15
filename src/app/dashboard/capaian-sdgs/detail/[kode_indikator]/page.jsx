@@ -7,6 +7,7 @@ import Table from "@/app/dashboard/components/table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faAdd, faExclamation, faPencil } from "@fortawesome/free-solid-svg-icons";
+import Breadcrumb from "@/components/ui/breadcrumb";
 
 
 const tableColumns = ['Target (2022)', 'Capaian (2022)', '%Capaian', 'Status'];
@@ -14,12 +15,7 @@ const tableColumns = ['Target (2022)', 'Capaian (2022)', '%Capaian', 'Status'];
 export default function Detail({params}) {
     const { kode_indikator } = params;
 
-    const PageCardContent = () => (
-        <>
-            <span className="text-lg font-bold">Indikator {'>'} Detail {'>'} {kode_indikator}</span>
-            
-        </>
-    )
+    const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {kode_indikator}</Breadcrumb>)
 
     return (
         <DashboardLayout Content={<PageCardContent />}>

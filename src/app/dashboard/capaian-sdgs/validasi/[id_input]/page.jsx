@@ -1,8 +1,7 @@
 'use client';
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
-import Controller from "react-hook-form";
 import { Input, Textarea, Select } from "@headlessui/react";
 import DashboardLayout from "../../../components/layout"
 
@@ -91,7 +90,7 @@ export default function Validate ({params}) {
                         />
                     </div>
                     <div>
-                        <button className="mt-12 px-4 py-2 flex justify-center items-center gap-4 font-medium text-green-900 bg-green-500 w-full transition-all ease-in ease-out hover:bg-white hover:text-green-500 hover:ring-offset-2 hover:ring-2 hover:ring-green-500" type="submit">Konfirmasi</button>
+                        <button className="mt-12 px-4 py-2 flex justify-center items-center gap-4 font-medium text-white bg-green-600 w-full transition-all ease-in ease-out hover:bg-white hover:text-green-500 hover:ring-offset-2 hover:ring-2 hover:ring-green-500" type="submit">Konfirmasi</button>
                     </div>
                 </form>
             </div>

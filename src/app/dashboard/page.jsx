@@ -52,10 +52,10 @@ const notes = [
 ]
 
 const PageCardContent = () => (
-    <>
-        <p className='w-[480px] font-bold text-2xl text-white'>Selamat Data di Data Center SDGs Kota Medan</p>
+    <div className='py-3'>
+        <p className='w-[360px] font-bold text-xl text-white'>Selamat Data di Data Center SDGs Kota Medan</p>
         <p className='mt-4 w-[560px] text-justify text-white text-sm'>Mohon untuk periksa kembali hasil status data yang telah diinput, data selesai jika status sudah diubah ke “approve”</p>
-    </>
+    </div>
 )
 
 export default function Dashboard () {

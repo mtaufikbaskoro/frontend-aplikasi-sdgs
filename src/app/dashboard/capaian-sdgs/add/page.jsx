@@ -4,16 +4,14 @@ import { useForm } from "react-hook-form";
 
 import Alert from "@/components/ui/error";
 import DashboardLayout from "../../components/layout";
+import Breadcrumb from "@/components/ui/breadcrumb";
 
-
-const PageCardContent = () => (
-    <>
-        <span className="text-lg font-bold">Indikator {'>'} Tambah</span>
-    </>
-)
 
 const AddCapaianSDGs = () => {
     const { register, handleSubmit, formState: { errors }, } = useForm()
+
+    const PageCardContent = () => (<Breadcrumb>Indikator {'>'} Tambah</Breadcrumb>)
+
     const onSubmit = (data) => console.log(data);
 
     return (

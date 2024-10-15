@@ -12,6 +12,7 @@ import Badge from '@/components/ui/badge';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faPencil, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
+import Breadcrumb from '@/components/ui/breadcrumb';
 
 
 const tableColumns = ['No', 'username', 'password', 'status', 'aksi']
@@ -37,6 +38,8 @@ const Users = () => {
     const [confirmModal, setConfirmModal] = useState(false);
     const [selectedId, setSelectedId] = useState(0);
 
+    const handleAddModal = () => {setAddModal(!addModal);}
+
     const handleDeleteModal = (id) => {
         setConfirmModal(!confirmModal);
         if (editModal && confirmModal == false) {
@@ -44,10 +47,6 @@ const Users = () => {
         } else {
             setSelectedId(id)
         }
-    }
-
-    const handleAddModal = () => {
-        setAddModal(!addModal);
     }
 
     const handleEditModal = (id) => {
@@ -60,18 +59,14 @@ const Users = () => {
     }
 
 
-    const PageCardContent = () => (
-        <>
-            <span className="text-lg font-bold">Akun Terdaftar</span>
-        </>
-    )
+    const PageCardContent = () => (<Breadcrumb>Atur Pengguna</Breadcrumb>)
 
     return (
         <>
         <Modal isOpen={addModal} setIsOpen={setAddModal} id={0}><Add /></Modal>
         <Modal isOpen={editModal} setIsOpen={setEditModal} id={selectedId}><Edit /></Modal>
         <DashboardLayout Content={<PageCardContent />}>
-            <button type="button" onClick={() => handleAddModal()} className={"flex justify-between items-center px-4 py-2 rounded font-semubold text-white bg-blue-500 w-[240px] transition-all ease-in ease-out hover:bg-white hover:text-blue-500 hover:ring-offset-2 hover:ring-2 hover:ring-blue-500"}>
+            <button type="button" onClick={() => handleAddModal()} className={"flex justify-between items-center px-4 py-2 rounded font-medium text-white bg-blue-500 w-[240px] transition-all ease-in ease-out hover:ring-offset-2 hover:ring-2 hover:ring-black"}>
                     <FontAwesomeIcon icon={faAdd} />
                     <span>Tambah Pengguna</span>
             </button>

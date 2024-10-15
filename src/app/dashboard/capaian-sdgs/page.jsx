@@ -5,6 +5,7 @@ import DashboardLayout from "../components/layout";
 import Table from "../components/table";
 
 import { faCheck, faClock, faEye, faTimes } from "@fortawesome/free-solid-svg-icons";
+import Breadcrumb from "@/components/ui/breadcrumb";
 
 
 const TableColumns = ['Nama Tujuan', 'Kode Indikator', 'Status', 'Aksi']
@@ -31,15 +32,11 @@ const dummies = [
 ]
 
 export default function CapaianSdgs () {
-    const PageCardContent = () => (
-        <>
-            <span className="text-lg font-bold">Indikator Tujuan SDGs</span>
-        </>
-    )
+    const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs</Breadcrumb>)
 
     const handleStatusIcon = (status) => {
         if (status == 2) {
-            return <FontAwesomeIcon icon={faClock} color="yello" />;
+            return <FontAwesomeIcon icon={faClock} color="orange" />;
         } else if (status == 1) {
             return <FontAwesomeIcon icon={faCheck} color="green" />;
         } else if (status == 3) {

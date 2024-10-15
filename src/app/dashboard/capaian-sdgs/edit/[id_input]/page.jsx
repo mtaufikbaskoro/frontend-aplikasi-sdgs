@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Error from "@/components/ui/Error";
+import Breadcrumb from "@/components/ui/breadcrumb";
 
 
 const Edit = ({params}) => {
@@ -11,11 +12,7 @@ const Edit = ({params}) => {
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const onSubmit = (data) => console.log(data);
 
-    const PageCardContent = () => (
-        <>
-            <span className="text-lg font-bold">Indikator {'>'} Detail {'>'} {id_input}</span>
-        </>
-    )
+    const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Edit {'>'} {id_input}</Breadcrumb>)
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
