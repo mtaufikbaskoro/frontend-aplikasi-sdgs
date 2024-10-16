@@ -89,7 +89,12 @@ const Users = () => {
     }
 
 
-    const PageCardContent = () => (<Breadcrumb>Atur Pengguna</Breadcrumb>)
+    const PageCardContent = () => (
+        <Breadcrumb>
+            <div className="w-[360px] font-bold text-xl text-white">Daftar Pengguna</div>
+            <p className="mt-4 w-[560px] text-justify text-white text-sm font-medium">Daftar seluruh akun yang terdaftar pada website monitoring dan evaluasi TPB/SDGs</p>
+        </Breadcrumb>
+    )
 
     return (
         <>
