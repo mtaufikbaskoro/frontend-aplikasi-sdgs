@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faChevronRight, faChevronDown, faPuzzlePiece, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function Sidebar (props) {
@@ -73,13 +73,13 @@ export default function Sidebar (props) {
                     </li>
                     <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
                         <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
+                            <FontAwesomeIcon size='sm' icon={faPuzzlePiece} />
                             <span className="sm">Identifikasi Masalah</span>
                         </div>
                     </li>
                     <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
                         <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
+                            <FontAwesomeIcon size='sm' icon={faLightbulb} />
                             <span className="sm">Pembelajaran SDGs</span>
                         </div>
                     </li>
