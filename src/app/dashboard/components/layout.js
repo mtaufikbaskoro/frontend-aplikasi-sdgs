@@ -13,7 +13,7 @@ export default function DashboardLayout (props) {
     return (
         <div>
             <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
-            <div className="relative flex min-h-screen">
+            <div className="relative flex max-h-screen">
                 <Sidebar isOpen={isOpen} />
                 <div className="grow flex flex-col gap-8 p-6 transition-all ease-in">
                     <PageCard>{Content}</PageCard>

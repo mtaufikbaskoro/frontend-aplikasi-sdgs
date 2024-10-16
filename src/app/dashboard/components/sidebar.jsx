@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faArrowDown, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function Sidebar (props) {
