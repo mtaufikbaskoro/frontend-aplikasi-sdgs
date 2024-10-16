@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize } from '@fortawesome/free-solid-svg-icons';
+import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faArrowDown, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function Sidebar (props) {
@@ -39,6 +39,7 @@ export default function Sidebar (props) {
                         <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
                             <span className="sm">Realisasi Program</span>
+                            <FontAwesomeIcon size='xs' icon={submenu == 'realisasi_program' ? faChevronDown : faChevronRight} />
                         </div>
                     </li>
                     <li className={`px-2 py-3 ${submenu == 'realisasi_program' ? '' : 'hidden'}`}>
