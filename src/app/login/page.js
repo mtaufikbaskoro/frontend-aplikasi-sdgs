@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from './component/footer';
-import Alert from '@/components/ui/error';
+import Error from '@/components/ui/error';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import logoSDGs from '@assets/img/logo_sdgs.png';
@@ -34,7 +34,7 @@ export default function Login () {
                             <input {...register("username", { required:true })} placeholder="Masukkan username anda" className="block w-full border border-gray-400 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.username && 
                                 <div className='mt-1'> 
-                                    <Alert>Username tidak boleh kosong.</Alert>
+                                    <Error>Username tidak boleh kosong.</Error>
                                 </div>
                             }
                         </div>
@@ -48,7 +48,7 @@ export default function Login () {
                             <input {...register("password", {required: true, })} type="password" placeholder="Masukkan password anda" className="block w-full border border-gray-400 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.password &&
                                 <div className='mt-2'> 
-                                    <Alert>Password tidak boleh kosong.</Alert>
+                                    <Error>Password tidak boleh kosong.</Error>
                                 </div>
                             }
                         </div>

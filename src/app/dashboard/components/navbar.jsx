@@ -21,8 +21,8 @@ export default function Navbar (props) {
                 </button>
             </div>
             <div className="flex justify-center items-center">
-                <div>
-                    <Image src={logoPemko} width={24} height={24} alt="logo pemko medan" />
+                <div className='w-6 h-6'>
+                    <Image src={logoPemko} width="auto" height="auto" alt="logo pemko medan" />
                 </div>
                 <div className="flex flex-col">
                     <p className="ml-4 text-lg font-bold uppercase">pemerintah kota medan</p>

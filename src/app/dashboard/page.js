@@ -5,6 +5,7 @@ import DashboardLayout from './components/layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import Breadcrumb from '@/components/ui/breadcrumb';
 
 const statuses = [
     {
@@ -52,10 +53,10 @@ const notes = [
 ]
 
 const PageCardContent = () => (
-    <div className='py-3'>
+    <Breadcrumb>
         <p className='w-[360px] font-bold text-xl text-white'>Selamat Data di Data Center SDGs Kota Medan</p>
         <p className='mt-4 w-[560px] text-justify text-white text-sm'>Mohon untuk periksa kembali hasil status data yang telah diinput, data selesai jika status sudah diubah ke “approve”</p>
-    </div>
+    </Breadcrumb>
 )
 
 export default function Dashboard () {
