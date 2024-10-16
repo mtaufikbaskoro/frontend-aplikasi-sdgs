@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import Footer from './component/footer';
+import Footer from './components/footer';
 import Error from '@/components/ui/error';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';

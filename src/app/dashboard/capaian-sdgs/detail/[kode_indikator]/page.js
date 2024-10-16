@@ -43,16 +43,16 @@ export default function Detail({params}) {
                     </div>
                     <div className="text-sm">Persentase penduduk yang hidup dibawah garis kemiskinan internasional</div>
                     <hr />
-                    <div className="text-md">
+                    <div className="text-sm">
                         Sumber Data : <span className="font-semibold">Renstra Dinas</span>
                     </div>
-                    <div className="text-md">
+                    <div className="text-sm">
                         Satuan Data : <span className="font-semibold">Persen (%)</span>
                     </div>
-                    <div className="text-md">
+                    <div className="text-sm">
                         Baseline (2021) : <span className="font-semibold">2.61</span>
                     </div>
-                    <div className="text-md">
+                    <div className="text-sm">
                         Dokumen Pendukung : <Link href="/" className="font-medium text-blue-600 hover:underline">nama_file.pdf</Link>
                     </div>
                 </div>

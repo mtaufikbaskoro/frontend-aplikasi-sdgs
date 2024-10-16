@@ -10,9 +10,9 @@ import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, fa
 
 
 export default function Sidebar (props) {
+    const { isOpen } = props;
     const router = useRouter();
     const pathname = usePathname();
-    const { isOpen } = props;
     const [ submenu, setSubmenu ] = useState('');
     const [ menuActive, setMenuActive ] = useState('');
 
