@@ -30,7 +30,7 @@ const Edit = () => {
                 }
             </div>
             <div className="mt-8 flex flex-col">
-                <button type="submit" className="bg-blue-500 text-white py-3 rounded cursor-pointer hover:text-blue-500 hover:bg-white hover:ring-offset-2 hover:ring-2 hover:ring-blue-500 transition-all ease-in ease-out">Tambah</button>
+                <button type="submit" className="bg-yellow-500 text-white py-3 rounded cursor-pointer hover:text-yellow-500 hover:bg-white hover:ring-offset-2 hover:ring-2 hover:ring-yellow-500 transition-all ease-in ease-out">Ubah</button>
             </div>
         </form>
     )
