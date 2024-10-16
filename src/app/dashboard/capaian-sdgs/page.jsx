@@ -32,7 +32,12 @@ const dummies = [
 ]
 
 export default function CapaianSdgs () {
-    const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs</Breadcrumb>)
+    const PageCardContent = () => (
+        <Breadcrumb>
+            <div className="w-[360px] font-bold text-xl text-white">Indikator Tujuan SDGs</div>
+            <p className="mt-4 w-[560px] text-justify text-white text-sm font-medium">Formulir evaluasi kinerja pencapaian sasaran TPB/SDGs</p>
+        </Breadcrumb>
+    )
 
     const handleStatusIcon = (status) => {
         if (status == 2) {
