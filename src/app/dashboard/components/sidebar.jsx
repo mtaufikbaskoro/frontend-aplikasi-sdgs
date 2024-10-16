@@ -24,7 +24,7 @@ export default function Sidebar (props) {
     }, [pathname])
 
     const handleLink = (route) => {
-        console.log(pathname);
+        router.push(route);
     };
 
     const handleSubMenu = (menu) => {
@@ -39,17 +39,17 @@ export default function Sidebar (props) {
         <div className={`${isOpen ? "w-[280px]" : "shrink w-0"} bg-white rounded transition-all ease-in ease-out`}>
             <aside className="py-4 fixed left-0 w-[280px]">
                 <ul className={`flex flex-col gap-2 ${isOpen ? '' : 'hidden'} transition-all ease-in ease-out`}>
-                    <li className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == '' ? 'bg-green-100' : ''}`}>
-                        <Link href="/dashboard" className='ml-6 flex gap-5 justify-start items-center'>
+                    <li onClick={() => handleLink("/dashboard")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == '' ? 'bg-green-100' : ''}`}>
+                        <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faTableColumns} />
                             <span className="sm">Dashboard</span>
-                        </Link>
+                        </div>
                     </li>
-                    <li className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out ${menuActive == 'capaian-sdgs' ? 'bg-green-100' : ''}`}>
-                        <Link href="/dashboard/capaian-sdgs" className='ml-6 flex gap-5 justify-start items-center'>
+                    <li onClick={() => handleLink("/dashboard/capaian-sdgs")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'capaian-sdgs' ? 'bg-green-100' : ''}`}>
+                        <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faChartBar} />
                             <span className="sm">Capaian SDGs</span>
-                        </Link>
+                        </div>
                     </li>
                     <li onClick={() => handleSubMenu('realisasi-program')} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'realisasi-program' ? 'bg-green-100' : ''}`}>
                         <div className='ml-6 flex gap-5 justify-start items-center'>
@@ -71,32 +71,32 @@ export default function Sidebar (props) {
                             </li>
                         </ul>
                     </li>
-                    <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                    <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
+                        <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
                             <span className="sm">Identifikasi Masalah</span>
-                        </Link>
+                        </div>
                     </li>
-                    <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                    <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
+                        <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
                             <span className="sm">Pembelajaran SDGs</span>
-                        </Link>
+                        </div>
                     </li>
-                    <li className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'cetak-matriks' ? 'bg-green-100' : ''}`}>
-                        <Link href="/dashboard/cetak-matriks" className='ml-6 flex gap-5 justify-start items-center'>
+                    <li onClick={() => handleLink("/dashboard/cetak-matriks")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'cetak-matriks' ? 'bg-green-100' : ''}`}>
+                        <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faFileAlt} />
                             <span className="sm">Cetak Matriks</span>
-                        </Link>
+                        </div>
                     </li>
 
                     <div className='mx-6 my-4 border-b-2 border-green-900'></div>
 
-                    <li className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'pengguna' ? 'bg-green-100' : ''}`}>
-                        <Link href="/dashboard/pengguna" className='ml-6 flex gap-5 justify-start items-center'>
+                    <li onClick={() => handleLink("/dashboard/pengguna")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'pengguna' ? 'bg-green-100' : ''}`}>
+                        <div className='ml-6 flex gap-5 justify-start items-center'>
                             <FontAwesomeIcon size='sm' icon={faUsers} />
                             <span className="sm">Atur Pengguna</span>
-                        </Link>
+                        </div>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
                         <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
