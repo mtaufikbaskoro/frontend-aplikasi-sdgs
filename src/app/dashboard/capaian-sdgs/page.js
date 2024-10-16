@@ -66,7 +66,7 @@ export default function CapaianSdgs () {
                                     {handleStatusIcon(dummy.status)}
                                 </td>
                                 <td className="px-6 py-4 flex gap-2">
-                                    <Link className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
+                                    <Link className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
                                         <FontAwesomeIcon icon={faEye} color="#3b82f6" />
                                     </Link>
                                 </td>

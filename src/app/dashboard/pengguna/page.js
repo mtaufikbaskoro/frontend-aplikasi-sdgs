@@ -29,7 +29,37 @@ const dummies = [
         username: 'dinas_kesehatan',
         password: '23456',
         status: 'tidak aktif'
-    }
+    },
+    {
+        id: 3,
+        username: 'dinas_kesehatan',
+        password: '23456',
+        status: 'tidak aktif'
+    },
+    {
+        id: 4,
+        username: 'dinas_kesehatan',
+        password: '23456',
+        status: 'tidak aktif'
+    },
+    {
+        id: 5,
+        username: 'dinas_kesehatan',
+        password: '23456',
+        status: 'tidak aktif'
+    },
+    {
+        id: 6,
+        username: 'dinas_kesehatan',
+        password: '23456',
+        status: 'tidak aktif'
+    },
+    {
+        id: 7,
+        username: 'dinas_kesehatan',
+        password: '23456',
+        status: 'tidak aktif'
+    },
 ]
 
 const Users = () => {
@@ -90,10 +120,10 @@ const Users = () => {
                                 </Badge>
                             </td>
                             <td className="px-6 py-4 flex justify-center">
-                                <button onClick={() => handleEditModal(dummy.id)} className="mx-auto" href="/dashboard/capaian-sdgs/detail/1.1">
+                                <button onClick={() => handleEditModal(dummy.id)} className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
                                     <FontAwesomeIcon icon={faPencil} color="yellow" />
                                 </button>
-                                <button onClick={() => handleDeleteModal(dummy.id)} className="mx-auto">
+                                <button onClick={() => handleDeleteModal(dummy.id)} className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                     <FontAwesomeIcon icon={faTrash} color="red" />
                                 </button>
                             </td>

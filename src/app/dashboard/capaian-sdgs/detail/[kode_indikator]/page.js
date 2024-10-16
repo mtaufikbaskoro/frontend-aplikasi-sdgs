@@ -10,7 +10,7 @@ import { faAdd, faExclamation, faPencil } from "@fortawesome/free-solid-svg-icon
 import Breadcrumb from "@/components/ui/breadcrumb";
 
 
-const tableColumns = ['Target (2022)', 'Capaian (2022)', '%Capaian', 'Status'];
+const tableColumns = ['Target (2022)', 'Capaian (2022)', '%Capaian', 'Aksi'];
 
 export default function Detail({params}) {
     const { kode_indikator } = params;
@@ -63,8 +63,8 @@ export default function Detail({params}) {
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4">
-                        <Link className="mx-auto" href="/dashboard/capaian-sdgs/edit/1">
-                            <FontAwesomeIcon icon={faPencil} color="#333333" />
+                        <Link className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/edit/1">
+                            <FontAwesomeIcon icon={faPencil} color="yellow" />
                         </Link>
                     </td>
                 </tr>
