@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
-import Button from "./ui/button";
+import LinkButton from "@components/ui/button";
 
 
 export default function Navbar (props) {
@@ -20,10 +20,10 @@ export default function Navbar (props) {
                     <p className="ml-4 text-xl font-bold uppercase">pemerintah kota medan</p>
                 </div>
             </div>
-            <div className="flex justify-end items-center gap-12 min-w-80">
+            <div className="flex items-center gap-12 min-w-80">
                 <Link className="font-bold hover:underline" href="/">Beranda</Link>
                 <Link className="font-bold hover:underline" href="/#metadata">Metadata</Link>
-                <Button href="/login">Masuk</Button>
+                <LinkButton color={color} href="/login">Masuk</LinkButton>
             </div>
         </nav>
     )

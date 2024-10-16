@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from 'next/link';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import horizontalLogoSdgs from '@assets/img/horizontal_logo_sdgs.png';
-import Button from "./ui/button";
+import LinkButton from "@components/ui/button";
 
 
 export default function HomeHeader () {
@@ -19,9 +20,9 @@ export default function HomeHeader () {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end gap-12 min-w-80">
-                <a className="font-bold hover:underline" href="#metadata">Metadata</a>
-                <Button href="/login">Masuk</Button>
+            <div className="flex justify-end items-center gap-12 min-w-80">
+                <Link className="px-2 py-1 font-semibold text-lg hover:text-gray-500 hover:underline transition-all ease-in ease-out" href="#metadata">Metadata</Link>
+                <LinkButton color="#14532d" href="/login">Masuk</LinkButton>
             </div>
         </nav>
     )

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import LinkButton from "@/app/dashboard/components/button";
+import LinkButton from "@/components/ui/button";
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

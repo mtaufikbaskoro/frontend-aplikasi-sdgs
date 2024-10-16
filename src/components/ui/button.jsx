@@ -1,12 +1,22 @@
-import React from 'react';
-import Link from 'next/link';
+'use client';
 
-export default function Button ({children, href}) {
-    // console.log(title);
-    // const { href } = props;
+import Link from 'next/link';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+
+const LinkButton = (props) => {
+    const { color, icon, children, href } = props;
+
     return (
         <div>
-            <Link href={href} className='px-4 py-2 bg-green-600 text-white font-bold rounded transition-all ease-out hover:bg-white hover:ring-2 hover:ring-offset-2 hover:ring-green-600 hover:text-green-600 hover:ease-in'>{children}</Link>
+            <Link style={{backgroundColor: color}} href={href} className="transition-all ease-in ease-out flex items-center gap-4 px-3 py-2 rounded font-medium text-white hover:ring-offset-2 hover:ring-2 hover:ring-black">
+                {
+                    icon ? (<FontAwesomeIcon icon={icon} />) : ''
+                }
+                <div>{children}</div>
+            </Link>
         </div>
     )
 }
+
+export default LinkButton;
