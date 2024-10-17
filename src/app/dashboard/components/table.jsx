@@ -3,7 +3,7 @@
 export default function Table (props) {
     const {columns, children} = props;
     return (
-        <table className="w-full p-6 text-sm text-center text-green-950">
+        <table className="p-6 text-sm text-center text-green-950">
             <thead className="text-xs uppercase bg-green-950 text-white">
                 <tr>
                     {

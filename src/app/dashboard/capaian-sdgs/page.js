@@ -1,14 +1,17 @@
 
 import Link from "next/link";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DashboardLayout from "../components/layout";
 import Table from "../components/table";
-
-import { faCheck, faClock, faEye, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from "@/components/ui/breadcrumb";
 
+import { faCheck, faClock, faTimes, faPrint } from "@fortawesome/free-solid-svg-icons";
+import goalImg from '@assets/img/sdgs_icons/E_SDG_PRINT-01.jpg';
 
-const TableColumns = ['Nama Tujuan', 'Kode Indikator', 'Status', 'Aksi']
+
+
+const TableColumns = ['', 'Nama Tujuan', 'Kode Indikator', 'Status', '']
 
 const dummies = [
     {
@@ -56,8 +59,19 @@ export default function CapaianSdgs () {
                     {
                         dummies.map(dummy => (
                             <tr key={dummy.id} className={`bg-white border-b ${dummy.id % 2 == 0 ? 'bg-green-100' : ''}`}>
-                                <td scope="row" className="font-bold whitespace-nowrap">
-                                    {dummy.nama_tujuan}
+                                <td>
+                                    <div className="flex justify-center items-center">
+                                        <Image src={goalImg} width={56} height={56} />
+                                    </div>
+                                </td>
+                                <td scope="row" className="px-6 py-4">
+                                    <div className="font-bold flex flex-col justify-center items-start gap-2">
+                                        <Link href="/dashboard/capaian-sdgs/tujuan-1-tanpa-kemiskinan" className="hover:underline">{dummy.nama_tujuan}</Link>
+                                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div className="bg-blue-600 h-2.5 rounded-full" style={{width: '45%'}}></div>
+                                        </div>
+                                        <span className="font-light text-xs">Progress : 45%</span>
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     {dummy.kode_indikator}
@@ -65,9 +79,9 @@ export default function CapaianSdgs () {
                                 <td className="px-6 py-4">
                                     {handleStatusIcon(dummy.status)}
                                 </td>
-                                <td className="px-6 py-4 flex gap-2">
-                                    <Link className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
-                                        <FontAwesomeIcon icon={faEye} color="#3b82f6" />
+                                <td className="px-6 py-4">
+                                    <Link className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
+                                        <FontAwesomeIcon icon={faPrint} />
                                     </Link>
                                 </td>
                             </tr>
