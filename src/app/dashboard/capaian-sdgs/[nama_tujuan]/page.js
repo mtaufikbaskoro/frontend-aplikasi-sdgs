@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
@@ -92,7 +92,7 @@ export default function Detail({params}) {
             <Table columns={tableColumns}>
                 {
                     dummies.map((dummy) => (
-                        <>
+                        <Fragment key={dummy.id}>
                             <tr key={dummy.id} className='text-left h-12 font-semibold bg-green-200'>
                                 <td className='text-center'>{dummy.kode}</td>
                                 <td>{dummy.deskripsi}</td>
@@ -100,9 +100,9 @@ export default function Detail({params}) {
                                 <td></td>
                             </tr>
                             {
-                                dummy.indikators.map(indikator => (
-                                    <>
-                                    <tr className='text-left h-12 font-medium bg-green-100'>
+                                dummy.indikators.map((indikator, idx) => (
+                                    <Fragment key={idx}>
+                                    <tr key={idx} className='text-left h-12 font-medium bg-green-100'>
                                         <td className='text-center'>{indikator.kode_indikator}</td>
                                         <td>{indikator.deskripsi}</td>
                                         <td className='text-center'>{indikator.nilai ? indikator.nilai : ''}</td>
@@ -118,13 +118,13 @@ export default function Detail({params}) {
                                         indikator.points !== undefined ? (
                                             <>
                                                 {
-                                                    indikator.points.map(point => (
-                                                        <tr className='text-left h-12'>
+                                                    indikator.points.map((point, idx) => (
+                                                        <tr key={idx} className='text-left h-12'>
                                                             <td></td>
                                                             <td>{point.nomor}. {point.deskripsi}</td>
                                                             <td className='text-center'>{point.nilai}</td>
                                                             <td className='text-center'>
-                                                                <button onClick={() => console.log(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                     <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                 </button>
                                                             </td>
@@ -135,10 +135,10 @@ export default function Detail({params}) {
                                         ) : (<></>)
                                         
                                     }
-                                    </>
+                                    </Fragment>
                                 ))
                             }
-                        </>
+                        </Fragment>
                     ))
                 }
             </Table>
