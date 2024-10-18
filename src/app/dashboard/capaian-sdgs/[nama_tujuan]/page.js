@@ -143,11 +143,11 @@ export default function Detail({params}) {
                                                             <td>{point.nomor}. {point.deskripsi}</td>
                                                             <td className='text-center'>{point.nilai}</td>
                                                             <td className='text-center'>
-                                                                <div className='flex'>
-                                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                <div className='flex justify-evenly'>
+                                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                     </button>
-                                                                    <button onClick={() => handleAddModal(indikator.kode_indikator)} className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <button onClick={() => handleAddModal(indikator.kode_indikator)} className="bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                                     </button>
                                                                 </div>

@@ -124,13 +124,15 @@ const Users = () => {
                                     {dummy.status}
                                 </Badge>
                             </td>
-                            <td className="px-6 py-4 flex justify-center">
-                                <button onClick={() => handleEditModal(dummy.id)} className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
-                                    <FontAwesomeIcon icon={faPencil} color="yellow" />
-                                </button>
-                                <button onClick={() => handleDeleteModal(dummy.id)} className="mx-auto bg-green-950 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                    <FontAwesomeIcon icon={faTrash} color="red" />
-                                </button>
+                            <td>
+                                <div className="flex justify-evenly">
+                                    <button onClick={() => handleEditModal(dummy.id)} className="bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
+                                        <FontAwesomeIcon icon={faPencil} color="white" />
+                                    </button>
+                                    <button onClick={() => handleDeleteModal(dummy.id)} className="bg-red-500 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                        <FontAwesomeIcon icon={faTrash} color="white" />
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     ))
