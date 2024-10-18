@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from 'next/link';
+import LinkButton from "@components/ui/button";
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import horizontalLogoSdgs from '@assets/img/horizontal_logo_sdgs.png';
-import LinkButton from "@components/ui/button";
+
 
 
 export default function HomeHeader () {
     return (
-        <nav className="flex justify-between px-36 py-12 h-64 border-b-4 border-green-900">
+        <nav className="flex justify-between px-36 py-12 h-64 bg-white border-b-8 border-green-900">
             <div className="flex justify-center">
                 <div>
                     <Image src={logoPemko} width={48} height={48} alt="logo pemko medan" />
