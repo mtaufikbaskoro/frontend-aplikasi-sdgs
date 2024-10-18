@@ -32,14 +32,13 @@ export default function Metadata ({params}) {
                 <div className='grid grid-cols-6 grid-row gap-10 my-32'>
                     {
                         goal[0].targets.map((target, index) => (
-                            <div className="transition-all ease-in ease-out hover:scale-[1.2]" key={target}>
+                            <div className="transition-all ease-in ease-out hover:scale-[1.2]" key={index}>
                                 <Image src={`/assets/img/sdgs_icons/goal_${goal[0].id}_target${target}`} width={240} height={240} alt={`image ${index}`} />
                             </div>
                         ))
                     }
                 </div>
             </main>
-            {/* <div className='mt-80'></div> */}
             <Footer />
         </div>
     )

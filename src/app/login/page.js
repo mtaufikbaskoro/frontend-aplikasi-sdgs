@@ -31,7 +31,7 @@ export default function Login () {
                     <div>
                         <label htmlFor="username" className="block text-sm text-green-950 font-bold leading-6 text-black">Username</label>
                         <div className="mt-2">
-                            <input {...register("username", { required:true })} placeholder="Masukkan username anda" className="block w-full border border-gray-400 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
+                            <input {...register("username", { required:true })} placeholder="Masukkan username anda" className="block w-full border border-gray-300 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.username && 
                                 <div className='mt-1'> 
                                     <Alert>Username tidak boleh kosong.</Alert>
@@ -45,7 +45,7 @@ export default function Login () {
                         <label htmlFor="password" className="block text-sm text-green-950 font-bold leading-6 text-black">Password</label>
                         </div>
                         <div className="mt-1">
-                            <input {...register("password", {required: true, })} type="password" placeholder="Masukkan password anda" className="block w-full border border-gray-400 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
+                            <input {...register("password", {required: true, })} type="password" placeholder="Masukkan password anda" className="block w-full border border-gray-300 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.password &&
                                 <div className='mt-2'> 
                                     <Alert>Password tidak boleh kosong.</Alert>
