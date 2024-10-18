@@ -19,6 +19,10 @@ export default function DetailIndikator () {
                     <th>Baseline (2022)</th>
                     <td>2.18</td>
                 </tr>
+                <tr>
+                    <th>Dokumen Pendukung</th>
+                    <td><span className="font-semibold text-blue-500">dokumen.pdf</span></td>
+                </tr>
             </table>
             <h1 className="p-2 font-medium border rounded border-green-900 text-center">Target / Capaian / %Capaian / Status</h1>
             <hr />

@@ -9,7 +9,8 @@ import Modal from "@/app/dashboard/components/modal";
 import DetailIndikator from "./components/detailIndikator";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import AddCapaian from './components/addCapaian';
 
 
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Capaian', 'Aksi'];
@@ -69,8 +70,9 @@ const dummies = [
 ]
 
 export default function Detail({params}) {
-    const { kode_indikator } = params;
-    const [ detailModal, setModalDetail ] = useState(false);
+    const { nama_tujuan } = params;
+    const [ detailModal, setDetailModal ] = useState(false);
+    const [ addModal, setAddModal ] = useState(false);
     const [ selectedId, setSelectedId ] = useState(0);
 
     useEffect(() => {
@@ -79,15 +81,27 @@ export default function Detail({params}) {
 
     const handleDetailModal = (id) => {
         setSelectedId(id);
-        setModalDetail(!detailModal);
+        setDetailModal(!detailModal);
     }
 
-    const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {kode_indikator}</Breadcrumb>)
+    const handleAddModal = (id) => {
+        if (selectedId != 0) {
+            setSelectedId(0)
+        } else {
+            setSelectedId(id)
+        }
+        setAddModal(!addModal);
+    }
+
+    const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <Modal isOpen={detailModal} setIsOpen={setModalDetail} id={selectedId}>
+            <Modal isOpen={detailModal} setIsOpen={setDetailModal} id={selectedId}>
                 <DetailIndikator />
+            </Modal>
+            <Modal isOpen={addModal} setIsOpen={setAddModal} id={selectedId}>
+                <AddCapaian />
             </Modal>
             <Table columns={tableColumns}>
                 {
@@ -108,9 +122,14 @@ export default function Detail({params}) {
                                         <td className='text-center'>{indikator.nilai ? indikator.nilai : ''}</td>
                                         <td className='text-center'>
                                             {indikator.nilai ? (
-                                                <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                                    <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                                </button>
+                                                <div className='flex'>
+                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                        <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                                    </button>
+                                                    <button onClick={() => handleAddModal(indikator.kode_indikator)} className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                        <FontAwesomeIcon icon={faEdit} color="white" />
+                                                    </button>
+                                                </div>
                                             ) : (<></>)}
                                         </td>
                                     </tr>
@@ -124,9 +143,14 @@ export default function Detail({params}) {
                                                             <td>{point.nomor}. {point.deskripsi}</td>
                                                             <td className='text-center'>{point.nilai}</td>
                                                             <td className='text-center'>
-                                                                <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                                                    <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                                                </button>
+                                                                <div className='flex'>
+                                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                        <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                                                    </button>
+                                                                    <button onClick={() => handleAddModal(indikator.kode_indikator)} className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                        <FontAwesomeIcon icon={faEdit} color="white" />
+                                                                    </button>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     ))
