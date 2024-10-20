@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -5,8 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DashboardLayout from "../components/layout";
 import Table from "../components/table";
 import Breadcrumb from "@/components/ui/breadcrumb";
+import LinkButton from '@/components/ui/button';
 
-import { faCheck, faClock, faTimes, faPrint } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faClock, faTimes, faPrint, faAdd, faEdit } from "@fortawesome/free-solid-svg-icons";
 import goalImg from '@assets/img/sdgs_icons/E_SDG_PRINT-01.jpg';
 
 
@@ -35,6 +39,8 @@ const dummies = [
 ]
 
 export default function CapaianSdgs () {
+    const [ selectecId, setSelectedId ] = useState('');
+
     const PageCardContent = () => (
         <Breadcrumb>
             <div className="w-[360px] font-bold text-xl text-white">Indikator Tujuan SDGs</div>
@@ -54,6 +60,10 @@ export default function CapaianSdgs () {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
+            <div className='grid grid-cols-4 gap-2'>
+                <LinkButton href="/" icon={faAdd} color="#0ea5e9">Tambah Tujuan</LinkButton>
+            </div>
+            <hr />
             <div className="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
@@ -80,9 +90,14 @@ export default function CapaianSdgs () {
                                     {handleStatusIcon(dummy.status)}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <Link className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
-                                        <FontAwesomeIcon icon={faPrint} />
-                                    </Link>
+                                    <div className="flex">
+                                        <Link className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
+                                            <FontAwesomeIcon icon={faPrint} />
+                                        </Link>
+                                        <Link className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
+                                            <FontAwesomeIcon icon={faEdit} color="white" />
+                                        </Link>
+                                    </div>
                                 </td>
                             </tr>
                         ))

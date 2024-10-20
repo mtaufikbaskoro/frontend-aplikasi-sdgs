@@ -8,8 +8,9 @@ import Breadcrumb from "@/components/ui/breadcrumb";
 import Modal from "@/app/dashboard/components/modal";
 import DetailIndikator from "./components/detailIndikator";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import LinkButton from '@/components/ui/button';
 
-import { faEdit, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMagnifyingGlass, faAdd } from '@fortawesome/free-solid-svg-icons';
 import AddCapaian from './components/addCapaian';
 
 
@@ -103,6 +104,10 @@ export default function Detail({params}) {
             <Modal isOpen={addModal} setIsOpen={setAddModal} id={selectedId}>
                 <AddCapaian />
             </Modal>
+            <div className='grid grid-cols-4 gap-2'>
+                <LinkButton href="/" icon={faAdd} color="#0ea5e9">Tambah Indikator Tujuan</LinkButton>
+            </div>
+            <hr />
             <Table columns={tableColumns}>
                 {
                     dummies.map((dummy) => (
