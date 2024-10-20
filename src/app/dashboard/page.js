@@ -54,7 +54,7 @@ const notes = [
 
 const PageCardContent = () => (
     <Breadcrumb>
-        <p className='w-[360px] font-bold text-xl text-white'>Selamat Data di Data Center SDGs Kota Medan</p>
+        <p className='w-[360px] font-bold text-xl text-white'>Selamat Data di Data Center SDGs Kota Medan Tahun 2023</p>
         <p className='mt-4 w-[560px] text-justify text-white text-sm'>Mohon untuk periksa kembali hasil status data yang telah diinput, data selesai jika status sudah diubah ke “approve”</p>
     </Breadcrumb>
 )
