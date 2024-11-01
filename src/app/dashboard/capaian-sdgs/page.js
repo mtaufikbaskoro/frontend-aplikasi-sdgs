@@ -8,39 +8,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DashboardLayout from "../components/layout";
 import Table from "../components/table";
 import Breadcrumb from "@/components/ui/breadcrumb";
-import LinkButton from '@/components/ui/button';
+import Pagination from "../components/pagination";
 
-import { faCheck, faClock, faTimes, faPrint, faAdd, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faClock, faTimes, faPrint, faEdit } from "@fortawesome/free-solid-svg-icons";
+import Loading from "../components/loading";
 
 
-
-const TableColumns = ['', 'Nama Tujuan', 'Status', '']
-
-const dummies = [
-    {
-        id: 1,
-        nama_tujuan: 'Tujuan 1: Tanpa Kemiskinan',
-        kode_indikator: '1.1.1.a',
-        status: 2,
-    },
-    {
-        id: 2,
-        nama_tujuan: 'Tujuan 1: Tanpa Kemiskinan',
-        kode_indikator: '1.1.1.b',
-        status: 1,
-    },
-    {
-        id: 3,
-        nama_tujuan: 'Tujuan 3: Tanpa Kemiskinan',
-        kode_indikator: '3.1.a',
-        status: 3,
-    },
-]
+const ITEMS_PER_PAGE = 5;
+const TableColumns = ['', 'Nama Tujuan', 'Status', ''];
 
 export default function CapaianSdgs () {
     const [ selectecId, setSelectedId ] = useState('');
-    const [items, setItems] = useState(null);
+    const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchGoals = async () => {
@@ -53,28 +36,33 @@ export default function CapaianSdgs () {
                 })
         
                 if (res.ok) {
-                    const data = await res.json();
-                    return data
+                    const data = await res.json()
+                    setItems(data)
+                    setTotalPages(Math.ceil(data.length / ITEMS_PER_PAGE))
+
                 }
             } catch (error) {
-                console.log(error)
+                setError(error.message)
+            } finally {
+                setIsLoading(false)
             }
         }
 
-        fetchGoals().then(res => setItems(res)).then(() => setIsLoading(false))
+        fetchGoals()
     }, [])
+
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
+    }
 
     const createSlug = (kode, nama) => {
         let slug = `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
         return slug
     }
 
-    const PageCardContent = () => (
-        <Breadcrumb>
-            <div className="w-[360px] font-bold text-xl text-white">Indikator Tujuan SDGs</div>
-            <p className="mt-4 w-[560px] text-justify text-white text-sm font-medium">Formulir evaluasi kinerja pencapaian sasaran TPB/SDGs</p>
-        </Breadcrumb>
-    )
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const currentItems = items.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
     const handleStatusIcon = (status) => {
         if (status == 2) {
@@ -86,21 +74,30 @@ export default function CapaianSdgs () {
         }
     }
 
+    const PageCardContent = () => (
+        <Breadcrumb>
+            <div className="w-[360px] font-bold text-xl text-white">Indikator Tujuan SDGs</div>
+            <p className="mt-4 w-[560px] text-justify text-white text-sm font-medium">Formulir evaluasi kinerja pencapaian sasaran TPB/SDGs</p>
+        </Breadcrumb>
+    )
+
     if (isLoading) {
-        return (<div>Tunggu...</div>)
+        return (<Loading>Memuat Data...</Loading>)
     }
+
+    if (error) {
+        return (<Loading>Error : {error}</Loading>)
+    }
+
+    console.log(totalPages)
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <div className='grid grid-cols-4 gap-2'>
-                <LinkButton href="/" icon={faAdd} color="#0ea5e9">Tambah Tujuan</LinkButton>
-            </div>
-            <hr />
             <div className="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
-                        items.map(dummy => (
-                            <tr key={dummy.id} className={`bg-white border-b ${dummy.id % 2 == 0 ? 'bg-green-100' : ''}`}>
+                        currentItems.map(dummy => (
+                            <tr key={dummy.id} className={`border-b ${dummy.id % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}>
                                 <td>
                                     <div className="flex justify-center items-center">
                                         <Image src={`/assets/img/sdgs_icons/E_SDG_PRINT-${dummy.kode}.jpg`} width={56} height={56} alt="goal image" />
@@ -109,8 +106,8 @@ export default function CapaianSdgs () {
                                 <td scope="row" className="px-6 py-4">
                                     <div className="font-bold flex flex-col justify-center items-start gap-2">
                                         <Link href={`/dashboard/capaian-sdgs/${createSlug(dummy.kode, dummy.nama)}`} className="hover:underline">{dummy.kode}. {dummy.nama.toUpperCase()}</Link>
-                                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div className="bg-blue-600 h-2.5 rounded-full" style={{width: '45%'}}></div>
+                                        <div className="w-full bg-gray-300 rounded-full h-2.5">
+                                            <div className="bg-blue-400 h-2.5 rounded-full" style={{width: '45%'}}></div>
                                         </div>
                                         <span className="font-light text-xs">Progress : 45%</span>
                                     </div>
@@ -123,15 +120,20 @@ export default function CapaianSdgs () {
                                         <Link className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
                                             <FontAwesomeIcon icon={faPrint} />
                                         </Link>
-                                        <Link className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
+                                        {/* <Link className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
                                             <FontAwesomeIcon icon={faEdit} color="white" />
-                                        </Link>
+                                        </Link> */}
                                     </div>
                                 </td>
                             </tr>
                         ))
                     }
                 </Table>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                />
             </div>
         </DashboardLayout>
     )
