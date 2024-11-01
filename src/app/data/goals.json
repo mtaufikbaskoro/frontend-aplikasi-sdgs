@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "tanpa kemiskinan",
-        "img": "/E_SDG_PRINT-01.jpg",
+        "img": "/E_SDG_PRINT-1.jpg",
         "color": "#e5243b",
         "desc": "Mengakhiri kemiskinan dalam segala bentuknya di mana-mana.",
         "targets": [
@@ -19,7 +19,7 @@
     {
         "id": 2,
         "name": "tanpa kelaparan",
-        "img": "/E_SDG_PRINT-02.jpg",
+        "img": "/E_SDG_PRINT-2.jpg",
         "color": "#dda63a",
         "desc": "Mengakhiri kelaparan, mencapai ketahanan pangan dan gizi yang baik, serta mempromosikan pertanian berkelanjutan.",
         "targets": [
@@ -36,7 +36,7 @@
     {
         "id": 3,
         "name": "kesehatan yang baik dan sejahtera",
-        "img": "/E_SDG_PRINT-03.jpg",
+        "img": "/E_SDG_PRINT-3.jpg",
         "color": "#4C9F38",
         "desc": "Menjamin kehidupan yang sehat dan mendorong kesejahteraan untuk semua di segala usia.",
         "targets": [
@@ -58,7 +58,7 @@
     {
         "id": 4,
         "name": "pendidikan berkualitas",
-        "img": "/E_SDG_PRINT-04.jpg",
+        "img": "/E_SDG_PRINT-4.jpg",
         "color": "#C5192D",
         "desc": "Memastikan bahwa semua orang, tanpa terkecuali, memiliki akses terhadap pendidikan yang berkualitas dan inklusif, serta mempromosikan pembelajaran sepanjang hayat.",
         "targets": [
@@ -77,7 +77,7 @@
     {
         "id": 5,
         "name": "kesetaraan gender",
-        "img": "/E_SDG_PRINT-05.jpg",
+        "img": "/E_SDG_PRINT-5.jpg",
         "color": "#FF3A21",
         "desc": "Mencapai kesetaraan gender dan memberdayakan semua perempuan dan anak perempuan.",
         "targets": [
@@ -95,7 +95,7 @@
     {
         "id": 6,
         "name": "Air Bersih dan Sanitasi Layak",
-        "img": "/E_SDG_PRINT-06.jpg",
+        "img": "/E_SDG_PRINT-6.jpg",
         "color": "#26BDE2",
         "desc": "Menjamin ketersediaan dan pengelolaan air bersih dan sanitasi yang berkelanjutan untuk semua.",
         "targets": [
@@ -113,7 +113,7 @@
     {
         "id": 7,
         "name": "Energi Bersih dan Terjangkau",
-        "img": "/E_SDG_PRINT-07.jpg",
+        "img": "/E_SDG_PRINT-7.jpg",
         "color": "#FCC30B",
         "desc": "Memastikan akses terhadap energi yang terjangkau, andal, berkelanjutan, dan modern untuk semua.",
         "targets": [
@@ -148,7 +148,7 @@
     {
         "id": 9,
         "name": "Industri Inovasi dan Infrastruktur",
-        "img": "/E_SDG_PRINT-09.jpg",
+        "img": "/E_SDG_PRINT-9.jpg",
         "color": "#FD6925",
         "desc": "Membangun infrastruktur yang tangguh, mempromosikan industrialisasi inklusif dan berkelanjutan, serta mendorong inovasi.",
         "targets": [

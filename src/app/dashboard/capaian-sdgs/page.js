@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -11,11 +11,10 @@ import Breadcrumb from "@/components/ui/breadcrumb";
 import LinkButton from '@/components/ui/button';
 
 import { faCheck, faClock, faTimes, faPrint, faAdd, faEdit } from "@fortawesome/free-solid-svg-icons";
-import goalImg from '@assets/img/sdgs_icons/E_SDG_PRINT-01.jpg';
 
 
 
-const TableColumns = ['', 'Nama Tujuan', 'Kode Indikator', 'Status', '']
+const TableColumns = ['', 'Nama Tujuan', 'Status', '']
 
 const dummies = [
     {
@@ -40,6 +39,35 @@ const dummies = [
 
 export default function CapaianSdgs () {
     const [ selectecId, setSelectedId ] = useState('');
+    const [items, setItems] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchGoals = async () => {
+            setIsLoading(true)
+            try {
+                const res = await fetch('/api/sdgs', {
+                    method: 'GET',
+                    headers: { "Content-Type": 'application/json'},
+                    credentials: 'include'
+                })
+        
+                if (res.ok) {
+                    const data = await res.json();
+                    return data
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchGoals().then(res => setItems(res)).then(() => setIsLoading(false))
+    }, [])
+
+    const createSlug = (kode, nama) => {
+        let slug = `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
+        return slug
+    }
 
     const PageCardContent = () => (
         <Breadcrumb>
@@ -58,6 +86,10 @@ export default function CapaianSdgs () {
         }
     }
 
+    if (isLoading) {
+        return (<div>Tunggu...</div>)
+    }
+
     return (
         <DashboardLayout Content={<PageCardContent />}>
             <div className='grid grid-cols-4 gap-2'>
@@ -67,16 +99,16 @@ export default function CapaianSdgs () {
             <div className="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
-                        dummies.map(dummy => (
+                        items.map(dummy => (
                             <tr key={dummy.id} className={`bg-white border-b ${dummy.id % 2 == 0 ? 'bg-green-100' : ''}`}>
                                 <td>
                                     <div className="flex justify-center items-center">
-                                        <Image src={goalImg} width={56} height={56} />
+                                        <Image src={`/assets/img/sdgs_icons/E_SDG_PRINT-${dummy.kode}.jpg`} width={56} height={56} alt="goal image" />
                                     </div>
                                 </td>
                                 <td scope="row" className="px-6 py-4">
                                     <div className="font-bold flex flex-col justify-center items-start gap-2">
-                                        <Link href="/dashboard/capaian-sdgs/tujuan-1-tanpa-kemiskinan" className="hover:underline">{dummy.nama_tujuan}</Link>
+                                        <Link href={`/dashboard/capaian-sdgs/${createSlug(dummy.kode, dummy.nama)}`} className="hover:underline">{dummy.kode}. {dummy.nama.toUpperCase()}</Link>
                                         <div className="w-full bg-gray-200 rounded-full h-2.5">
                                             <div className="bg-blue-600 h-2.5 rounded-full" style={{width: '45%'}}></div>
                                         </div>
@@ -84,10 +116,7 @@ export default function CapaianSdgs () {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    {dummy.kode_indikator}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {handleStatusIcon(dummy.status)}
+                                    {handleStatusIcon(2)}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex">

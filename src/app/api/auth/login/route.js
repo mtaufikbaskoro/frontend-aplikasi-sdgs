@@ -3,13 +3,6 @@ import { cookies } from "next/headers";
 
 export async function POST (request) {
     const {username, password} = await request.json();
-
-    // console.log(username);
-
-    // return NextResponse.json({message: 'success'});
-
-    // const username = formData.get('username');
-    // const password = formData.get('password');
     
     try {
 
