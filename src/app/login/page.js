@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Footer from './components/footer';
 import Alert from '@/components/ui/alert';
 
@@ -13,8 +14,30 @@ import logoSDGs from '@assets/img/logo_sdgs.png';
 
 export default function Login () {
     const { register, handleSubmit, formState: { errors }, } = useForm()
+    const router = useRouter();
 
-    const onSubmit = (data) => console.log(data)
+    async function onSubmit (form) {
+        const { username, password } = form;
+
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({username, password}),
+            // credentials: 'include',
+        });
+
+        if (!response.ok) {
+            console.log('failed to login');
+        } else {
+            const data = await response.json();
+            localStorage.setItem('user', JSON.stringify(data.user))
+            console.log('login successful');
+            router.push('/dashboard');
+        }
+        
+    }
 
     return (
         <>

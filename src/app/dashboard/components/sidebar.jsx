@@ -17,6 +17,22 @@ export default function Sidebar (props) {
     const [ menuActive, setMenuActive ] = useState('');
     const [ submenuActive, setSubmenuActive ] = useState('');
 
+    async function handleLogout () {
+        const response = await fetch('/api/auth/logout', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (response.ok) {
+            localStorage.removeItem('user');
+            router.push('/login')
+        } else {
+            console.log('gagal logout')
+        }
+    }
+
     useEffect(() => {
         const pathArray = pathname.split('/');
         if (pathArray[2]) {
@@ -114,10 +130,10 @@ export default function Sidebar (props) {
                         </Link>
                     </li>
                     <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
+                        <div onClick={() => handleLogout()} className='ml-6 flex gap-5 justify-start items-center cursor-pointer'>
                             <FontAwesomeIcon size='sm' icon={faSignOut} />
                             <span className="sm">Keluar</span>
-                        </Link>
+                        </div>
                     </li>
                 </ul>
             </aside>
