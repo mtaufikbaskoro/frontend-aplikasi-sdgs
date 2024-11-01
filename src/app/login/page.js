@@ -28,13 +28,13 @@ export default function Login () {
             // credentials: 'include',
         });
 
-        if (!response.ok) {
-            console.log('failed to login');
-        } else {
+        if (response.ok) {
             const data = await response.json();
-            localStorage.setItem('user', JSON.stringify(data.user))
-            console.log('login successful');
-            router.push('/dashboard');
+            if (data.ok) {
+                router.push('/dashboard')
+            }
+            console.log(data.message);
+            // router.push('/dashboard');
         }
         
     }

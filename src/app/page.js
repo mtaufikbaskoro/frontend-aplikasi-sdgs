@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen">
-      <Image src={sdg_wheel} className="absolute top-32 -left-20 opacity-25 -z-10" width="auto" height={"auto"} />
+      <Image src={sdg_wheel} className="absolute top-32 -left-20 opacity-25 -z-10" width="auto" height={"auto"} alt="backdrop logo sdgs" />
       <HomeHeader />
       <main className="">
         <div className="flex justify-between items-center gap-8 row-start-2 items-center sm:items-start px-48 py-12 mt-32">

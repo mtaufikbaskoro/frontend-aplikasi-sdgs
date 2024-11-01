@@ -29,19 +29,24 @@ export async function POST (request) {
 
         if (data.ok) {
             const jwt = data.token;
-            const roles = data.user.roles;
-            const json_arr = JSON.stringify(roles);
+            const user = data.user;
 
             if (jwt) {
-                const nextResponse = NextResponse.json({ message: 'login successful', user: data.user});
+                const nextResponse = NextResponse.json({ message: 'login successful', user: data.user, ok: data.ok, status: data.status});
+                
                 nextResponse.cookies.set('token', jwt, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     maxAge: 60 * 60 * 24,
                     path: '/'
                 });
-                
-                // localStorage.setItem('roles', json_arr);
+
+                nextResponse.cookies.set('user', JSON.stringify(user), {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 60 * 60 * 24,
+                    path: '/'
+                })
                 
                 return nextResponse;
             }

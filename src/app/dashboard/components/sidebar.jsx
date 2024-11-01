@@ -26,7 +26,6 @@ export default function Sidebar (props) {
         })
 
         if (response.ok) {
-            localStorage.removeItem('user');
             router.push('/login')
         } else {
             console.log('gagal logout')
