@@ -6,7 +6,12 @@ export async function GET (request) {
         const cookieStore = await cookies();
         const token = cookieStore.get('token');
 
-        const response = await fetch('http://v3.test/api/index/v1/astra/sdgs/get-goals', {
+        // extract queries parameter for pagination
+        const { searchParams } = new URL(request.url);
+        const page = searchParams.get('page')
+        const limit = searchParams.get('limit')
+
+        const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-goals?page=${page}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,
@@ -20,7 +25,10 @@ export async function GET (request) {
         }
 
         const data  = await response.json();
-        return NextResponse.json(data)
+        return NextResponse.json({
+            data: data.items,
+            totalItems: data.totalItems
+        })
     } catch (error) {
         return NextResponse.json({message: 'no cookies found', status: 404})
     }

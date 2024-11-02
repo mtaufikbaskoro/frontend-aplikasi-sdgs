@@ -26,19 +26,19 @@ export default function CapaianSdgs () {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetchGoals = async () => {
+        const fetchGoals = async (page) => {
             setIsLoading(true)
             try {
-                const res = await fetch('/api/sdgs', {
+                const res = await fetch(`/api/sdgs?page=${page}&limit=${ITEMS_PER_PAGE}`, {
                     method: 'GET',
                     headers: { "Content-Type": 'application/json'},
                     credentials: 'include'
                 })
         
                 if (res.ok) {
-                    const data = await res.json()
+                    const { data, totalItems } = await res.json()
                     setItems(data)
-                    setTotalPages(Math.ceil(data.length / ITEMS_PER_PAGE))
+                    setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE))
 
                 }
             } catch (error) {
@@ -48,8 +48,8 @@ export default function CapaianSdgs () {
             }
         }
 
-        fetchGoals()
-    }, [])
+        fetchGoals(currentPage)
+    }, [currentPage])
 
 
     const handlePageChange = (page) => {
@@ -60,9 +60,6 @@ export default function CapaianSdgs () {
         let slug = `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
         return slug
     }
-
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-    const currentItems = items.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
     const handleStatusIcon = (status) => {
         if (status == 2) {
@@ -89,14 +86,12 @@ export default function CapaianSdgs () {
         return (<Loading>Error : {error}</Loading>)
     }
 
-    console.log(totalPages)
-
     return (
         <DashboardLayout Content={<PageCardContent />}>
             <div className="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
-                        currentItems.map(dummy => (
+                        items.map(dummy => (
                             <tr key={dummy.id} className={`border-b ${dummy.id % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}>
                                 <td>
                                     <div className="flex justify-center items-center">
