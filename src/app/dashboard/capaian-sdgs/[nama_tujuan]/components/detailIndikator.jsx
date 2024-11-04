@@ -1,3 +1,5 @@
+import LinkButton from "@/components/ui/button";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function DetailIndikator () {
@@ -53,7 +55,8 @@ export default function DetailIndikator () {
                     </tr>
                 </tbody>
             </table>
-
+            <br />
+            <LinkButton href="/" icon={faEdit} color="#0ea5e9">Atur Capaian</LinkButton>
         </div>
     )
 }

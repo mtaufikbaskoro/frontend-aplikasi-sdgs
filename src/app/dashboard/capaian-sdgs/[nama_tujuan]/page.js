@@ -12,9 +12,10 @@ import LinkButton from '@/components/ui/button';
 
 import { faEdit, faMagnifyingGlass, faAdd } from '@fortawesome/free-solid-svg-icons';
 import AddCapaian from './components/addCapaian';
+import EditTarget from './components/editTarget';
 
 
-const tableColumns = ['Kode Indikator', 'Kriteria', 'Capaian', 'Aksi'];
+const tableColumns = ['Kode Indikator', 'Kriteria', 'Keterangan', 'Aksi Detail'];
 const dummies = [
     {
         id: 1,
@@ -28,7 +29,7 @@ const dummies = [
                     {
                         nomor: 'a',
                         deskripsi: 'Persentase penduduk yang hidup dibawah garis kemiskinan internasional.',
-                        nilai: 2.3
+                        nilai: 'Capaian belum diisi.'
                     }
                 ]
             }
@@ -42,7 +43,7 @@ const dummies = [
             {
                 kode_indikator: '1.2.1*',
                 deskripsi: "Persentase penduduk yang hidup di bawah garis kemiskinan nasional, menurut jenis kelamin dan kelompok umur.",
-                nilai: 1.9
+                nilai: 'Sudah terpenuhi.'
             },
             {
                 kode_indikator: '1.2.2*',
@@ -51,17 +52,17 @@ const dummies = [
                     {
                         nomor: '1.c',
                         deskripsi: 'Persentase penduduk yang mengalami gangguan kesehatan (tingkat morbilitas)',
-                        nilai: 1.1
+                        nilai: 'Target belum diisi.'
                     }, 
                     {
                         nomor: '3.a',
                         deskripsi: 'Persentase rumah tangga yang sumber penerangan utamanya bukan listrik',
-                        nilai: 8.2
+                        nilai: 'Target belum diisi.'
                     },
                     {
                         nomor: '3.b',
                         deskripsi: 'Persentase rumah tangga tanpa akses pada air minum bersih.',
-                        nilai: 2.1
+                        nilai: 'Capaian belum dimasukkan'
                     }
                 ]
             }
@@ -74,7 +75,7 @@ export default function Detail({params}) {
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
     const [ detailModal, setDetailModal ] = useState(false);
-    const [ addModal, setAddModal ] = useState(false);
+    const [ editModal, setEditModal ] = useState(false);
     const [ selectedId, setSelectedId ] = useState(0);
 
     useEffect(() => {
@@ -86,13 +87,13 @@ export default function Detail({params}) {
         setDetailModal(!detailModal);
     }
 
-    const handleAddModal = (id) => {
+    const handleEditModal = (id) => {
         if (selectedId != 0) {
             setSelectedId(0)
         } else {
             setSelectedId(id)
         }
-        setAddModal(!addModal);
+        setEditModal(!editModal);
     }
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
@@ -104,8 +105,8 @@ export default function Detail({params}) {
             <Modal isOpen={detailModal} setIsOpen={setDetailModal} id={selectedId}>
                 <DetailIndikator />
             </Modal>
-            <Modal isOpen={addModal} setIsOpen={setAddModal} id={selectedId}>
-                <AddCapaian />
+            <Modal isOpen={editModal} setIsOpen={setEditModal} id={selectedId}>
+                <EditTarget />
             </Modal>
             <div className='grid grid-cols-4 gap-2'>
                 <LinkButton href="/" icon={faAdd} color="#0ea5e9">Tambah Indikator Tujuan</LinkButton>
@@ -115,47 +116,45 @@ export default function Detail({params}) {
                 {
                     dummies.map((dummy) => (
                         <Fragment key={dummy.id}>
-                            <tr key={dummy.id} className='text-left h-12 font-semibold bg-green-200'>
+                            <tr key={dummy.id} className='text-left h-12 font-semibold bg-green-700 text-white'>
                                 <td className='text-center'>{dummy.kode}</td>
-                                <td>{dummy.deskripsi}</td>
-                                <td></td>
-                                <td></td>
+                                <td colSpan={tableColumns.length - 1}>{dummy.deskripsi}</td>
                             </tr>
                             {
                                 dummy.indikators.map((indikator, idx) => (
                                     <Fragment key={idx}>
-                                    <tr key={idx} className='text-left h-12 font-medium bg-green-100'>
+                                    <tr key={idx} className='text-left h-12 font-medium bg-green-200'>
                                         <td className='text-center'>{indikator.kode_indikator}</td>
-                                        <td>{indikator.deskripsi}</td>
-                                        <td className='text-center'>{indikator.nilai ? indikator.nilai : ''}</td>
-                                        <td className='text-center'>
-                                            {indikator.nilai ? (
-                                                <div className='flex'>
-                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-auto bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                        <td colSpan={!indikator.nilai ? tableColumns.length - 2 : 0}>{indikator.deskripsi}</td>
+                                        <td className='text-center'>{indikator.nilai && indikator.nilai}</td>
+                                        {indikator.nilai && (
+                                            <td>
+                                                <div className='grid grid-cols-2 gap-2 py-2'>
+                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                     </button>
-                                                    <button onClick={() => handleAddModal(indikator.kode_indikator)} className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    <button onClick={() => handleEditModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                     </button>
                                                 </div>
-                                            ) : (<></>)}
-                                        </td>
+                                            </td>
+                                        )}
                                     </tr>
                                     {
                                         indikator.points !== undefined ? (
                                             <>
                                                 {
                                                     indikator.points.map((point, idx) => (
-                                                        <tr key={idx} className='text-left h-12'>
+                                                        <tr key={idx} className='text-left h-12 bg-green-100'>
                                                             <td></td>
                                                             <td>{point.nomor}. {point.deskripsi}</td>
                                                             <td className='text-center'>{point.nilai}</td>
                                                             <td className='text-center'>
-                                                                <div className='flex justify-evenly'>
-                                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="bg-green-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                <div className='grid grid-cols-2 gap-2 py-2'>
+                                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                     </button>
-                                                                    <button onClick={() => handleAddModal(indikator.kode_indikator)} className="bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <button onClick={() => handleEditModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                                     </button>
                                                                 </div>
