@@ -3,7 +3,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
 
-export default function EditTarget () {
+export default function EditTargetCapaian () {
     const { register, handleSubmit, control } = useForm({
         defaultValues: {
             target: '',
@@ -29,23 +29,33 @@ export default function EditTarget () {
             <h4 className="font-medium text-center text-xl">Atur Target</h4>
             <hr className='mt-5' />
             <div className="mt-4 flex flex-col gap-4">
-                <label htmlFor='target'>Target Capaian</label>
+                <label
+                    className='text-sm' 
+                    htmlFor='target'
+                >
+                    Target Capaian
+                </label>
                 <input 
-                    className='border border-gray-300 rounded p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm transition-all ease-in ease-out'
+                    className='border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-slate-400 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm transition-all ease-in ease-out'
                     type="text" 
-                    placeholder="Masukkan capaian..."
+                    placeholder="Masukkan target capaian..."
                     {...register('target', {required: true})} 
                 />
-                <label htmlFor='instansis'>Instansi Pelaksana</label>
+                <label 
+                    className='text-sm' 
+                    htmlFor='instansis'
+                >
+                    Instansi Pelaksana
+                </label>
                 {
                     fields.map((field, index) => (
                         <div key={field.id} className='mb-3 grid grid-cols-4 gap-2'>
                             <select
-                                className='col-span-3'
+                                className='col-span-3 bg-transparent text-slate-400 text-sm border border-slate-200 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer'
                                 {...register(`instansis.${index}.instansi`, { required: true})}
                                 defaultValue="" 
                             >
-                                <option value="" disabled>Pilih Instansi Pelaksana</option>
+                                <option className='text-slate-700' value="" disabled>Pilih Instansi Pelaksana</option>
                                 {
                                     selectInstansis.map((inst) => (
                                         <option key={inst.value} value={inst.value}>
@@ -56,16 +66,17 @@ export default function EditTarget () {
                             </select>
                             {
                                 index === 0 && (
-                                    <span className='flex justify-end gap-6'>
+                                    <span className='flex justify-center gap-3'>
                                         <button 
-                                            className='bg-sky-500 px-2 py-1 rounded-sm text-white hover:bg-white hover:text-sky-500 hover:ring-2 hover:ring-sky-500 transition-all ease-in ease-out' 
+                                            className='bg-sky-500 px-3 rounded-sm text-white hover:bg-sky-400 shadow-sm transition-all ease-in ease-out' 
                                             type='button'
                                             onClick={() => append({instansi: ''})}
                                         >
-                                            <FontAwesomeIcon icon={faAdd}/>
+                                            <FontAwesomeIcon icon={faAdd} size='sm'/>
                                         </button>
                                         <button 
-                                            className='bg-red-400 px-2 py-1 rounded-sm text-white hover:bg-white hover:text-red-400 hover:ring-2 hover:ring-red-400 transition-all ease-in ease-out'
+                                            disabled={fields.length <= 1 && true}
+                                            className='bg-red-400 px-3 rounded-sm text-white disabled:bg-slate-400 hover:bg-red-300 shadow-sm transition-all ease-in ease-out'
                                             type='button'  
                                             onClick={() => remove(index)}
                                         >
@@ -77,9 +88,15 @@ export default function EditTarget () {
                         </div>
                     ))
                 }
+                {console.log(fields)}
             </div>
             <div className="mt-8 flex flex-col">
-                <button type="submit" className="bg-blue-500 text-white py-2 rounded cursor-pointer hover:text-blue-500 hover:bg-white hover:ring-offset-2 hover:ring-2 hover:ring-blue-500 transition-all ease-in ease-out">Atur</button>
+                <button 
+                    className="px-4 py-1.5 font-medium text-gray-100 bg-sky-500 rounded-sm transition-all ease-in ease-out hover:bg-white hover:text-sky-500 hover:ring-2 hover:ring-sky-500"
+                    type="submit" 
+                >
+                    Atur
+                </button>
             </div>
         </form>
     )

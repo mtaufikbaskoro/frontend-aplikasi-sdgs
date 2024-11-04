@@ -12,7 +12,8 @@ import LinkButton from '@/components/ui/button';
 
 import { faEdit, faMagnifyingGlass, faAdd } from '@fortawesome/free-solid-svg-icons';
 import AddCapaian from './components/addCapaian';
-import EditTarget from './components/editTarget';
+import EditTargetCapaian from './components/editTargetCapaian';
+import EditCapaian from './components/editCapaian';
 
 
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Keterangan', 'Aksi Detail'];
@@ -74,8 +75,10 @@ const dummies = [
 export default function Detail({params}) {
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
+
     const [ detailModal, setDetailModal ] = useState(false);
-    const [ editModal, setEditModal ] = useState(false);
+    const [ editTargetCapaianModal, setEditTargetCapaianModal ] = useState(false);
+    const [ editCapaianModal, setEditCapaianModal ] = useState(false);
     const [ selectedId, setSelectedId ] = useState(0);
 
     useEffect(() => {
@@ -87,31 +90,45 @@ export default function Detail({params}) {
         setDetailModal(!detailModal);
     }
 
-    const handleEditModal = (id) => {
+    const handleEditTargetCapaianModal = (id) => {
         if (selectedId != 0) {
             setSelectedId(0)
         } else {
             setSelectedId(id)
         }
-        setEditModal(!editModal);
+        if (detailModal !== false) {
+            setDetailModal(false);
+        }
+        setEditTargetCapaianModal(!editTargetCapaianModal);
+    }
+
+    const handleEditCapaianModal = (id) => {
+        if (selectedId != 0) {
+            setSelectedId(0)
+        } else {
+            setSelectedId(id)
+        }
+        if (detailModal === true) {
+            setDetailModal(false)
+        }
+
+        setEditCapaianModal(!editCapaianModal);
     }
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
 
-    // console.log(kode_tujuan);
-
     return (
         <DashboardLayout Content={<PageCardContent />}>
             <Modal isOpen={detailModal} setIsOpen={setDetailModal} id={selectedId}>
-                <DetailIndikator />
+                <DetailIndikator editCapaian={editCapaianModal} handleEditCapaianModal={handleEditCapaianModal} />
             </Modal>
-            <Modal isOpen={editModal} setIsOpen={setEditModal} id={selectedId}>
-                <EditTarget />
+            <Modal isOpen={editTargetCapaianModal} setIsOpen={setEditTargetCapaianModal} id={selectedId}>
+                <EditTargetCapaian />
             </Modal>
-            <div className='grid grid-cols-4 gap-2'>
-                <LinkButton href="/" icon={faAdd} color="#0ea5e9">Tambah Indikator Tujuan</LinkButton>
-            </div>
-            <hr />
+            <Modal isOpen={editCapaianModal} setIsOpen={setEditCapaianModal} id={selectedId}>
+                <EditCapaian />
+            </Modal>
+
             <Table columns={tableColumns}>
                 {
                     dummies.map((dummy) => (
@@ -133,7 +150,7 @@ export default function Detail({params}) {
                                                     <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                     </button>
-                                                    <button onClick={() => handleEditModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                     </button>
                                                 </div>
@@ -154,7 +171,7 @@ export default function Detail({params}) {
                                                                     <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                     </button>
-                                                                    <button onClick={() => handleEditModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                                     </button>
                                                                 </div>

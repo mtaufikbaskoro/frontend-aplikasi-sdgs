@@ -1,8 +1,11 @@
 import LinkButton from "@/components/ui/button";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-export default function DetailIndikator () {
+export default function DetailIndikator (props) {
+    const {editCapaianModal, handleEditCapaianModal} = props;
+
     return (
         <div className="flex flex-col gap-4">
             <h1 className="font-semibold">Target 1.1</h1>
@@ -56,7 +59,13 @@ export default function DetailIndikator () {
                 </tbody>
             </table>
             <br />
-            <LinkButton href="/" icon={faEdit} color="#0ea5e9">Atur Capaian</LinkButton>
+            <button 
+                className="flex items-center justify-center gap-3 bg-sky-500 py-2.5 rounded-sm text-white text-sm hover:text-sky-500 hover:bg-white hover:ring-2 hover:ring-sky-500 transition-all ease-in ease-out"
+                onClick={() => handleEditCapaianModal()}
+            >
+                <FontAwesomeIcon icon={faEdit} />
+                <span>Atur Capaian</span>
+            </button>
         </div>
     )
 }
