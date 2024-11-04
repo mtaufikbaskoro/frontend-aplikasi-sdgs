@@ -27,7 +27,7 @@ const dummies = [
                 points: [
                     {
                         nomor: 'a',
-                        deskripsi: 'Persentase penduduk yang hidup dibawah garing kemiskinan internasional.',
+                        deskripsi: 'Persentase penduduk yang hidup dibawah garis kemiskinan internasional.',
                         nilai: 2.3
                     }
                 ]
@@ -72,6 +72,7 @@ const dummies = [
 
 export default function Detail({params}) {
     const { nama_tujuan } = params;
+    const kode_tujuan = nama_tujuan.split('-')[1];
     const [ detailModal, setDetailModal ] = useState(false);
     const [ addModal, setAddModal ] = useState(false);
     const [ selectedId, setSelectedId ] = useState(0);
@@ -95,6 +96,8 @@ export default function Detail({params}) {
     }
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
+
+    // console.log(kode_tujuan);
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
