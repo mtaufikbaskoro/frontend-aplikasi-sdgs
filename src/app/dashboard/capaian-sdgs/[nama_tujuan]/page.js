@@ -8,70 +8,14 @@ import Breadcrumb from "@/components/ui/breadcrumb";
 import Modal from "@/app/dashboard/components/modal";
 import DetailIndikator from "./components/detailIndikator";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import LinkButton from '@/components/ui/button';
 import Loading from '../../components/loading';
 
 import { faEdit, faMagnifyingGlass, faAdd } from '@fortawesome/free-solid-svg-icons';
-import AddCapaian from './components/addCapaian';
 import EditTargetCapaian from './components/editTargetCapaian';
 import EditCapaian from './components/editCapaian';
 
 
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Aksi Detail'];
-const dummies = [
-    {
-        id: 1,
-        kode: '1.1',
-        deskripsi: 'Pada Tahun 2030, mengentaskan kemiskinan ekstrim bagi semua orang yang saat ini berpendapatan kurang dari 1,25 dolar amerika per hari.',
-        indikators: [
-            {
-                kode_indikator: '1.1.1*',
-                deskripsi: "Tingkat kemiskinan ekstrim",
-                points: [
-                    {
-                        nomor: 'a',
-                        deskripsi: 'Persentase penduduk yang hidup dibawah garis kemiskinan internasional.',
-                        nilai: 'Capaian belum diisi.'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        id: 2,
-        kode: '1.2',
-        deskripsi: 'Pada Tahun 2030, mengurangi setidaknya setengah proporsi laki-laki perempuan dan anak-anak dari semua usia, yang hidup dalam kemiskinan di semua dimensi, sesuai dengan definisi nasional.',
-        indikators: [
-            {
-                kode_indikator: '1.2.1*',
-                deskripsi: "Persentase penduduk yang hidup di bawah garis kemiskinan nasional, menurut jenis kelamin dan kelompok umur.",
-                nilai: 'Sudah terpenuhi.'
-            },
-            {
-                kode_indikator: '1.2.2*',
-                deskripsi: "Persentase laki-laki, perempuan dan anak-anak dari semua usia yang hidup dalam kemiskinan dalam berbagai dimensi sesuai dengan definisi nasional.",
-                points: [
-                    {
-                        nomor: '1.c',
-                        deskripsi: 'Persentase penduduk yang mengalami gangguan kesehatan (tingkat morbilitas)',
-                        nilai: 'Target belum diisi.'
-                    }, 
-                    {
-                        nomor: '3.a',
-                        deskripsi: 'Persentase rumah tangga yang sumber penerangan utamanya bukan listrik',
-                        nilai: 'Target belum diisi.'
-                    },
-                    {
-                        nomor: '3.b',
-                        deskripsi: 'Persentase rumah tangga tanpa akses pada air minum bersih.',
-                        nilai: 'Capaian belum dimasukkan'
-                    }
-                ]
-            }
-        ]
-    } 
-
-]
 
 export default function Detail({params}) {
     const { nama_tujuan } = params;

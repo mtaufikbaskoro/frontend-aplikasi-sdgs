@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faChevronRight, faChevronDown, faPuzzlePiece, faLightbulb } from '@fortawesome/free-solid-svg-icons';
@@ -60,82 +59,80 @@ export default function Sidebar (props) {
     };
 
     return (
-        <div className={`${isOpen ? "w-[280px]" : "shrink w-0"} bg-white rounded transition-all ease-in ease-out`}>
-            <aside className="py-4 fixed left-0 w-[280px]">
-                <ul className={`flex flex-col gap-2 ${isOpen ? '' : 'hidden'} transition-all ease-in ease-out`}>
-                    <li onClick={() => handleLink("/dashboard")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'dashboard' ? 'bg-green-100' : ''}`}>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faTableColumns} />
-                            <span className="sm">Dashboard</span>
-                        </div>
-                    </li>
-                    <li onClick={() => handleLink("/dashboard/capaian-sdgs")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'capaian-sdgs' ? 'bg-green-100' : ''}`}>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faChartBar} />
-                            <span className="sm">Capaian SDGs</span>
-                        </div>
-                    </li>
-                    <li onClick={() => handleSubMenu('realisasi-program')} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'realisasi-program' ? 'bg-green-100' : ''}`}>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
-                            <span className="sm">Realisasi Program</span>
-                            <FontAwesomeIcon size='xs' icon={submenu == 'realisasi-program' ? faChevronDown : faChevronRight} />
-                        </div>
-                    </li>
-                    <li className={`px-2 py-3 ${submenu == 'realisasi-program' ? '' : 'hidden'}`}>
-                        <ul className='px-3 flex flex-col gap-3 justify-start text-gray-700 text-sm transition-all ease-in ease-out'>
-                            <li onClick={() => handleLink('/dashboard/realisasi-program/pemerintah-daerah')} className={`px-2 py-3 hover:bg-gray-100 cursor-pointer ${submenuActive == 'pemerintah-daerah' ? 'bg-green-50' : ''}`}>
-                                <span>Pemerintah Daerah</span>
-                            </li>
-                            <li onClick={() => handleLink('/dashboard/realisasi-program/non-pemerintah')} className={`px-2 py-3 hover:bg-gray-100 cursor-pointer ${submenuActive == 'non-pemerintah' ? 'bg-green-50' : ''}`}>
-                                <span>Non Pemerintah</span>
-                            </li>
-                            <li onClick={() => handleLink('/dashboard/realisasi-program/pelaku-usaha')} className={`px-2 py-3 hover:bg-gray-100 cursor-pointer ${submenuActive == 'pelaku-usaha' ? 'bg-green-50' : ''}`}>
-                                <span>Pelaku Usaha</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faPuzzlePiece} />
-                            <span className="sm">Identifikasi Masalah</span>
-                        </div>
-                    </li>
-                    <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faLightbulb} />
-                            <span className="sm">Pembelajaran SDGs</span>
-                        </div>
-                    </li>
-                    <li onClick={() => handleLink("/dashboard/cetak-matriks")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'cetak-matriks' ? 'bg-green-100' : ''}`}>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faFileAlt} />
-                            <span className="sm">Cetak Matriks</span>
-                        </div>
-                    </li>
+        <div className={`${isOpen ? "w-72" : "shrink w-0"} bg-white shadow-2 py-6 pl-6 rounded transition-all ease-in ease-out`}>
+            <ul className={`${isOpen ? '' : 'hidden'} space-y-2 transition-all ease-in ease-out`}>
+                <li onClick={() => handleLink("/dashboard")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'dashboard' ? 'bg-green-100' : ''}`}>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faTableColumns} />
+                        <span className="sm">Dashboard</span>
+                    </div>
+                </li>
+                <li onClick={() => handleLink("/dashboard/capaian-sdgs")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'capaian-sdgs' ? 'bg-green-100' : ''}`}>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faChartBar} />
+                        <span className="sm">Capaian SDGs</span>
+                    </div>
+                </li>
+                <li onClick={() => handleSubMenu('realisasi-program')} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'realisasi-program' ? 'bg-green-100' : ''}`}>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
+                        <span className="sm">Realisasi Program</span>
+                        <FontAwesomeIcon size='xs' icon={submenu == 'realisasi-program' ? faChevronDown : faChevronRight} />
+                    </div>
+                </li>
+                <li className={`px-2 py-3 ${submenu == 'realisasi-program' ? '' : 'hidden'}`}>
+                    <ul className='px-3 flex flex-col gap-3 justify-start text-gray-700 text-sm transition-all ease-in ease-out'>
+                        <li onClick={() => handleLink('/dashboard/realisasi-program/pemerintah-daerah')} className={`px-2 py-3 hover:bg-gray-100 cursor-pointer ${submenuActive == 'pemerintah-daerah' ? 'bg-green-50' : ''}`}>
+                            <span>Pemerintah Daerah</span>
+                        </li>
+                        <li onClick={() => handleLink('/dashboard/realisasi-program/non-pemerintah')} className={`px-2 py-3 hover:bg-gray-100 cursor-pointer ${submenuActive == 'non-pemerintah' ? 'bg-green-50' : ''}`}>
+                            <span>Non Pemerintah</span>
+                        </li>
+                        <li onClick={() => handleLink('/dashboard/realisasi-program/pelaku-usaha')} className={`px-2 py-3 hover:bg-gray-100 cursor-pointer ${submenuActive == 'pelaku-usaha' ? 'bg-green-50' : ''}`}>
+                            <span>Pelaku Usaha</span>
+                        </li>
+                    </ul>
+                </li>
+                <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faPuzzlePiece} />
+                        <span className="sm">Identifikasi Masalah</span>
+                    </div>
+                </li>
+                <li onClick={() => handleLink("/")} className='px-2 py-3 hover:bg-gray-100'>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faLightbulb} />
+                        <span className="sm">Pembelajaran SDGs</span>
+                    </div>
+                </li>
+                <li onClick={() => handleLink("/dashboard/cetak-matriks")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'cetak-matriks' ? 'bg-green-100' : ''}`}>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faFileAlt} />
+                        <span className="sm">Cetak Matriks</span>
+                    </div>
+                </li>
 
-                    <div className='mx-6 my-4 border-b-2 border-green-900'></div>
+                <div className='mx-6 my-4 border-b-2 border-green-900'></div>
 
-                    <li onClick={() => handleLink("/dashboard/pengguna")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'pengguna' ? 'bg-green-100' : ''}`}>
-                        <div className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faUsers} />
-                            <span className="sm">Atur Pengguna</span>
-                        </div>
-                    </li>
-                    <li className='px-2 py-3 hover:bg-gray-100'>
-                        <Link href="/" className='ml-6 flex gap-5 justify-start items-center'>
-                            <FontAwesomeIcon size='sm' icon={faWrench} />
-                            <span className="sm">Atur Instansi</span>
-                        </Link>
-                    </li>
-                    <li className='px-2 py-3 hover:bg-gray-100'>
-                        <div onClick={() => handleLogout()} className='ml-6 flex gap-5 justify-start items-center cursor-pointer'>
-                            <FontAwesomeIcon size='sm' icon={faSignOut} />
-                            <span className="sm">Keluar</span>
-                        </div>
-                    </li>
-                </ul>
-            </aside>
+                <li onClick={() => handleLink("/dashboard/pengguna")} className={`px-2 py-3 hover:bg-gray-100 transition-all ease-in ease-out cursor-pointer ${menuActive == 'pengguna' ? 'bg-green-100' : ''}`}>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faUsers} />
+                        <span className="sm">Atur Pengguna</span>
+                    </div>
+                </li>
+                <li className='px-2 py-3 hover:bg-gray-100'>
+                    <div className='flex gap-5 justify-start items-center transition-all ease-in ease-out cursor-pointer'>
+                        <FontAwesomeIcon size='sm' icon={faWrench} />
+                        <span className="sm">Atur Instansi</span>
+                    </div>
+                </li>
+                <li onClick={() => handleLogout()} className='px-2 py-3 hover:bg-gray-100 cursor-pointer'>
+                    <div className='flex gap-5 justify-start items-center'>
+                        <FontAwesomeIcon size='sm' icon={faSignOut} />
+                        <span className="sm">Keluar</span>
+                    </div>
+                </li>
+            </ul>
         </div>
     )
 }

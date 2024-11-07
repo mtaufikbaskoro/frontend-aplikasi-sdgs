@@ -11,11 +11,11 @@ export default function DashboardLayout (props) {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
-        <div>
+        <div className='fkex flex-col h-screen'>
             <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
-            <div className="relative flex gap-4">
+            <div className="flex flex-1 gap-4">
                 <Sidebar isOpen={isOpen} />
-                <div className="grow flex flex-col gap-6 p-6 transition-all ease-in">
+                <div className="flex-1 p-6 transition-all ease-in">
                     <PageCard>{Content}</PageCard>
                     {children}
                 </div>
