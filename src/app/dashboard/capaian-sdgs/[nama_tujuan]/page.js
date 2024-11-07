@@ -9,6 +9,7 @@ import Modal from "@/app/dashboard/components/modal";
 import DetailIndikator from "./components/detailIndikator";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LinkButton from '@/components/ui/button';
+import Loading from '../../components/loading';
 
 import { faEdit, faMagnifyingGlass, faAdd } from '@fortawesome/free-solid-svg-icons';
 import AddCapaian from './components/addCapaian';
@@ -16,7 +17,7 @@ import EditTargetCapaian from './components/editTargetCapaian';
 import EditCapaian from './components/editCapaian';
 
 
-const tableColumns = ['Kode Indikator', 'Kriteria', 'Keterangan', 'Aksi Detail'];
+const tableColumns = ['Kode Indikator', 'Kriteria', 'Aksi Detail'];
 const dummies = [
     {
         id: 1,
@@ -75,11 +76,40 @@ const dummies = [
 export default function Detail({params}) {
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
+    const [ indikatorsData, setIndikatorsData ] = useState([]);
 
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState('');
     const [ detailModal, setDetailModal ] = useState(false);
     const [ editTargetCapaianModal, setEditTargetCapaianModal ] = useState(false);
     const [ editCapaianModal, setEditCapaianModal ] = useState(false);
     const [ selectedId, setSelectedId ] = useState(0);
+
+    const handleFetchIndikators = async (kode) => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}`, {
+                method: 'GET',
+                headers: {"Content-Type": 'application/json'},
+                credentials: 'include'
+            })
+
+            if (res.ok) {
+                const data = await res.json();
+                setIndikatorsData(data.data)
+            }
+
+        } catch (error) {
+            setError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        handleFetchIndikators(kode_tujuan);
+
+    }, []);
 
     useEffect(() => {
         setSelectedId(0);
@@ -117,6 +147,14 @@ export default function Detail({params}) {
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
 
+    if (isLoading) {
+        return (<Loading>Memuat Data...</Loading>)
+    }
+
+    if (error) {
+        return (<Loading>Error : {error}</Loading>)
+    }
+
     return (
         <DashboardLayout Content={<PageCardContent />}>
             <Modal isOpen={detailModal} setIsOpen={setDetailModal} id={selectedId}>
@@ -131,20 +169,19 @@ export default function Detail({params}) {
 
             <Table columns={tableColumns}>
                 {
-                    dummies.map((dummy) => (
+                    indikatorsData.map((dummy) => (
                         <Fragment key={dummy.id}>
                             <tr key={dummy.id} className='text-left h-12 font-semibold bg-green-700 text-white'>
                                 <td className='text-center'>{dummy.kode}</td>
-                                <td colSpan={tableColumns.length - 1}>{dummy.deskripsi}</td>
+                                <td colSpan={tableColumns.length - 1}>{dummy.kriteria}</td>
                             </tr>
                             {
                                 dummy.indikators.map((indikator, idx) => (
                                     <Fragment key={idx}>
                                     <tr key={idx} className='text-left h-12 font-medium bg-green-200'>
-                                        <td className='text-center'>{indikator.kode_indikator}</td>
-                                        <td colSpan={!indikator.nilai ? tableColumns.length - 2 : 0}>{indikator.deskripsi}</td>
-                                        <td className='text-center'>{indikator.nilai && indikator.nilai}</td>
-                                        {indikator.nilai && (
+                                        <td className='text-center'>{indikator.kode}</td>
+                                        <td colSpan={!indikator.subindikator.length < 1 ? tableColumns.length - 1 : 0}>{indikator.kriteria}</td>
+                                        {indikator.subindikator.length === 0 && (
                                             <td>
                                                 <div className='grid grid-cols-2 gap-2 py-2'>
                                                     <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
@@ -158,14 +195,13 @@ export default function Detail({params}) {
                                         )}
                                     </tr>
                                     {
-                                        indikator.points !== undefined ? (
+                                        indikator.subindikator !== undefined ? (
                                             <>
                                                 {
-                                                    indikator.points.map((point, idx) => (
+                                                    indikator.subindikator.map((point, idx) => (
                                                         <tr key={idx} className='text-left h-12 bg-green-100'>
                                                             <td></td>
-                                                            <td>{point.nomor}. {point.deskripsi}</td>
-                                                            <td className='text-center'>{point.nilai}</td>
+                                                            <td>{point.kode}. {point.kriteria}</td>
                                                             <td className='text-center'>
                                                                 <div className='grid grid-cols-2 gap-2 py-2'>
                                                                     <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">

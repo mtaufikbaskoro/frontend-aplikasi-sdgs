@@ -31,7 +31,7 @@ export default function CapaianSdgs () {
             try {
                 const res = await fetch(`/api/sdgs?page=${page}&limit=${ITEMS_PER_PAGE}`, {
                     method: 'GET',
-                    headers: { "Content-Type": 'application/json'},
+                    headers: {"Content-Type": 'application/json'},
                     credentials: 'include'
                 })
         

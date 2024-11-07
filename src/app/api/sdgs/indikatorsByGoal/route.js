@@ -1,0 +1,32 @@
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+
+export async function GET (request) {
+    try {
+        const cookieStore = cookies()
+        const token = cookieStore.get('token')
+
+        const { searchParams } = new URL(request.url)
+        const kode = searchParams.get('kode')
+
+        const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-indikators-by-goal?kode=${kode}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token.value}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+
+        const data = await response.json();
+
+        return NextResponse.json({data: data});
+
+    } catch (error) {
+        return NextResponse.json({message: error, status: 404})
+    }
+}

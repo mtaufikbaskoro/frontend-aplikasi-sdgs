@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET (request) {
     try {
-        const cookieStore = await cookies();
+        const cookieStore = cookies();
         const token = cookieStore.get('token');
 
         // extract queries parameter for pagination
