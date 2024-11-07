@@ -1,4 +1,5 @@
 import LinkButton from "@/components/ui/button";
+import MathDisplay from "@/components/ui/mathdisplay";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -11,22 +12,38 @@ export default function DetailIndikator (props) {
             <h1 className="font-semibold">Target 1.1</h1>
             <p className="text-sm text-justify">Pada Tahun 2030, mengentaskan kemiskinan ekstrim bagi semua orang yang saat ini berpendapatan kurang dari 1,25 dolar amerika per hari.</p>
             <hr />
-            <table className="table text-sm">
+            <table className="table border-separate border-spacing-y-4 text-sm">
                 <tbody>
                     <tr>
-                        <th>Sumber Data</th>
-                        <td>Renstra Dinas</td>
+                        <th className="w-[180px]">Sumber Data</th>
+                        <td colSpan={2}>Renstra Dinas</td>
                     </tr>
                     <tr>
                         <th>Satuan</th>
-                        <td>Persen (%)</td>
+                        <td colSpan={2}>Persen (%)</td>
                     </tr>
                     <tr>
                         <th>Baseline (2022)</th>
-                        <td>2.18</td>
+                        <td colSpan={2}>2.18</td>
                     </tr>
                     <tr>
-                        <td className="py-3">
+                        <th>Rumus</th>
+                        <td colSpan={2}>
+                            <MathDisplay formula="P KPLE = \frac{JPLE}{JSPLE} \times 100\%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th className="align-top">Keterangan Rumus</th>
+                        <td colSpan={2}>
+                            <ul>
+                                <li>P KPLE = Persentase keterwakilan perempuan sebagai pengambilan keputusan di lembaga eksekutif</li>
+                                <li>P KPLE = Persentase keterwakilan perempuan sebagai pengambilan keputusan di lembaga eksekutif</li>
+                                <li>P KPLE = Persentase keterwakilan perempuan sebagai pengambilan keputusan di lembaga eksekutif</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr className="text-center">
+                        <td>
                             <button className="text-left font-medium text-blue-500 hover:text-gray-400 transition-all ease-in ease-out">Dokumen Pendukung 1</button>
                         </td>
                         <td>
