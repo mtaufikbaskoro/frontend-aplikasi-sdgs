@@ -21,6 +21,7 @@ export default function Detail({params}) {
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
     const [ indikatorsData, setIndikatorsData ] = useState([]);
+    const [ detailIndikator, setDetailIndikator ] = useState([]);
 
     const [ isLoading, setIsLoading ] = useState(false);
     const [ error, setError ] = useState('');
@@ -52,16 +53,29 @@ export default function Detail({params}) {
 
     useEffect(() => {
         handleFetchIndikators(kode_tujuan);
-
     }, []);
 
     useEffect(() => {
         setSelectedId(0);
     }, []);
 
-    const handleDetailModal = (id) => {
-        setSelectedId(id);
-        setDetailModal(!detailModal);
+    const handleDetailModal = async (kd_indikator, kd_subindikator = 0) => {
+        try {
+            const res = await fetch(`/api/sdgs/detailByKode?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`,{
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setDetailIndikator(data.data);
+            }
+        } catch (error) {
+            setError(error)
+        } finally {
+            setDetailModal(!detailModal)
+        }
     }
 
     const handleEditTargetCapaianModal = (id) => {
@@ -101,8 +115,8 @@ export default function Detail({params}) {
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
-            <Modal isOpen={detailModal} setIsOpen={setDetailModal} id={selectedId}>
-                <DetailIndikator editCapaian={editCapaianModal} handleEditCapaianModal={handleEditCapaianModal} />
+            <Modal isOpen={detailModal} setIsOpen={setDetailModal}>
+                <DetailIndikator handleEditCapaianModal={handleEditCapaianModal} detail={detailIndikator} />
             </Modal>
             <Modal isOpen={editTargetCapaianModal} setIsOpen={setEditTargetCapaianModal} id={selectedId}>
                 <EditTargetCapaian />
@@ -128,7 +142,7 @@ export default function Detail({params}) {
                                         {indikator.subindikator.length === 0 && (
                                             <td>
                                                 <div className='grid grid-cols-2 gap-2 py-2'>
-                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    <button onClick={() => handleDetailModal(indikator.kode)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                     </button>
                                                     <button onClick={() => handleEditTargetCapaianModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
@@ -148,7 +162,7 @@ export default function Detail({params}) {
                                                             <td>{point.kode}. {point.kriteria}</td>
                                                             <td className='text-center'>
                                                                 <div className='grid grid-cols-2 gap-2 py-2'>
-                                                                    <button onClick={() => handleDetailModal(indikator.kode_indikator)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <button onClick={() => handleDetailModal(indikator.kode, point.kode)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                     </button>
                                                                     <button onClick={() => handleEditTargetCapaianModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">

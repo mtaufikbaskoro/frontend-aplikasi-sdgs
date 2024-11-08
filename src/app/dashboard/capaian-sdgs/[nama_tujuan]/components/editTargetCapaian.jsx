@@ -88,7 +88,6 @@ export default function EditTargetCapaian () {
                         </div>
                     ))
                 }
-                {console.log(fields)}
             </div>
             <div className="mt-8 flex flex-col">
                 <button 

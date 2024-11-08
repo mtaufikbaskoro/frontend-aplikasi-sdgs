@@ -44,8 +44,7 @@ export async function POST (request) {
                 return nextResponse;
             }
         } else {
-            const nextResponse = NextResponse.json(data);
-            return nextResponse;
+            return NextResponse.json(data);
         }
 
     } catch (error) {
