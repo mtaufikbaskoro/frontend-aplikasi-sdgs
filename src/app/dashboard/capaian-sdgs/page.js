@@ -78,16 +78,13 @@ export default function CapaianSdgs () {
         </Breadcrumb>
     )
 
-    if (isLoading) {
-        return (<Loading>Memuat Data...</Loading>)
-    }
-
     if (error) {
         return (<Loading>Error : {error}</Loading>)
     }
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
+            {isLoading && <Loading />}
             <div className="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
@@ -124,11 +121,14 @@ export default function CapaianSdgs () {
                         ))
                     }
                 </Table>
-                <Pagination
+                {
+                    !isLoading && 
+                    <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
                 />
+                }
             </div>
         </DashboardLayout>
     )

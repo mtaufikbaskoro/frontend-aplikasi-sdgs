@@ -33,8 +33,6 @@ export default function Login () {
             if (data.ok) {
                 router.push('/dashboard')
             }
-            console.log(data.message);
-            // router.push('/dashboard');
         }
         
     }

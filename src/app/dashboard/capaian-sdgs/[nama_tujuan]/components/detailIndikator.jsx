@@ -26,7 +26,7 @@ export default function DetailIndikator (props) {
                         <td colSpan={2}>2.18</td>
                     </tr>
                     {
-                        detail.rumus !== 0 && (
+                        detail.rumus != 0 && (
                             <tr>
                                 <th>Rumus</th>
                                 <td colSpan={2}>
@@ -36,7 +36,7 @@ export default function DetailIndikator (props) {
                         )
                     }
                     {
-                        detail.variabel !== 0 && (
+                        detail.variabel != 0 && (
                             <tr>
                                 <th className="align-top">Keterangan Rumus</th>
                                 <td colSpan={2}>

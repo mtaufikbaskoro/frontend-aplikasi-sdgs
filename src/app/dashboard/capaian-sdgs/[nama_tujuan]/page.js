@@ -10,12 +10,12 @@ import DetailIndikator from "./components/detailIndikator";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/loading';
 
-import { faEdit, faMagnifyingGlass, faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMagnifyingGlass, faAdd, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import EditTargetCapaian from './components/editTargetCapaian';
 import EditCapaian from './components/editCapaian';
 
 
-const tableColumns = ['Kode Indikator', 'Kriteria', 'Aksi Detail'];
+const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
 
 export default function Detail({params}) {
     const { nama_tujuan } = params;
@@ -105,16 +105,13 @@ export default function Detail({params}) {
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
 
-    if (isLoading) {
-        return (<Loading>Memuat Data...</Loading>)
-    }
-
     if (error) {
         return (<Loading>Error : {error}</Loading>)
     }
 
     return (
         <DashboardLayout Content={<PageCardContent />}>
+            {isLoading && <Loading />}
             <Modal isOpen={detailModal} setIsOpen={setDetailModal}>
                 <DetailIndikator handleEditCapaianModal={handleEditCapaianModal} detail={detailIndikator} />
             </Modal>
@@ -139,6 +136,15 @@ export default function Detail({params}) {
                                     <tr key={idx} className='text-left h-12 font-medium bg-green-200'>
                                         <td className='text-center'>{indikator.kode}</td>
                                         <td colSpan={!indikator.subindikator.length < 1 ? tableColumns.length - 1 : 0}>{indikator.kriteria}</td>
+                                        {
+                                            indikator.subindikator.length === 0 && (
+                                                <td className='text-center'>{
+                                                    indikator.status_target_capaian ? 
+                                                    indikator.status_capaian ? <FontAwesomeIcon icon={faCheckCircle} color='blue' /> : <FontAwesomeIcon icon={faExclamationCircle} color='orange' /> 
+                                                    : <FontAwesomeIcon icon={faCrosshairs} color='red' />
+                                                }</td>
+                                            )
+                                        }
                                         {indikator.subindikator.length === 0 && (
                                             <td>
                                                 <div className='grid grid-cols-2 gap-2 py-2'>
@@ -160,6 +166,13 @@ export default function Detail({params}) {
                                                         <tr key={idx} className='text-left h-12 bg-green-100'>
                                                             <td></td>
                                                             <td>{point.kode}. {point.kriteria}</td>
+                                                            <td className='text-center'>
+                                                                {
+                                                                point.status_target_capaian ? 
+                                                                point.status_capaian ? <FontAwesomeIcon icon={faCheckCircle} color='blue' /> : <FontAwesomeIcon icon={faExclamationCircle} color='orange' /> 
+                                                                : <FontAwesomeIcon icon={faCrosshairs} color='red' />
+                                                                }
+                                                            </td>
                                                             <td className='text-center'>
                                                                 <div className='grid grid-cols-2 gap-2 py-2'>
                                                                     <button onClick={() => handleDetailModal(indikator.kode, point.kode)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
