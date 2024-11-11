@@ -6,13 +6,13 @@ import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
 import Breadcrumb from "@/components/ui/breadcrumb";
 import Modal from "@/app/dashboard/components/modal";
-import DetailIndikator from "./components/detailIndikator";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/loading';
 
-import { faEdit, faMagnifyingGlass, faAdd, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMagnifyingGlass, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import EditTargetCapaian from './components/editTargetCapaian';
 import EditCapaian from './components/editCapaian';
+import Link from 'next/link';
 
 
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
@@ -20,15 +20,12 @@ const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
 export default function Detail({params}) {
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
-    const [ indikatorsData, setIndikatorsData ] = useState([]);
-    const [ detailIndikator, setDetailIndikator ] = useState([]);
 
+    const [ indikatorsData, setIndikatorsData ] = useState([]);
+    const [ instansis, setInstansis ] = useState([]);
+    const [ targetCapaian, setTargetCapaian ] = useState([]); 
     const [ isLoading, setIsLoading ] = useState(false);
-    const [ error, setError ] = useState('');
-    const [ detailModal, setDetailModal ] = useState(false);
-    const [ editTargetCapaianModal, setEditTargetCapaianModal ] = useState(false);
-    const [ editCapaianModal, setEditCapaianModal ] = useState(false);
-    const [ selectedId, setSelectedId ] = useState(0);
+    const [ targetCapaianModal, setTargetCapaianModal ] = useState(false);
 
     const handleFetchIndikators = async (kode) => {
         setIsLoading(true);
@@ -45,81 +42,70 @@ export default function Detail({params}) {
             }
 
         } catch (error) {
-            setError(error);
+            console.log(error)
         } finally {
             setIsLoading(false);
         }
     }
 
-    useEffect(() => {
-        handleFetchIndikators(kode_tujuan);
-    }, []);
-
-    useEffect(() => {
-        setSelectedId(0);
-    }, []);
-
-    const handleDetailModal = async (kd_indikator, kd_subindikator = 0) => {
+    const handleFetchTargetCapaian = async (kode_indikator, kode_subindikator) => {
+        setIsLoading(true);
         try {
-            const res = await fetch(`/api/sdgs/detailByKode?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`,{
+            const res = await fetch(`/api/sdgs/targetCapaian?kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 credentials: 'include'
+            })
+
+            if(res.ok) {
+                const data = await res.json();
+                setTargetCapaian(data.data);
+            }
+            
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+            setTargetCapaianModal(true);
+        }
+    }
+
+    const fetchAllInstansis = async () => {
+        try {
+            const res = await fetch('/api/sdgs/sotkUnit', {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
             });
 
             if (res.ok) {
-                const data = await res.json();
-                setDetailIndikator(data.data);
+                const data = await res.json()
+                setInstansis(data.data)
             }
         } catch (error) {
-            setError(error)
-        } finally {
-            setDetailModal(!detailModal)
+            console.log(error)
+            
         }
     }
 
-    const handleEditTargetCapaianModal = (id) => {
-        if (selectedId != 0) {
-            setSelectedId(0)
-        } else {
-            setSelectedId(id)
-        }
-        if (detailModal !== false) {
-            setDetailModal(false);
-        }
-        setEditTargetCapaianModal(!editTargetCapaianModal);
-    }
+    useEffect(() => {
+        handleFetchIndikators(kode_tujuan);
+        fetchAllInstansis();
+    }, []);
 
-    const handleEditCapaianModal = (id) => {
-        if (selectedId != 0) {
-            setSelectedId(0)
-        } else {
-            setSelectedId(id)
-        }
-        if (detailModal === true) {
-            setDetailModal(false)
-        }
-
-        setEditCapaianModal(!editCapaianModal);
+    const handleEditTargetCapaianModal = async (kd_indikator, kd_subindikator = 0) => {
+        await handleFetchTargetCapaian(kd_indikator, kd_subindikator);
     }
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan}</Breadcrumb>)
 
-    if (error) {
-        return (<Loading>Error : {error}</Loading>)
-    }
-
     return (
         <DashboardLayout Content={<PageCardContent />}>
             {isLoading && <Loading />}
-            <Modal isOpen={detailModal} setIsOpen={setDetailModal}>
-                <DetailIndikator handleEditCapaianModal={handleEditCapaianModal} detail={detailIndikator} />
-            </Modal>
-            <Modal isOpen={editTargetCapaianModal} setIsOpen={setEditTargetCapaianModal} id={selectedId}>
-                <EditTargetCapaian />
-            </Modal>
-            <Modal isOpen={editCapaianModal} setIsOpen={setEditCapaianModal} id={selectedId}>
-                <EditCapaian />
+            <Modal isOpen={targetCapaianModal} setIsOpen={setTargetCapaianModal}>
+                <EditTargetCapaian instansis={instansis} targetCapaian={targetCapaian} />
             </Modal>
 
             <Table columns={tableColumns}>
@@ -148,10 +134,10 @@ export default function Detail({params}) {
                                         {indikator.subindikator.length === 0 && (
                                             <td>
                                                 <div className='grid grid-cols-2 gap-2 py-2'>
-                                                    <button onClick={() => handleDetailModal(indikator.kode)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                                    </button>
-                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    </Link>
+                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode)} className="mx-3 bg-yellow-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                     </button>
                                                 </div>
@@ -175,10 +161,10 @@ export default function Detail({params}) {
                                                             </td>
                                                             <td className='text-center'>
                                                                 <div className='grid grid-cols-2 gap-2 py-2'>
-                                                                    <button onClick={() => handleDetailModal(indikator.kode, point.kode)} className="mx-3 bg-sky-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}/${point.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                                                    </button>
-                                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode_indikator)} className="mx-3 bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    </Link>
+                                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode, point.kode)} className="mx-3 bg-yellow-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                                     </button>
                                                                 </div>

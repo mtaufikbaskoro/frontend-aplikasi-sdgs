@@ -22,10 +22,10 @@ export async function POST (request) {
 
         if (data.ok) {
             const jwt = data.token;
-            const user = data.user;
+            const unit_id = data.unit_id;
 
             if (jwt) {
-                const nextResponse = NextResponse.json({ message: 'login successful', user: data.user, ok: data.ok, status: data.status});
+                const nextResponse = NextResponse.json({ message: 'login successful', ok: data.ok, status: data.status});
                 
                 nextResponse.cookies.set('token', jwt, {
                     httpOnly: true,
@@ -34,7 +34,7 @@ export async function POST (request) {
                     path: '/'
                 });
 
-                nextResponse.cookies.set('user', JSON.stringify(user), {
+                nextResponse.cookies.set('unit_id', unit_id, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     maxAge: 60 * 60 * 24,

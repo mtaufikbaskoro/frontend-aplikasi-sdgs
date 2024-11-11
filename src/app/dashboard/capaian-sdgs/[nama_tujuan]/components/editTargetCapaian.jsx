@@ -1,34 +1,70 @@
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
 
-export default function EditTargetCapaian () {
-    const { register, handleSubmit, control } = useForm({
+export default function EditTargetCapaian (props) {
+    const { instansis, targetCapaian } = props; 
+    const [method, setMethod] = useState('POST');
+    
+    const { register, handleSubmit, reset, control } = useForm({
         defaultValues: {
+            detail_id: targetCapaian.sdgs_detail_id,
             target: '',
-            instansis: [{instansi: ''}],
+            units: [{id: ''}],
         }
     });
 
-    const {fields, append, remove} = useFieldArray({
+    const {fields, append, remove, replace} = useFieldArray({
         control,
-        name: 'instansis',
+        name: 'units',
     });
 
-    const selectInstansis = [
-        {value: 'dinaspendidikan', label: 'Dinas Pendidikan'},
-        {value: 'sekwan', label: 'Sekretariat DPRD'},
-        {value: 'disdukcapil', label: 'Disdukcapil'},
-    ]
+    useEffect(() => {
+        if (targetCapaian?.target_capaian) {
+            const tempArr = targetCapaian.instansis.map(x => ({id: x.unit_id}))
+            reset({
+                detail_id: targetCapaian.sdgs_detail_id,
+                target: targetCapaian.target_capaian.target,
+                units: tempArr
+            })
+            replace(tempArr)
+            setMethod('PUT')
+        }
+    }, [targetCapaian, reset, replace])
 
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = async (data) => {
+        console.log(data)
+        try {
+            const url = method === 'POST' ? `/api/sdgs/targetCapaian` : `/api/sdgs/targetCapaian?targetCapaianId=${targetCapaian.target_capaian.id}`
+            const res = await fetch(url, {
+                method: method,
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+
+            if(res.ok) {
+                const data = await res.json();
+                console.log(data)
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="px-2 py-6">
             <h4 className="font-medium text-center text-xl">Atur Target</h4>
             <hr className='mt-5' />
             <div className="mt-4 flex flex-col gap-4">
+                <input 
+                    className='border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-slate-400 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm transition-all ease-in ease-out'
+                    type="text" 
+                    {...register('detail_id', {required: true})}
+                    disabled
+                    hidden 
+                />
                 <label
                     className='text-sm' 
                     htmlFor='target'
@@ -51,15 +87,15 @@ export default function EditTargetCapaian () {
                     fields.map((field, index) => (
                         <div key={field.id} className='mb-3 grid grid-cols-4 gap-2'>
                             <select
-                                className='col-span-3 bg-transparent text-slate-400 text-sm border border-slate-200 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer'
-                                {...register(`instansis.${index}.instansi`, { required: true})}
-                                defaultValue="" 
+                                className='col-span-3 bg-transparent text-slate-600 text-sm border border-slate-200 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer'
+                                {...register(`units.${index}.id`, { required: true})}
+                                 
                             >
-                                <option className='text-slate-700' value="" disabled>Pilih Instansi Pelaksana</option>
+                                <option value="" disabled>Pilih Instansi Pelaksana</option>
                                 {
-                                    selectInstansis.map((inst) => (
-                                        <option key={inst.value} value={inst.value}>
-                                            {inst.label}
+                                    instansis.map((inst) => (
+                                        <option className='text-slate-700' key={inst.id} value={inst.id}>
+                                            {inst.unit}
                                         </option>
                                     ))
                                 }
@@ -70,7 +106,7 @@ export default function EditTargetCapaian () {
                                         <button 
                                             className='bg-sky-500 px-3 rounded-sm text-white hover:bg-sky-400 shadow-sm transition-all ease-in ease-out' 
                                             type='button'
-                                            onClick={() => append({instansi: ''})}
+                                            onClick={() => append({id: ''})}
                                         >
                                             <FontAwesomeIcon icon={faAdd} size='sm'/>
                                         </button>
