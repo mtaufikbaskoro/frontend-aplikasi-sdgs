@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
+import Alert from '@/components/ui/alert';
 
 export default function EditTargetCapaian (props) {
     const { instansis, targetCapaian } = props; 
     const [method, setMethod] = useState('POST');
+    const [showAlert, setShowAlert] = useState(false);
     
     const { register, handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -35,7 +37,6 @@ export default function EditTargetCapaian (props) {
     }, [targetCapaian, reset, replace])
 
     const onSubmit = async (data) => {
-        console.log(data)
         try {
             const url = method === 'POST' ? `/api/sdgs/targetCapaian` : `/api/sdgs/targetCapaian?targetCapaianId=${targetCapaian.target_capaian.id}`
             const res = await fetch(url, {
@@ -46,7 +47,7 @@ export default function EditTargetCapaian (props) {
 
             if(res.ok) {
                 const data = await res.json();
-                console.log(data)
+                setShowAlert(data.success);
             }
         } catch (err) {
             console.log(err.message);
@@ -133,6 +134,12 @@ export default function EditTargetCapaian (props) {
                     Atur
                 </button>
             </div>
+            {showAlert && (
+                <Alert
+                    message="Data saved successfully!"
+                    type="success"
+                    onClose={() => setShowAlert(false)} />
+            )}
         </form>
     )
 }

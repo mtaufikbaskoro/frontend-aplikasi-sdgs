@@ -6,33 +6,45 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Footer from './components/footer';
 import Alert from '@/components/ui/alert';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 import logoSDGs from '@assets/img/logo_sdgs.png';
+import Loading from '../dashboard/components/loading';
 
 export default function Login () {
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ showAlert, setShowAlert ] = useState(false);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const router = useRouter();
 
     async function onSubmit (form) {
+        setIsLoading(true)
         const { username, password } = form;
 
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username, password}),
-            // credentials: 'include',
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            if (data.ok) {
-                router.push('/dashboard')
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({username, password}),
+                // credentials: 'include',
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                if (data.ok) {
+                    setShowAlert(true)
+                    router.push('/dashboard')
+                }
             }
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLoading(false)
         }
         
     }
@@ -40,6 +52,7 @@ export default function Login () {
     return (
         <>
         <div className="flex min-w-full h-full flex-col justify-center items-center px-6 py-12 lg:px-8">
+            {isLoading && (<Loading />)}
             <div className="flex items-center justify-center h-32 sm:mx-auto sm:w-full sm:max-w-sm">
                 <div className="flex justify-center items-center gap-x-4">
                     <Image src={logoPemko} width={120} height={120} alt="Logo Pemerintah Kota Medan" />
@@ -54,9 +67,7 @@ export default function Login () {
                         <div className="mt-2">
                             <input {...register("username", { required:true })} placeholder="Masukkan username anda" className="block w-full border border-gray-300 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.username && 
-                                <div className='mt-1'> 
-                                    <Alert>Username tidak boleh kosong.</Alert>
-                                </div>
+                                <span className='text-red-500 text-xs'>Username tidak boleh kosong</span>
                             }
                         </div>
                     </div>
@@ -68,9 +79,7 @@ export default function Login () {
                         <div className="mt-1">
                             <input {...register("password", {required: true, })} type="password" placeholder="Masukkan password anda" className="block w-full border border-gray-300 rounded-sm p-2 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm" />
                             { errors.password &&
-                                <div className='mt-2'> 
-                                    <Alert>Password tidak boleh kosong.</Alert>
-                                </div>
+                                <span className='text-red-500 text-xs'>Password tidak boleh kosong</span>
                             }
                         </div>
                     </div>
@@ -86,6 +95,12 @@ export default function Login () {
                     <Link href="/" className="font-regular leading-6 hover:underline">Kembali</Link>
                 </p>
             </div>
+            {showAlert && (
+                <Alert
+                    message="Login success!"
+                    type="success"
+                    onClose={() => setShowAlert(false)} />
+            )}
         </div>
         <Footer />
         </>
