@@ -74,7 +74,7 @@ export default function Detail({params}) {
 
     const fetchAllInstansis = async () => {
         try {
-            const res = await fetch('/api/sdgs/sotkUnit', {
+            const res = await fetch('/api/auth/sotkSubunits', {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
@@ -95,7 +95,7 @@ export default function Detail({params}) {
         fetchAllInstansis();
     }, []);
 
-    const handleEditTargetCapaianModal = async (kd_indikator, kd_subindikator = 0) => {
+    const handleTargetCapaianModal = async (kd_indikator, kd_subindikator = 0) => {
         await handleFetchTargetCapaian(kd_indikator, kd_subindikator);
     }
 
@@ -134,7 +134,7 @@ export default function Detail({params}) {
                                         {indikator.subindikator.length === 0 && (
                                             <td>
                                                 <div className='grid grid-cols-2 gap-2 py-2'>
-                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}/0`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                     </Link>
                                                     <button onClick={() => handleEditTargetCapaianModal(indikator.kode)} className="mx-3 bg-yellow-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
@@ -164,7 +164,7 @@ export default function Detail({params}) {
                                                                     <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}/${point.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                     </Link>
-                                                                    <button onClick={() => handleEditTargetCapaianModal(indikator.kode, point.kode)} className="mx-3 bg-yellow-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <button onClick={() => handleTargetCapaianModal(indikator.kode, point.kode)} className="mx-3 bg-yellow-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faEdit} color="white" />
                                                                     </button>
                                                                 </div>

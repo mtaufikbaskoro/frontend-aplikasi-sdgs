@@ -11,7 +11,7 @@ export async function GET (request) {
         const page = searchParams.get('page')
         const limit = searchParams.get('limit')
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-goals?page=${page}&limit=${limit}`, {
+        const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs?page=${page}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,

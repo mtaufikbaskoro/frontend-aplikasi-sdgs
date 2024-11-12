@@ -25,7 +25,7 @@ export default function EditTargetCapaian (props) {
 
     useEffect(() => {
         if (targetCapaian?.target_capaian) {
-            const tempArr = targetCapaian.instansis.map(x => ({id: x.unit_id}))
+            const tempArr = targetCapaian.instansis.map(x => ({id: x.sub_unit_id}))
             reset({
                 detail_id: targetCapaian.sdgs_detail_id,
                 target: targetCapaian.target_capaian.target,
@@ -96,7 +96,7 @@ export default function EditTargetCapaian (props) {
                                 {
                                     instansis.map((inst) => (
                                         <option className='text-slate-700' key={inst.id} value={inst.id}>
-                                            {inst.unit}
+                                            {inst.sub_unit}
                                         </option>
                                     ))
                                 }

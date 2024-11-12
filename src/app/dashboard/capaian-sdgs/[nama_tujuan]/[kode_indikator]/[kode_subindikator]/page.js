@@ -13,21 +13,32 @@ import { useEffect, useState } from "react";
 
 export default function Detail ({ params }) {
     const {nama_tujuan, kode_indikator, kode_subindikator} = params;
-    const [detail, setDetail] = useState([]);
+    const [indikator, setIndikator] = useState({});
+    const [subindikator, setSubindikator] = useState({});
+    const [detail, setDetail] = useState({});
+    const [targetCapaian, setTargetCapaian] = useState({});
+    const [capaian, setCapaian] = useState({});
+    const [units, setUnits] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [capaianModal, setCapaianModal] = useState(false);
 
-    const fetchDetail = async (kd_indikator, kd_subindikator = 0) => {
+    const fetchData = async (kd_indikator, kd_subindikator = 0) => {
         try {
             setIsLoading(true);
-            const res = await fetch(`/api/sdgs/detailByKode?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+            const res = await fetch(`/api/sdgs/detailIndikator?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include'
             });
     
             if (res.ok) {
-                res.json().then(data => setDetail(data.data))
+                const data = await res.json();
+                setIndikator(data.data.indikator);
+                setDetail(data.data.detail);
+                setTargetCapaian(data.data.target_capaian);
+                setCapaian(data.data.capaian)
+                setUnits(data.data.units);
+                setSubindikator(data.data.subindikator);
             }
         } catch (error) {
             console.log(error);
@@ -41,7 +52,7 @@ export default function Detail ({ params }) {
     }
     
     useEffect(() => {
-        fetchDetail(kode_indikator, kode_subindikator)
+        fetchData(kode_indikator, kode_subindikator)
     }, [])
 
     const PageCardContent = () => (<Breadcrumb>Indikator Tujuan SDGs {'>'} Detail {'>'} {nama_tujuan} {'>'} {kode_indikator}</Breadcrumb>)
@@ -53,11 +64,11 @@ export default function Detail ({ params }) {
                 <Modal isOpen={capaianModal} setIsOpen={setCapaianModal}>
                     <EditCapaian />
                 </Modal>
-                <h1 className="font-semibold">Indikator {detail.kode_indikator}</h1>
-                <p className="text-sm text-justify">{detail.indikator_kriteria}</p> 
+                <h1 className="font-semibold">Indikator {indikator.kode}</h1>
+                <p className="text-sm text-justify">{indikator.kriteria}</p>
                 {
-                    kode_subindikator !== 0 && (
-                        <p className="text-sm text-justify">{detail.kode_subindikator}. {detail.subindikator_kriteria}</p>
+                    subindikator && (
+                        <p className="text-sm text-justify">{subindikator.kode}. {subindikator.kriteria}</p>
                     )
                 } 
                 <hr />
@@ -105,8 +116,12 @@ export default function Detail ({ params }) {
                             <th className="align-top text-left">Instansi Pelaksana</th>
                             <td colSpan={2}>
                                 <ul>
-                                    <li>Dinas Pendidikan</li>
-                                    <li>Dinas Pendidikan</li>
+                                    {
+                                        units &&
+                                        units.map((unit, index) => (
+                                            <li key={index}>{unit}</li>
+                                        ))
+                                    }
                                 </ul>
                             </td>
                         </tr>
@@ -126,18 +141,18 @@ export default function Detail ({ params }) {
                 <h1 className="p-2 font-medium border rounded border-green-900 text-center">Target / Capaian / %Capaian / Status</h1>
                 <hr />
                 <table className="table text-sm text-center">
-                <thead>
+                    <thead>
                         <tr>
-                            <th>Target ({detail.target_capaian ? detail.target_capaian.tahun : ''})</th>
-                            <th>Capaian</th>
+                            <th>Target ({targetCapaian ? targetCapaian.tahun : ''})</th>
+                            <th>Capaian ({targetCapaian ? targetCapaian.tahun : ''})</th>
                             <th>% Capaian</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{detail.target_capaian ? detail.target_capaian.target : 'Belum ada target'}</td>
-                            <td>1.23</td>
+                            <td>{targetCapaian ? targetCapaian.target : 'Belum ada target'}</td>
+                            <td>{capaian ? capaian.capaian : 'Belum ada capaian'}</td>
                             <td>170.73</td>
                             <td>pending</td>
                         </tr>

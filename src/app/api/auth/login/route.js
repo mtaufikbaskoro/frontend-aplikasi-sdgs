@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 export async function POST (request) {
     const {username, password} = await request.json();
@@ -22,7 +21,7 @@ export async function POST (request) {
 
         if (data.ok) {
             const jwt = data.token;
-            const unit_id = data.unit_id;
+            const user = data.user;
 
             if (jwt) {
                 const nextResponse = NextResponse.json({ message: 'login successful', ok: data.ok, status: data.status});
@@ -34,7 +33,7 @@ export async function POST (request) {
                     path: '/'
                 });
 
-                nextResponse.cookies.set('unit_id', unit_id, {
+                nextResponse.cookies.set('user', JSON.stringify(user), {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     maxAge: 60 * 60 * 24,
