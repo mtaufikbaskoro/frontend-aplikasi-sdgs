@@ -2,12 +2,11 @@
 import { useForm } from 'react-hook-form'
 
 export default function EditCapaian () {
-    const { register, handleSubmit, formState: {errors}, setError, clearErrors, setValue } = useForm();
+    const { register, handleSubmit, formState: {errors}, setError, clearErrors } = useForm();
     const MAX_FILE_SIZE = 1 * 1024 * 1024 // 1MB
 
     const handleFileChange = (e, fieldName, maxFileSize = MAX_FILE_SIZE) => {
         const files = e.target.files;
-
         if (files.length > 1) {
             setError(fieldName, {
                 type: 'manual',
@@ -15,7 +14,6 @@ export default function EditCapaian () {
             })
             return
         }
-
         if (files.length > 0 && files[0].size > maxFileSize) {
             setError(fieldName, {
                 type: 'manual',
@@ -23,36 +21,30 @@ export default function EditCapaian () {
             })
             return
         }
-
         clearErrors(fieldName)
     }
 
-    const onSubmit = (data) => {
-        const formData = new FormData();
-        console.log(data.capaian)
+    const onSubmit = async (data) => {
+        const formData = new FormData()
+        formData.append('capaian', data.capaian)
+        if (data.file1[0]) formData.append('file1', data.file1[0])
+        if (data.file2[0]) formData.append('file2', data.file2[0])
+        if (data.file3[0]) formData.append('file3', data.file3[0])
 
-        formData.append('capaian', data.capaian);
-
-        if (data.file1?.[0]) formData.append('files[]', data.file1[0], data.file1[0].name)
-        if (data.file2?.[0]) formData.append('files[]', data.file2[0], data.file2[0].name)
-        if (data.file3?.[0]) formData.append('files[]', data.file3[0], data.file3[0].name)
-        
-
-        for (let pair of formData.entries()) {
-            const key = pair[0]
-            const value = pair[1]
-
-            if (value instanceof File) {
-                console.log(`${key} : ${value.name}`)
-            } else {
-                console.log(`${key} : ${value}`)
-            }
+        try {
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            const result = await response.json()
+            console.log(result)
+        } catch (err) {
+            console.error('Error uploading files: ', err)
         }
-        
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
             <h2 className='font-semibold text-center text-xl'>Atur Capaian</h2>
             <hr className='my-5' />
             <div className='mb-5 flex flex-col gap-3'>
