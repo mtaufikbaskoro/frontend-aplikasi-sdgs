@@ -25,7 +25,7 @@ export default function Navbar (props) {
                     <Image src={logoPemko} width="auto" height="auto" alt="logo pemko medan" />
                 </div>
                 <div className="flex flex-col">
-                    <p className="ml-4 text-lg font-bold uppercase">pemerintah kota medan</p>
+                    <p className="ml-4 text-lg font-bold uppercase">astra</p>
                 </div>
             </div>
             <div className="pr-16 flex justify-end items-center gap-12 min-w-80">

@@ -6,7 +6,10 @@ export async function GET (request) {
         const cookieStore = cookies()
         const token = cookieStore.get('token')
 
-        const response = await fetch('http://v3.test/api/index/v1/astra/auth/get-subunits', {
+        const { searchParams } = new URL(request.url)
+        const detailId = searchParams.get('detail_id')
+
+        const res = await fetch(`http://v3.test/api/index/v1/astra/detail/view-target-capaian?sdgs_detail_id=${detailId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,
@@ -15,13 +18,10 @@ export async function GET (request) {
             credentials: 'include'
         })
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status : ${response.status}`)
+        if (res.ok) {
+            const data = await res.json();
+            return NextResponse.json(data);
         }
-
-        const data = await response.json()
-
-        return NextResponse.json(data)
 
     } catch (error) {
         return NextResponse.json({message: error, status: 404})

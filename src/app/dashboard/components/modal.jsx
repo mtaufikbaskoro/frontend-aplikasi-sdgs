@@ -1,9 +1,9 @@
 'use client'
 
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 
 export default function Modal(props) {
-    const {isOpen, setIsOpen, id, children} = props;
+    const {isOpen, setIsOpen, children} = props;
 
     return (
         <Dialog open={isOpen} onClose={setIsOpen} className="relative z-10">

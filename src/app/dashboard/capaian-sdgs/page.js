@@ -1,24 +1,22 @@
 'use client'
 
 import { useState, useEffect } from "react";
-
 import Link from "next/link";
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import DashboardLayout from "../components/layout";
 import Table from "../components/table";
-import Breadcrumb from "@/components/ui/breadcrumb";
 import Pagination from "../components/pagination";
-
-import { faCheck, faClock, faTimes, faPrint, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../components/loading";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faClock, faTimes, faPrint } from "@fortawesome/free-solid-svg-icons";
 
 
 const ITEMS_PER_PAGE = 5;
 const TableColumns = ['', 'Nama Tujuan', 'Status', ''];
 
 export default function CapaianSdgs () {
-    const [ selectecId, setSelectedId ] = useState('');
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,23 +69,16 @@ export default function CapaianSdgs () {
         }
     }
 
-    const PageCardContent = () => (
-        <Breadcrumb>
-            <div className="w-[360px] font-bold text-xl text-white">Indikator Tujuan SDGs</div>
-            <p className="mt-4 w-[560px] text-justify text-white text-sm font-medium">Formulir evaluasi kinerja pencapaian sasaran TPB/SDGs</p>
-        </Breadcrumb>
-    )
-
     if (error) {
         return (<Loading>Error : {error}</Loading>)
     }
 
     return (
-        <DashboardLayout Content={<PageCardContent />}>
-            {isLoading && <Loading />}
+        <DashboardLayout>
             <div className="overflow-x-auto">
                 <Table columns={TableColumns}>
                     {
+                        items.length > 0 ?
                         items.map(dummy => (
                             <tr key={dummy.id} className={`border-b ${dummy.id % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}>
                                 <td>
@@ -118,17 +109,16 @@ export default function CapaianSdgs () {
                                     </div>
                                 </td>
                             </tr>
-                        ))
+                        )) : (<tr className='text-center h-12 font-semibold bg-green-50'><td colSpan={TableColumns.length}>{isLoading ? 'Memuat data...' : 'tidak ada data'}</td></tr>)
                     }
                 </Table>
-                {
-                    !isLoading && 
+                <div className="mt-6">
                     <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
-                }
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
             </div>
         </DashboardLayout>
     )

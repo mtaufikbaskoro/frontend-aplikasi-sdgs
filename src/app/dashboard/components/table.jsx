@@ -1,9 +1,8 @@
 
-
 export default function Table (props) {
     const {columns, children} = props;
     return (
-        <table className="table-auto w-full text-sm text-center text-green-950">
+        <table className="table-auto w-full text-sm text-center text-green-950 drop-shadow-xl">
             <thead className="text-xs uppercase bg-green-950 text-white">
                 <tr>
                     {

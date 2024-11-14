@@ -25,7 +25,7 @@ export async function GET (request) {
         }
 
         const data = await response.json();
-        return NextResponse.json({data: data})
+        return NextResponse.json(data)
 
     } catch (err) {
         return NextResponse.json({message: err.message})
