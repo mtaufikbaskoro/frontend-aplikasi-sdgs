@@ -62,8 +62,10 @@ export default function Detail ({ params }) {
                 if (!data.empty) {
                     setTargetCapaian(data.target_capaian ?? '')
                     setUnits(data.target_capaian.units ?? [])
-                    setCapaian(data.capaian ?? '')
-                    setFiles(data.capaian.files ?? [])
+                    if (data.capaian != undefined) {
+                        setCapaian(data.capaian ?? '')
+                        setFiles(data.capaian.files ?? [])
+                    }
                 }
             }
         } catch (error) {
@@ -128,7 +130,7 @@ export default function Detail ({ params }) {
     }, [])
     
     useEffect(() => {
-        if (!targetCapaianModal || !capaianModal) {
+        if (targetCapaianModal === false || capaianModal === false) {
             fetchDetail(kode_indikator, kode_subindikator)
         }
     }, [targetCapaianModal, capaianModal])
@@ -144,7 +146,10 @@ export default function Detail ({ params }) {
             { isLoading && (<Loading />) }
             <div className="flex flex-col gap-4 p-6 border-2 border-green-900 rounded-md">
                 <Modal isOpen={capaianModal} setIsOpen={setCapaianModal}>
-                    <EditCapaian />
+                    <EditCapaian 
+                        targetCapaianId={targetCapaian.id}
+                        capaian={capaian ? capaian : ''}
+                        files={capaian ? capaian.files : []} />
                 </Modal>
                 <Modal isOpen={targetCapaianModal} setIsOpen={setTargetCapaianModal}>
                     <EditTargetCapaian instansis={instansis} targetCapaian={targetCapaianForm} />
@@ -218,7 +223,7 @@ export default function Detail ({ params }) {
                                         files != false ? 
                                         files.map((file, index) => (
                                             <li key={index} className="font-medium text-sky-500 hover:text-gray-400 transition-all ease-in ease-out cursor-pointer">
-                                                <Link href={file.url}>{file.nama_file_asli}</Link>
+                                                <Link rel="preload" href={file.url} as={file.url}>{file.nama_file_asli}</Link>
                                             </li>
                                         )) : (<li>-</li>)
                                     }
