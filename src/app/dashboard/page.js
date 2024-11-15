@@ -34,7 +34,7 @@ export default function Dashboard () {
 
     return (
         <DashboardLayout>
-            <div className='grid max-w-[1620px] grid-cols-4 gap-x-2 gap-y-4 mx-auto'>
+            <div className='grid max-w-[1620px] grid-cols-4 gap-x-2 gap-y-4'>
                 {
                     statuses.map(status => (
                         <Card key={status.id} color={status.color}>

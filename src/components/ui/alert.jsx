@@ -2,14 +2,16 @@
 
 import { useEffect } from "react";
 
-export default function Alert ({ message, type, onClose }) {
+export default function Alert ({ message, type, onClose, duration = 3000, className }) {
     useEffect(() => {
-        const timer = setTimeout(onClose, 3000);
+        const timer = setTimeout(() => {
+            onClose()
+        }, duration)
         return () => clearTimeout(timer);
-    }, [onClose])
+    }, [duration, onClose])
     return (
         <div
-            className={`fixed top-5 right-5 p-4 rounded-sm shadow-lg text-white transition-opacity ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
+            className={`${className} fixed top-5 right-5 p-4 rounded-sm shadow-lg text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
             {message}
         </div>
     )

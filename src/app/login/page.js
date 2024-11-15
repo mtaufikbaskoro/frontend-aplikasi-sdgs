@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import Image from 'next/image';
@@ -17,8 +17,15 @@ import Loading from '../dashboard/components/loading';
 export default function Login () {
     const [ isLoading, setIsLoading ] = useState(false);
     const [ showAlert, setShowAlert ] = useState(false);
+    const [ notification, setNotification ] = useState(false);
     const { register, handleSubmit, formState: { errors }, } = useForm()
     const router = useRouter();
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const login = params.get('isLogin');
+        if (!login) setNotification(true);
+    }, [])
 
     async function onSubmit (form) {
         setIsLoading(true)
@@ -31,7 +38,6 @@ export default function Login () {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({username, password}),
-                // credentials: 'include',
             });
     
             if (response.ok) {
@@ -97,10 +103,18 @@ export default function Login () {
             </div>
             {showAlert && (
                 <Alert
+                    className={`${showAlert ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out`}
                     message="Login success!"
                     type="success"
                     onClose={() => setShowAlert(false)} />
             )}
+            {
+                <Alert 
+                    className={`${notification ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out`}
+                    message="Anda perlu login terlebih dahulu."
+                    type="failed"
+                    onClose={() => setNotification(false)} />
+            }
         </div>
         <Footer />
         </>

@@ -8,9 +8,14 @@ export default function NotFoundPage () {
 
     useEffect(() => {
         setTimeout(() => {
-            router.push('/')
-        }, 1000)
+            router.back()
+        }, 2000)
     }, [router])
 
-    return <div className="min-w-full h-full flex items-center justify-center">Page not found. Redirecting...</div>
+    return (
+        <div className="min-w-full h-full flex flex-col items-center justify-center">
+            <div>Halaman tidak ditemukan, mengalihkan...</div>
+            <div className="w-10 h-10 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin-slow"></div>  
+        </div>
+    )
 }

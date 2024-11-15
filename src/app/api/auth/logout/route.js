@@ -8,7 +8,7 @@ export async function GET (request) {
     try {
 
         cookieStore.delete('token')
-        cookieStore.delete('unit_id')
+        cookieStore.delete('user')
 
         return NextResponse.json({message: 'logout successful'})
 
