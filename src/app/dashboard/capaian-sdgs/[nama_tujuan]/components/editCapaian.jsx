@@ -175,6 +175,7 @@ export default function EditCapaian (props) {
             </div>
             {showAlert && (
                 <Alert
+                    className={`${showAlert ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out`}
                     message="Data saved successfully!"
                     type="success"
                     onClose={() => setShowAlert(false)} />

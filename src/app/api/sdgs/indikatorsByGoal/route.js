@@ -5,11 +5,17 @@ export async function GET (request) {
     try {
         const cookieStore = cookies()
         const token = cookieStore.get('token')
+        const user = cookieStore.get('user')?.value
+
+        const parseUser = JSON.parse(user)
+        const { username, sub_unit_id } = parseUser;
+
+        // if (sub_unit_id != true) 
 
         const { searchParams } = new URL(request.url)
         const kode = searchParams.get('kode')
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-indikators-by-goal?kode=${kode}`, {
+        const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-indikators-by-goal?kode=${kode}&sub_unit_id=${sub_unit_id != 'admin' ? sub_unit_id : 0}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,

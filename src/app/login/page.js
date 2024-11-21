@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import Footer from './components/footer';
 import Alert from '@/components/ui/alert';
 
@@ -15,16 +14,19 @@ import logoSDGs from '@assets/img/logo_sdgs.png';
 import Loading from '../dashboard/components/loading';
 
 export default function Login () {
+    const { register, handleSubmit, formState: { errors }, } = useForm()
     const [ isLoading, setIsLoading ] = useState(false);
     const [ showAlert, setShowAlert ] = useState(false);
+    const [ message, setMessage ] = useState('');
     const [ notification, setNotification ] = useState(false);
-    const { register, handleSubmit, formState: { errors }, } = useForm()
     const router = useRouter();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const login = params.get('isLogin');
-        if (!login) setNotification(true);
+        if (params.get('isLogin')) {
+            setNotification(params.get('isLogin'));
+            setMessage('Anda Perlu login terlebih dahulu');
+        }
     }, [])
 
     async function onSubmit (form) {
@@ -45,10 +47,17 @@ export default function Login () {
                 if (data.ok) {
                     setShowAlert(true)
                     router.push('/dashboard')
+                } else {
+                    setNotification(true)
+                    setMessage('Username atau password salah.')
                 }
+            } else {
+                const errorData = await response.json();
+                console.log('Error: ', errorData.message || 'An error occured');
             }
         } catch (err) {
-            console.log(err)
+            console.error('Network error: ', err);
+            setShowAlert(false);
         } finally {
             setIsLoading(false)
         }
@@ -111,7 +120,7 @@ export default function Login () {
             {
                 <Alert 
                     className={`${notification ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out`}
-                    message="Anda perlu login terlebih dahulu."
+                    message={message}
                     type="failed"
                     onClose={() => setNotification(false)} />
             }

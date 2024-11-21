@@ -1,3 +1,6 @@
+'use client'
+
+import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +10,23 @@ import logoPemko from '@assets/img/logo_pemko_medan.png';
 
 export default function Navbar (props) {
     const { isOpen, setIsOpen } = props;
+    const [ username, setUsername ] = useState();
+
+    const fetchUser = async () => {
+        const res = await fetch(`/api/auth/role`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const data = await res.json()
+            setUsername(data?.username)
+            console.log(data)
+        }
+    }
+
+    useEffect(() => {
+        fetchUser();
+    }, [])
 
     return (
         <nav className={`sticky top-0 flex justify-between items-center bg-white z-10 ${isOpen ? "pl-64" : "pl-16"} transition-all ease-in ease-out py-6 border-b-4 border-green-900 bg-white`}>
@@ -29,7 +49,7 @@ export default function Navbar (props) {
                 </div>
             </div>
             <div className="pr-16 flex justify-end items-center gap-12 min-w-80">
-                <p className='text-sm'>Selamat datang, <span className='font-bold'>Dinas Pendidikan</span></p>
+                <p className='text-sm'>Selamat datang, <span className='font-bold'>{username}</span></p>
             </div>
         </nav>
     )

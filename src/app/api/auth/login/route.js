@@ -13,8 +13,8 @@ export async function POST (request) {
         })
 
         if (!res.ok) {
-            // const errorData = await res.json();
-            return NextResponse.json({message: 'login failed'}, { status: res.status});
+            const errorData = await res.json();
+            return NextResponse.json({message: errorData.message || 'Login failed'}, { status: res.status});
         }
 
         const data = await res.json();

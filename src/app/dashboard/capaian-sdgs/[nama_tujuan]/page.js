@@ -8,16 +8,16 @@ import Table from "@/app/dashboard/components/table";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import Tooltip from '@/components/ui/tooltip';
 
 
-const tableColumns = ['Kode Indikator', 'Kriteria', 'Aksi Detail'];
+const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
 
 export default function Detail({params}) {
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
 
     const [ indikatorsData, setIndikatorsData ] = useState([]);
-    const [ status, setStatus ] = useState([]); 
     const [ isLoading, setIsLoading ] = useState(false);
 
     const handleFetchIndikators = async (kode) => {
@@ -41,6 +41,15 @@ export default function Detail({params}) {
         }
     }
 
+    const getInfo = (targetCapaianStatus, capaianStatus) => {
+        if (targetCapaianStatus) {
+            if (capaianStatus) return 'Data telah selesai diinput'
+            else return 'Capaian belum diinput'
+        } else {
+            return 'Target belum diinput'
+        }
+    } 
+
     useEffect(() => {
         handleFetchIndikators(kode_tujuan);
     }, []);
@@ -49,7 +58,7 @@ export default function Detail({params}) {
         <DashboardLayout>
             <Table columns={tableColumns}>
                 {
-                    indikatorsData.length > 1 ?
+                    indikatorsData.length > 0 ?
                     indikatorsData.map((dummy) => (
                         <Fragment key={dummy.id}>
                             <tr key={dummy.id} className='text-left h-14 font-semibold bg-green-700 text-white'>
@@ -64,15 +73,19 @@ export default function Detail({params}) {
                                         <td className='text-center'>{indikator.kode}</td>
                                         <td colSpan={!indikator.subindikator.length < 1 ? tableColumns.length - 2 : 0}>{indikator.kriteria}</td>
                                         {!indikator.subindikator.length < 1 && <td></td>}
-                                        {/* {
+                                        {
                                             indikator.subindikator.length === 0 && (
-                                                <td className='text-center'>{
-                                                    indikator.status_target_capaian ? 
-                                                    indikator.status_capaian ? <FontAwesomeIcon icon={faCheckCircle} color='blue' /> : <FontAwesomeIcon icon={faExclamationCircle} color='orange' /> 
-                                                    : <FontAwesomeIcon icon={faCrosshairs} color='red' />
-                                                }</td>
+                                                    <td className='text-center'>  
+                                                        <Tooltip text={getInfo(indikator.target_capaian_status, indikator.capaian_status)}>
+                                                        {
+                                                            indikator.target_capaian_status ? 
+                                                            indikator.capaian_status ? <FontAwesomeIcon icon={faCheckCircle} color='green' /> : <FontAwesomeIcon icon={faExclamationCircle} color='orange' /> 
+                                                            : <FontAwesomeIcon icon={faCrosshairs} color='red' />
+                                                        }
+                                                        </Tooltip>
+                                                    </td>
                                             )
-                                        } */}
+                                        }
                                         {indikator.subindikator.length === 0 && (
                                             <td className='text-center'>
                                                 <div className='py-2'>
@@ -91,13 +104,15 @@ export default function Detail({params}) {
                                                         <tr key={idx} className='text-left h-14 bg-green-100'>
                                                             <td></td>
                                                             <td>{point.kode}. {point.kriteria}</td>
-                                                            {/* <td className='text-center'>
+                                                            <td className='text-center'>
+                                                                <Tooltip text={getInfo(point.target_capaian_status, point.capaian_status)}>
                                                                 {
-                                                                    point.status_target_capaian ? 
-                                                                    point.status_capaian ? <FontAwesomeIcon icon={faCheckCircle} color='blue' /> : <FontAwesomeIcon icon={faExclamationCircle} color='orange' /> 
+                                                                    point.target_capaian_status ? 
+                                                                    point.capaian_status ? <FontAwesomeIcon icon={faCheckCircle} color='green' /> : <FontAwesomeIcon icon={faExclamationCircle} color='orange' /> 
                                                                     : <FontAwesomeIcon icon={faCrosshairs} color='red' />
                                                                 }
-                                                            </td> */}
+                                                                </Tooltip>
+                                                            </td>
                                                             <td className='text-center'>
                                                                 <div className='py-2'>
                                                                     <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}/${point.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">

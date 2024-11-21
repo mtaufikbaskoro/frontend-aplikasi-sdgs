@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 
 export default function Detail ({ params }) {
     const { kode_indikator, kode_subindikator } = params;
+    const [ role, setRole ] = useState('');
     const [ indikator, setIndikator ] = useState({});
     const [ subindikator, setSubindikator ] = useState({});
     const [ detail, setDetail ] = useState({});
@@ -49,6 +50,19 @@ export default function Detail ({ params }) {
         }
     }
 
+    const fetchRole = async () => {
+        const res = await fetch(`/api/auth/role`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        })
+
+        if (res.ok) {
+            const data = await res.json()
+            setRole(data?.role)
+        }
+    }
+
     const fetchTargetCapaian = async (detailId) => {
         setIsLoading(true)
         try {
@@ -80,17 +94,13 @@ export default function Detail ({ params }) {
         try {
             const res = await fetch(`/api/sdgs/targetCapaian?kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: {'Content-Type': 'application/json'},
                 credentials: 'include'
             })
-
             if(res.ok) {
                 const data = await res.json();
                 setTargetCapaianForm(data);
             }
-            
         } catch (error) {
             console.log(error)
         } finally {
@@ -102,9 +112,9 @@ export default function Detail ({ params }) {
     const fetchAllInstansis = async () => {
         try {
             const res = await fetch('/api/auth/sotkSubunits', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include'
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
             });
 
             if (res.ok) {
@@ -112,8 +122,19 @@ export default function Detail ({ params }) {
                 setInstansis(data)
             }
         } catch (error) {
-            console.log(error)
-            
+            console.log(error)   
+        }
+    }
+
+    const calculatePercentage = (capaian, target) => {
+        if (!capaian || !target) return 0
+        const targetValue = parseFloat(target);
+        const capaianValue = parseFloat(capaian);
+        if (isNaN(targetValue) && isNaN(capaianValue)) {
+            if (capaian === "tidak ada") return 0
+            else if (capaian === "ada") return 100
+        } else {
+            return ((capaianValue/targetValue)*100).toFixed(2)
         }
     }
 
@@ -127,12 +148,11 @@ export default function Detail ({ params }) {
 
     useEffect(() => {
         fetchAllInstansis();
+        fetchRole();
     }, [])
     
     useEffect(() => {
-        if (targetCapaianModal === false || capaianModal === false) {
-            fetchDetail(kode_indikator, kode_subindikator)
-        }
+        if (targetCapaianModal === false || capaianModal === false) fetchDetail(kode_indikator, kode_subindikator)
     }, [targetCapaianModal, capaianModal])
 
     useEffect(() => {
@@ -247,7 +267,7 @@ export default function Detail ({ params }) {
                         <tr>
                             <td>{targetCapaian ? targetCapaian.target : 'Belum ada target'}</td>
                             <td>{capaian ? capaian.capaian : 'Belum ada capaian'}</td>
-                            <td>170.73</td>
+                            <td>{capaian ? calculatePercentage(capaian.capaian, targetCapaian.target) : '-'}</td>
                             <td>pending</td>
                         </tr>
                     </tbody>
@@ -255,8 +275,9 @@ export default function Detail ({ params }) {
                 <br />
                 <div className="flex gap-6">
                     <button 
-                        className="flex flex-1 items-center min-w-[240px] justify-center gap-3 bg-yellow-300 py-2.5 rounded-sm text-black text-sm hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 transition-all ease-in ease-out"
-                        onClick={() => handleTargetCapaianModal(kode_indikator, kode_subindikator)} >
+                        className={`flex flex-1 items-center min-w-[240px] justify-center gap-3 bg-yellow-300 py-2.5 rounded-sm text-black text-sm hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 ${role === 'admin' ? '' : 'hidden'} transition-all ease-in ease-out`}
+                        onClick={() => handleTargetCapaianModal(kode_indikator, kode_subindikator)}
+                        disabled={role === 'admin' ? false : true} >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Atur Target Capaian</span>
                     </button>
