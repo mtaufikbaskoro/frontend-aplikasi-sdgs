@@ -20,7 +20,6 @@ export default function Navbar (props) {
         if (res.ok) {
             const data = await res.json()
             setUsername(data?.username)
-            console.log(data)
         }
     }
 

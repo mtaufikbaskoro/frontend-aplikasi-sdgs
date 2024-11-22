@@ -4,6 +4,25 @@ export const content = [
   "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 ];
+export const safeList = [
+  'bg-tujuan-1',
+  'bg-tujuan-2',
+  'bg-tujuan-3',
+  'bg-tujuan-4',
+  'bg-tujuan-5',
+  'bg-tujuan-6',
+  'bg-tujuan-7',
+  'bg-tujuan-8',
+  'bg-tujuan-9',
+  'bg-tujuan-10',
+  'bg-tujuan-11',
+  'bg-tujuan-12',
+  'bg-tujuan-13',
+  'bg-tujuan-14',
+  'bg-tujuan-15',
+  'bg-tujuan-16',
+  'bg-tujuan-17',
+];
 export const theme = {
   extend: {
     colors: {

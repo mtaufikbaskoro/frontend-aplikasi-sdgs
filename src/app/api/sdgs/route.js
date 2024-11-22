@@ -12,12 +12,13 @@ export async function GET (request) {
 
         // extract queries parameter for pagination
         const { searchParams } = new URL(request.url);
-        const page = searchParams.get('page')
-        const limit = searchParams.get('limit')
+        const page = searchParams.get('page') ?? false
+        const limit = searchParams.get('limit') ?? false
 
-        const url = sub_unit_id === 'admin' ? 
+        const url = page && limit ? sub_unit_id === 'admin' ? 
         `http://v3.test/api/index/v1/astra/sdgs?page=${page}&limit=${limit}` :
-        `http://v3.test/api/index/v1/astra/sdgs/get-goals-by-user?page=${page}&limit=${limit}&sub_unit_id=${sub_unit_id}`
+        `http://v3.test/api/index/v1/astra/sdgs/get-goals-by-user?page=${page}&limit=${limit}&sub_unit_id=${sub_unit_id}` :
+        'http://v3.test/api/index/v1/astra/sdgs'
 
         const response = await fetch(url, {
             method: 'GET',
@@ -34,11 +35,10 @@ export async function GET (request) {
 
         const data  = await response.json();
         return NextResponse.json({
-            data: data.items,
-            totalItems: data.totalItems
+            data: data?.items ?? data,
+            totalItems: data?.totalItems ?? data.length
         })
     } catch (error) {
         return NextResponse.json({message: 'no cookies found', status: 404})
     }
-    
 }

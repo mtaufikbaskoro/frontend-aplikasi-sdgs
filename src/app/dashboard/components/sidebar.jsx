@@ -61,19 +61,19 @@ export default function Sidebar (props) {
     return (
         <div className={`${isOpen ? "" : "-translate-x-72"} w-72 fixed top-[64px] left-0 h-[calc(100vh-64px)] py-6 bg-slate-100 drop-shadow-xl rounded transition-all ease-in ease-out`}>
             <ul className={`${isOpen ? '' : '-translate-x-72'} space-y-4 transition-all ease-in ease-out`}>
-                <li onClick={() => handleLink("/dashboard")} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'dashboard' ? 'bg-green-100' : ''}`}>
+                <li onClick={() => handleLink("/dashboard")} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'dashboard' ? 'bg-slate-400' : ''}`}>
                     <div className='flex gap-5 justify-start items-center'>
                         <FontAwesomeIcon size='sm' icon={faTableColumns} />
                         <span className="sm">Dashboard</span>
                     </div>
                 </li>
-                <li onClick={() => handleLink("/dashboard/capaian-sdgs")} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'capaian-sdgs' ? 'bg-green-100' : ''}`}>
+                <li onClick={() => handleLink("/dashboard/capaian-sdgs")} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'capaian-sdgs' ? 'bg-slate-400' : ''}`}>
                     <div className='flex gap-5 justify-start items-center'>
                         <FontAwesomeIcon size='sm' icon={faChartBar} />
                         <span className="sm">Capaian SDGs</span>
                     </div>
                 </li>
-                <li onClick={() => handleSubMenu('realisasi-program')} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'realisasi-program' ? 'bg-green-100' : ''}`}>
+                <li onClick={() => handleSubMenu('realisasi-program')} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'realisasi-program' ? 'bg-slate-400' : ''}`}>
                     <div className='flex gap-5 justify-start items-center'>
                         <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
                         <span className="sm">Realisasi Program</span>
@@ -82,13 +82,13 @@ export default function Sidebar (props) {
                 </li>
                 <li className={`${submenu == 'realisasi-program' ? '' : 'hidden'}`}>
                     <ul className='flex flex-col gap-3 justify-start text-gray-700 text-sm transition-all ease-in ease-out'>
-                        <li onClick={() => handleLink('/dashboard/realisasi-program/pemerintah-daerah')} className={`pl-14 py-3 hover:bg-slate-300 cursor-pointer ${submenuActive == 'pemerintah-daerah' ? 'bg-green-50' : ''}`}>
+                        <li onClick={() => handleLink('/dashboard/realisasi-program/pemerintah-daerah')} className={`pl-14 py-3 hover:bg-slate-300 cursor-pointer ${submenuActive == 'pemerintah-daerah' ? 'bg-slate-500 text-white' : ''}`}>
                             <span>Pemerintah Daerah</span>
                         </li>
-                        <li onClick={() => handleLink('/dashboard/realisasi-program/non-pemerintah')} className={`pl-14 py-3 hover:bg-slate-300 cursor-pointer ${submenuActive == 'non-pemerintah' ? 'bg-green-50' : ''}`}>
+                        <li onClick={() => handleLink('/dashboard/realisasi-program/non-pemerintah')} className={`pl-14 py-3 hover:bg-slate-300 cursor-pointer ${submenuActive == 'non-pemerintah' ? 'bg-slate-500 text-white' : ''}`}>
                             <span>Non Pemerintah</span>
                         </li>
-                        <li onClick={() => handleLink('/dashboard/realisasi-program/pelaku-usaha')} className={`pl-14 py-3 hover:bg-slate-300 cursor-pointer ${submenuActive == 'pelaku-usaha' ? 'bg-green-50' : ''}`}>
+                        <li onClick={() => handleLink('/dashboard/realisasi-program/pelaku-usaha')} className={`pl-14 py-3 hover:bg-slate-300 cursor-pointer ${submenuActive == 'pelaku-usaha' ? 'bg-slate-500 text-white' : ''}`}>
                             <span>Pelaku Usaha</span>
                         </li>
                     </ul>
