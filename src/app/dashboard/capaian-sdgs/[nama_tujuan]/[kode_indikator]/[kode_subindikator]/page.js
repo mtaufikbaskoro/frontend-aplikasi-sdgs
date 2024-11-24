@@ -56,7 +56,6 @@ export default function Detail ({ params }) {
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
         })
-
         if (res.ok) {
             const { data } = await res.json()
             const { role } = data
@@ -105,19 +104,15 @@ export default function Detail ({ params }) {
     }
 
     const fetchAllInstansis = async () => {
-        try {
-            const res = await fetch('/api/auth/sotkSubunits', {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include'
-            });
-
-            if (res.ok) {
-                const data = await res.json()
-                setInstansis(data)
-            }
-        } catch (error) {
-            console.log(error)   
+        const res = await fetch('/api/auth/sotkSubunits', {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const result = await res.json()
+            const { data } = result
+            setInstansis(data)
         }
     }
 
@@ -129,7 +124,7 @@ export default function Detail ({ params }) {
             if (capaian === "tidak ada") return 0
             else if (capaian === "ada") return 100
         } else {
-            return ((capaianValue/targetValue)*100).toFixed(2)
+            return ((capaianValue / targetValue) * 100).toFixed(2)
         }
     }
 
