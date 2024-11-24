@@ -1,53 +1,50 @@
 import { NextResponse } from "next/server";
 
 export async function POST (request) {
-    const {username, password} = await request.json();
-    
-    try {
+    const { username, password } = await request.json();
+    const res = await fetch('http://v3.test/api/index/v1/astra/auth/masuk', {
+        method: 'POST',
+        headers: { "Content-Type": 'application/json'},
+        body: JSON.stringify({ username, password }),
+        credentials: 'include'
+    })
 
-        const res = await fetch('http://v3.test/api/index/v1/astra/auth/masuk', {
-            method: 'POST', 
-            headers: { "Content-Type": 'application/json'},
-            body: JSON.stringify({ username, password }),
-            credentials: 'include'
+    if (!res.ok) NextResponse.json({
+        message: 'Internal server error',
+        error: true,
+        data: null
+    }, {status: 500})
+
+    const { data, error, message } = await res.json();
+    if (error) return NextResponse.json({
+        message: message,
+        error: true,
+        data: null
+    }, {status: 404})
+
+    const { token, sub_unit_id } = data
+    if (token) {
+        const result = NextResponse.json({
+            message: 'Berhasil login.',
+            error: false,
+            data: data
         })
-
-        if (!res.ok) {
-            const errorData = await res.json();
-            return NextResponse.json({message: errorData.message || 'Login failed'}, { status: res.status});
-        }
-
-        const data = await res.json();
-
-        if (data.ok) {
-            const jwt = data.token;
-            const user = data.user;
-
-            if (jwt) {
-                const nextResponse = NextResponse.json({ message: 'login successful', ok: data.ok, status: data.status});
-                
-                nextResponse.cookies.set('token', jwt, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    maxAge: 60 * 60 * 24,
-                    path: '/'
-                });
-
-                nextResponse.cookies.set('user', JSON.stringify(user), {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    maxAge: 60 * 60 * 24,
-                    path: '/'
-                })
-                
-                return nextResponse;
-            }
-        } else {
-            return NextResponse.json(data);
-        }
-
-    } catch (error) {
-        console.log(error)
-        return NextResponse.json({ message: error.message || 'Internal Server Error.'}, {status: 500})
-    }
+        result.cookies.set('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24,
+            path: '/'
+        })
+        result.cookies.set('user', JSON.stringify({username: username, sub_unit_id: sub_unit_id}), {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24,
+            path: '/'
+        })
+        return result
+    } else return NextResponse.json({
+        message: 'Gagal membuat token.',
+        error: true,
+        data: null
+    }, {status: 500})
 }

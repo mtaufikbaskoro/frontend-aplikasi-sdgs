@@ -2,6 +2,7 @@
 
 import { Fragment, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Table from "@/app/dashboard/components/table";
@@ -14,8 +15,11 @@ import Tooltip from '@/components/ui/tooltip';
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
 
 export default function Detail({params}) {
+    const router = useRouter();
     const { nama_tujuan } = params;
     const kode_tujuan = nama_tujuan.split('-')[1];
+
+    if (kode_tujuan === undefined) router.push('/404')
 
     const [ indikatorsData, setIndikatorsData ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(false);
@@ -30,8 +34,8 @@ export default function Detail({params}) {
             })
 
             if (res.ok) {
-                const data = await res.json();
-                setIndikatorsData(data)
+                const { data, error } = await res.json();
+                if (!error) setIndikatorsData(data)
             }
 
         } catch (error) {

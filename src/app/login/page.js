@@ -31,37 +31,27 @@ export default function Login () {
 
     async function onSubmit (form) {
         setIsLoading(true)
-        const { username, password } = form;
-
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({username, password}),
-            });
-    
-            if (response.ok) {
-                const data = await response.json();
-                if (data.ok) {
-                    setShowAlert(true)
-                    router.push('/dashboard')
-                } else {
-                    setNotification(true)
-                    setMessage('Username atau password salah.')
-                }
-            } else {
-                const errorData = await response.json();
-                console.log('Error: ', errorData.message || 'An error occured');
-            }
-        } catch (err) {
-            console.error('Network error: ', err);
-            setShowAlert(false);
-        } finally {
-            setIsLoading(false)
+        const { username, password } = form
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username, password})
+        })
+        const result = await response.json()
+        if (!response.ok) {
+            const { data, error, message } = result
+            setNotification(error)
+            setMessage(message)
+        } 
+        const { error, message } = result
+        if (!error) {
+            setShowAlert(true)
+            router.push('/dashboard')
+        } else {
+            setNotification(error)
+            setMessage(message)
         }
-        
+        setIsLoading(false)
     }
 
     return (

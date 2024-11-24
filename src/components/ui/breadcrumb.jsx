@@ -7,7 +7,7 @@ export default function Breadcrumb () {
     const pathSegments = pathname.split('/').filter((segment) => segment);
 
     return (
-        <div className="mb-4 py-4 px-3.5 border-2 border-green-950 text-white rounded-md drop-shadow-xl">
+        <div className="mb-4 py-4 px-3.5 border-2 border-green-700 bg-green-100 rounded-md drop-shadow-xl">
             <span className="text-sm font-medium">
                 <ol className='flex space-x-2 text-slate-300'>
                     {

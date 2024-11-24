@@ -10,23 +10,23 @@ import { faAdd, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import Table from "../../components/table"
 
 const goalColors = {
-    1: 'bg-tujuan-1',
-    2: 'bg-tujuan-2',
-    3: 'bg-tujuan-3',
-    4: 'bg-tujuan-4',
-    5: 'bg-tujuan-5',
-    6: 'bg-tujuan-6',
-    7: 'bg-tujuan-7',
-    8: 'bg-tujuan-8',
-    9: 'bg-tujuan-9',
-    10: 'bg-tujuan-10',
-    11: 'bg-tujuan-11',
-    12: 'bg-tujuan-12',
-    13: 'bg-tujuan-13',
-    14: 'bg-tujuan-14',
-    15: 'bg-tujuan-15',
-    16: 'bg-tujuan-16',
-    17: 'bg-tujuan-17',
+    1: 'text-tujuan-1',
+    2: 'text-tujuan-2',
+    3: 'text-tujuan-3',
+    4: 'text-tujuan-4',
+    5: 'text-tujuan-5',
+    6: 'text-tujuan-6',
+    7: 'text-tujuan-7',
+    8: 'text-tujuan-8',
+    9: 'text-tujuan-9',
+    10: 'text-tujuan-10',
+    11: 'text-tujuan-11',
+    12: 'text-tujuan-12',
+    13: 'text-tujuan-13',
+    14: 'text-tujuan-14',
+    15: 'text-tujuan-15',
+    16: 'text-tujuan-16',
+    17: 'text-tujuan-17',
 }
 
 const TableColumns = ['kode', 'Program / Kegiatan / SubKegiatan', 'Aksi']
@@ -60,7 +60,7 @@ export default function PemerintahDaerah () {
     useEffect(() => {
         const goal = goals.find(goal => goal.id == goalInput)
         setSelectedGoal(goal || null)
-        setColor(goalInput[goalColors[goalInput]])
+        setColor(goalColors[goalInput])
     }, [goalInput])
 
 
@@ -69,7 +69,7 @@ export default function PemerintahDaerah () {
             <div className="flex flex-col gap-8">
                 <form className="mt-6 px-2 flex flex-none justify-between">
                     <Link 
-                        className="flex items-center justify-center w-[240px] py-2.5 gap-3 bg-sky-400 rounded-sm text-white text-sm hover:text-sky-400 hover:bg-white hover:ring-2 hover:ring-sky-400 transition-all ease-in ease-out" 
+                        className="flex items-center justify-center w-[240px] py-2.5 gap-3 bg-sky-400 rounded-sm text-white drop-shadow-lg text-sm hover:text-sky-400 hover:bg-white hover:ring-2 hover:ring-sky-400 transition-all ease-in ease-out" 
                         href='/' >
                             <FontAwesomeIcon icon={faAdd} />
                             Tambah Sub Kegiatan
@@ -88,9 +88,9 @@ export default function PemerintahDaerah () {
                         </select>
                     </div>
                 </form>
-                <div className={`${selectedGoal != null ? 'opacity-100' : 'opacity-0 hidden'} flex flex-col gap-6 transition-all ease-in ease-out`}>
-                    <div className={`mx-3 px-3 py-2.5 bg-tujuan-${goalInput} text-white rounded-md drop-shadow-md`}>
-                        <h1 className="capitalize text-lg font-regular">tujuan {selectedGoal?.kode} - {selectedGoal?.nama}</h1>
+                <div className={`${selectedGoal != null ? 'opacity-100' : 'opacity-0'} flex flex-col gap-6 transition-all ease-in ease-out`}>
+                    <div className={`mx-3 px-3 py-2.5 border-2 border-slate-700 bg-slate-100 rounded-md drop-shadow-md`}>
+                        <h1 className={`capitalize text-md font-semibold ${color}`}>tujuan {selectedGoal?.kode} - {selectedGoal?.nama}</h1>
                     </div>
                     <div className="mx-3 drop-shadow-md">
                         <Table columns={TableColumns}>

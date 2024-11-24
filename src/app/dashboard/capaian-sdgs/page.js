@@ -34,9 +34,9 @@ export default function CapaianSdgs () {
                 })
         
                 if (res.ok) {
-                    const { data, totalItems } = await res.json()
-                    setItems(data)
-                    setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE))
+                    const { data } = await res.json()
+                    setItems(data.items)
+                    setTotalPages(Math.ceil(data.totalItems / ITEMS_PER_PAGE))
 
                 }
             } catch (error) {
