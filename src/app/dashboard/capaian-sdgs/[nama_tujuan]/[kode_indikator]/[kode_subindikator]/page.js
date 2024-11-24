@@ -58,8 +58,9 @@ export default function Detail ({ params }) {
         })
 
         if (res.ok) {
-            const data = await res.json()
-            setRole(data?.role)
+            const { data } = await res.json()
+            const { role } = data
+            setRole(role)
         }
     }
 
@@ -71,15 +72,17 @@ export default function Detail ({ params }) {
             credentials: 'include'
         });
         if (res.ok) {
-            const data = await res.json();
-            if (!data.empty) {
-                setTargetCapaian(data.target_capaian ?? '')
-                setUnits(data.target_capaian.units ?? [])
-                if (data.capaian != undefined) {
-                    setCapaian(data.capaian ?? '')
-                    setFiles(data.capaian.files ?? [])
+            const result = await res.json()
+            const { data, error, message } = result
+            if (!error) {
+                const { target_capaian, capaian } = data
+                setTargetCapaian(target_capaian ?? '')
+                setUnits(target_capaian.units ?? [])
+                if (capaian != undefined) {
+                    setCapaian(capaian ?? '')
+                    setFiles(capaian.files ?? [])
                 }
-            }
+            } 
         }
         setIsLoading(false)
     }
@@ -159,6 +162,7 @@ export default function Detail ({ params }) {
     return (
         <DashboardLayout>
             { isLoading && (<Loading />) }
+            { indikator == {} && <div>No Data...</div>}
             <div className="flex flex-col gap-4 p-6 border-2 border-green-900 rounded-md">
                 <Modal isOpen={capaianModal} setIsOpen={setCapaianModal}>
                     <EditCapaian 
