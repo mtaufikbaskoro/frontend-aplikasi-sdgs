@@ -3,32 +3,39 @@ import { NextResponse } from "next/server";
 
 
 export async function GET (request) {
-    try {
-        const cookieStore = cookies();
-        const token = cookieStore.get('token');
+    const cookieStore = cookies();
+    const token = cookieStore.get('token');
 
-        const { searchParams } = new URL(request.url);
-        const kd_indikator = searchParams.get('kd_indikator');
-        const kd_subindikator = searchParams.get('kd_subindikator');
+    if (!token) return NextResponse.json({
+        message: 'Token tidak ditemukan.',
+        error: true,
+        data: null
+    }, {status: 404})
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/detail/view?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token.value}`,
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include'
-        })
+    const { searchParams } = new URL(request.url);
+    const kd_indikator = searchParams.get('kd_indikator');
+    const kd_subindikator = searchParams.get('kd_subindikator');
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
-        }
+    if (!kd_indikator || !kd_subindikator) return NextResponse.json({
+        message: 'kode indikator atau kode subindikator tidak ditemukan',
+        error: true,
+        data: null
+    }, {status: 400}) 
 
-        const data = await response.json();
-        return NextResponse.json(data)
+    const response = await fetch(`http://v3.test/api/index/v1/astra/detail/view?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token.value}`,
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+    })
 
-    } catch (err) {
-        return NextResponse.json({message: err.message})
+    if (response.ok) {
+        const result = await response.json()
+        const { error } = result
+        if (error) return NextResponse.json(result, {status: 400})
+        return NextResponse.json(result)   
     }
 }
 

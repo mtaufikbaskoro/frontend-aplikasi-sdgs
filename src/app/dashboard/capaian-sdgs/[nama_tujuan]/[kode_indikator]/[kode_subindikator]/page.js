@@ -10,44 +10,44 @@ import EditTargetCapaian from "../../components/editTargetCapaian";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 export default function Detail ({ params }) {
-    const { kode_indikator, kode_subindikator } = params;
-    const [ role, setRole ] = useState('');
-    const [ indikator, setIndikator ] = useState({});
-    const [ subindikator, setSubindikator ] = useState({});
-    const [ detail, setDetail ] = useState({});
-    const [ targetCapaianForm, setTargetCapaianForm ] = useState([]);
-    const [ targetCapaian, setTargetCapaian ] = useState('');
-    const [ capaian, setCapaian ] = useState('');
-    const [ units, setUnits ] = useState([]);
-    const [ files, setFiles ] = useState([]);
-    const [ instansis, setInstansis ] = useState([]);
-    const [ isLoading, setIsLoading ] = useState(false);
-    const [ capaianModal, setCapaianModal ] = useState(false);
-    const [ targetCapaianModal, setTargetCapaianModal ] = useState(false);
+    const { kode_indikator, kode_subindikator } = params
+    const router = useRouter()
+    const [ role, setRole ] = useState('')
+    const [ indikator, setIndikator ] = useState({})
+    const [ subindikator, setSubindikator ] = useState({})
+    const [ detail, setDetail ] = useState({})
+    const [ targetCapaianForm, setTargetCapaianForm ] = useState([])
+    const [ targetCapaian, setTargetCapaian ] = useState('')
+    const [ capaian, setCapaian ] = useState('')
+    const [ units, setUnits ] = useState([])
+    const [ files, setFiles ] = useState([])
+    const [ instansis, setInstansis ] = useState([])
+    const [ isLoading, setIsLoading ] = useState(false)
+    const [ isError, setIsError ] = useState(false)
+    const [ capaianModal, setCapaianModal ] = useState(false)
+    const [ targetCapaianModal, setTargetCapaianModal ] = useState(false)
 
     const fetchDetail = async (kd_indikator, kd_subindikator = 0) => {
-        try {
-            setIsLoading(true);
-            const res = await fetch(`/api/sdgs/detailIndikator?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include'
-            });
-    
-            if (res.ok) {
-                const data = await res.json();
-                setDetail(data.detail);
-                setIndikator(data.indikator);
-                setSubindikator(data.subindikator);
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
+        setIsLoading(true)
+        const res = await fetch(`/api/sdgs/detailIndikator?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        })
+        const result = await res.json()
+        const { data, error, message } = result
+        if (res.ok) {
+            setDetail(data.detail);
+            setIndikator(data.indikator);
+            setSubindikator(data.subindikator);
+        } else {
+            if (error) setIsError(error)
         }
+        setIsLoading(false);
     }
 
     const fetchRole = async () => {
@@ -65,28 +65,23 @@ export default function Detail ({ params }) {
 
     const fetchTargetCapaian = async (detailId) => {
         setIsLoading(true)
-        try {
-            const res = await fetch(`/api/sdgs/detailTargetCapaian?detail_id=${detailId}`, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include'
-            });
-            if (res.ok) {
-                const data = await res.json();
-                if (!data.empty) {
-                    setTargetCapaian(data.target_capaian ?? '')
-                    setUnits(data.target_capaian.units ?? [])
-                    if (data.capaian != undefined) {
-                        setCapaian(data.capaian ?? '')
-                        setFiles(data.capaian.files ?? [])
-                    }
+        const res = await fetch(`/api/sdgs/detailTargetCapaian?detail_id=${detailId}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (!data.empty) {
+                setTargetCapaian(data.target_capaian ?? '')
+                setUnits(data.target_capaian.units ?? [])
+                if (data.capaian != undefined) {
+                    setCapaian(data.capaian ?? '')
+                    setFiles(data.capaian.files ?? [])
                 }
             }
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
         }
+        setIsLoading(false)
     }
 
     const fetchTargetCapaianForm = async (kode_indikator, kode_subindikator) => {
@@ -159,7 +154,7 @@ export default function Detail ({ params }) {
         if (detail.id != undefined) fetchTargetCapaian(detail.id)
     }, [detail])
 
-    // console.log(capaian);
+    if (isError) router.push('/404')
 
     return (
         <DashboardLayout>
