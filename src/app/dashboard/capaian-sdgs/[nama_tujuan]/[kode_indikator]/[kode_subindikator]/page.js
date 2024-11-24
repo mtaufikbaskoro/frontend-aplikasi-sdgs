@@ -89,22 +89,19 @@ export default function Detail ({ params }) {
 
     const fetchTargetCapaianForm = async (kode_indikator, kode_subindikator) => {
         setIsLoading(true);
-        try {
-            const res = await fetch(`/api/sdgs/targetCapaian?kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include'
-            })
-            if(res.ok) {
-                const data = await res.json();
-                setTargetCapaianForm(data);
-            }
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-            setTargetCapaianModal(true);
+        const res = await fetch(`/api/sdgs/targetCapaian?kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        })
+        if(res.ok) {
+            const result = await res.json()
+            const { data, error, message } = result
+            if (!error) setTargetCapaianForm(data)
         }
+        setIsLoading(false)
+        setTargetCapaianModal(true)
+        console.log(targetCapaianForm)
     }
 
     const fetchAllInstansis = async () => {

@@ -24,7 +24,7 @@ export default function EditTargetCapaian (props) {
     });
 
     useEffect(() => {
-        if (targetCapaian?.target_capaian) {
+        if (targetCapaian.target_capaian) {
             const tempArr = targetCapaian.instansis.map(x => ({id: x.sub_unit_id}))
             reset({
                 detail_id: targetCapaian.sdgs_detail_id,
