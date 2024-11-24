@@ -26,32 +26,24 @@ export default function Detail({params}) {
 
     const handleFetchIndikators = async (kode) => {
         setIsLoading(true);
-        try {
-            const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}`, {
-                method: 'GET',
-                headers: {"Content-Type": 'application/json'},
-                credentials: 'include'
-            })
+        const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}`, {
+            method: 'GET',
+            headers: {"Content-Type": 'application/json'},
+            credentials: 'include'
+        })
+        const result = await res.json()
+        const { data, error } = result
 
-            if (res.ok) {
-                const { data, error } = await res.json();
-                if (!error) setIndikatorsData(data)
-            }
-
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false);
+        if (res.ok) {
+            if (!error) setIndikatorsData(data)
         }
+        setIsLoading(false);
     }
 
     const getInfo = (targetCapaianStatus, capaianStatus) => {
-        if (targetCapaianStatus) {
-            if (capaianStatus) return 'Data telah selesai diinput'
-            else return 'Capaian belum diinput'
-        } else {
-            return 'Target belum diinput'
-        }
+        return targetCapaianStatus ?
+        capaianStatus ? 'Data telah selesai diinput' : 'Capaian belum diinput'
+        : 'Target belum diinput'
     } 
 
     useEffect(() => {

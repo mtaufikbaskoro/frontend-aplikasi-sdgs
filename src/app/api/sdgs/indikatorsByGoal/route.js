@@ -35,10 +35,10 @@ export async function GET (request) {
         data: null
     }, {status: 500}) 
 
-    const data = await response.json();
-    return NextResponse.json({
-        message: 'Berhasil',
-        error: false,
-        data: data
-    });
+    const result = await response.json()
+    const { error } = result
+    if (error) {
+        return NextResponse.json(result, {status: 404})
+    }
+    return NextResponse.json(result);
 }
