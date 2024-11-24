@@ -35,21 +35,22 @@ export async function GET (request) {
     })
 
     if (!response.ok) return NextResponse.json({
-        message: 'Internal Server Error',
+        message: 'Internal Server Error.',
         error: true,
         data: null
     })
 
-    const data  = await response.json();
-    if (!data) return NextResponse.json({
-        message: 'Failed to get data from server',
-        error: true,
-        data: null,
-    })
-    
-    return NextResponse.json({
-        message: 'Berhasil',
-        error: false,
+    const result = await response.json()
+    const { data, error, message } = result
+    if (error) return NextResponse.json({
+        message: message,
+        error: error,
         data: data
+    }, {status: 404})
+    return NextResponse.json({
+        message: message,
+        error: error,
+        data: data 
     })
+
 }

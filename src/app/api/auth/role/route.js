@@ -12,5 +12,4 @@ export async function GET () {
     const role = sub_unit_id === 'admin' ? 'admin' : 'user'
 
     return NextResponse.json({role: role, username: username})
-
 }
