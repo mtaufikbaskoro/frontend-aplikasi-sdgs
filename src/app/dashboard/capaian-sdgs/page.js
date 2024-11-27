@@ -10,18 +10,18 @@ import Pagination from "../components/pagination";
 import Loading from "../components/loading";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faClock, faTimes, faPrint } from "@fortawesome/free-solid-svg-icons";
+import { faPrint } from "@fortawesome/free-solid-svg-icons";
 
 
 const ITEMS_PER_PAGE = 5;
-const TableColumns = ['', 'Nama Tujuan', 'Status', ''];
+const TableColumns = ['', 'Nama Tujuan', 'Aksi'];
 
 export default function CapaianSdgs () {
-    const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
-    const [error, setError] = useState('');
+    const [items, setItems] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
+    const [error, setError] = useState('')
 
     useEffect(() => {
         const fetchGoals = async (page) => {
@@ -35,9 +35,14 @@ export default function CapaianSdgs () {
         
                 if (res.ok) {
                     const { data } = await res.json()
-                    setItems(data.items)
+                    const progressData = await Promise.all(
+                        data.items.map(async (item) => {
+                            const progress = await findProgress(item.kode)
+                            return { ...item, progress }
+                        })
+                    )
+                    setItems(progressData)
                     setTotalPages(Math.ceil(data.totalItems / ITEMS_PER_PAGE))
-
                 }
             } catch (error) {
                 setError(error.message)
@@ -49,6 +54,21 @@ export default function CapaianSdgs () {
         fetchGoals(currentPage)
     }, [currentPage])
 
+    console.log(items)
+
+    const findProgress = async (kode) => {
+        const res = await fetch(`/api/sdgs/goalProgress?kode=${kode}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        const result = await res.json()
+        const { data, error, message } = result
+        if (!error) {
+            const { complete, total } = data
+            return (complete/total).toFixed(2) * 100
+        }
+        return message
+    }
 
     const handlePageChange = (page) => {
         setCurrentPage(page)
@@ -58,16 +78,7 @@ export default function CapaianSdgs () {
         let slug = `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
         return slug
     }
-
-    const handleStatusIcon = (status) => {
-        if (status == 2) {
-            return <FontAwesomeIcon icon={faClock} color="orange" />;
-        } else if (status == 1) {
-            return <FontAwesomeIcon icon={faCheck} color="green" />;
-        } else if (status == 3) {
-            return <FontAwesomeIcon icon={faTimes} color="red" />;
-        }
-    }
+    
 
     if (error) {
         return (<Loading>Error : {error}</Loading>)
@@ -90,22 +101,16 @@ export default function CapaianSdgs () {
                                     <div className="font-bold flex flex-col justify-center items-start gap-2">
                                         <Link href={`/dashboard/capaian-sdgs/${createSlug(dummy.kode, dummy.nama)}`} className="hover:underline">{dummy.kode}. {dummy.nama.toUpperCase()}</Link>
                                         <div className="w-full bg-gray-300 rounded-full h-2.5">
-                                            <div className="bg-blue-400 h-2.5 rounded-full" style={{width: '45%'}}></div>
+                                            <div className="bg-blue-400 h-2.5 rounded-full" style={{width: `${dummy.progress}%`}}></div>
                                         </div>
-                                        <span className="font-light text-xs">Progress : 45%</span>
+                                        <span className="font-light text-xs">{`Progress : ${dummy.progress}%`}</span>
                                     </div>
-                                </td>
-                                <td className="px-6 py-4">
-                                    {handleStatusIcon(2)}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex">
                                         <Link className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
                                             <FontAwesomeIcon icon={faPrint} />
                                         </Link>
-                                        {/* <Link className="mx-auto bg-yellow-300 px-1 py-0.5 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
-                                            <FontAwesomeIcon icon={faEdit} color="white" />
-                                        </Link> */}
                                     </div>
                                 </td>
                             </tr>

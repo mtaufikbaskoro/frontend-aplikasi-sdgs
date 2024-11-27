@@ -18,8 +18,12 @@ export default function Navbar (props) {
             headers: {'Content-Type': 'application/json'}
         })
         if (res.ok) {
-            const data = await res.json()
-            setUsername(data?.username)
+            const result = await res.json()
+            const { data, error } = result
+            if (!error) {
+                const { username } = data
+                setUsername(username)
+            }
         }
     }
 

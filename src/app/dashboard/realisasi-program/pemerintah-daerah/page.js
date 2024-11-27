@@ -47,9 +47,9 @@ export default function PemerintahDaerah () {
             headers: {'Content-Type': 'application/json'}
         })
         if (res.ok) {
-            const data = await res.json()
-            if (data) setGoals(data?.data)
-            // console.log(data)
+            const result = await res.json()
+            const { data, error, message } = result
+            if (!error) setGoals(data.items)
         }
     }
 
@@ -70,13 +70,13 @@ export default function PemerintahDaerah () {
                 <form className="mt-6 px-2 flex flex-none justify-between">
                     <Link 
                         className="flex items-center justify-center w-[240px] py-2.5 gap-3 bg-sky-400 rounded-sm text-white drop-shadow-lg text-sm hover:text-sky-400 hover:bg-white hover:ring-2 hover:ring-sky-400 transition-all ease-in ease-out" 
-                        href='/' >
+                        href="/dashboard/realisasi-program/pemerintah-daerah/tambah" >
                             <FontAwesomeIcon icon={faAdd} />
                             Tambah Sub Kegiatan
                     </Link>
                     <div className="flex flex-col">
                         <select 
-                            className="mt-2 px-1.5 py-2 text-sm border-b-4 border-green-900 focus:outline-none"
+                            className="mt-2 px-1.5 py-2 text-sm border-b-4 border-slate-800 focus:outline-none"
                             {...register('goal')} >
                             <option value=''>Pilih Tujuan SDGs</option>
                             {goals.length > 0 ? goals.map(goal => (
@@ -94,7 +94,7 @@ export default function PemerintahDaerah () {
                     </div>
                     <div className="mx-3 drop-shadow-md">
                         <Table columns={TableColumns}>
-                            <tr className={`h-14 bg-tujuan-${goalInput} bg-opacity-75 text-center text-black font-semibold`}>
+                            <tr className={`h-14 ${color} bg-slate-300 text-center text-black font-semibold`}>
                                 <td className="px-4">1.1.1*</td>
                                 <td className="text-left" colSpan={TableColumns.length-1} >Tingkat kemiskinan ekstrim</td>
                             </tr>
@@ -114,7 +114,7 @@ export default function PemerintahDaerah () {
                                     Pemeliharaan anak-anak terlantar
                                 </td>
                             </tr>
-                            <tr className={`h-14 text-center bg-slate-100 text-black`}>
+                            <tr className={`h-14 text-center bg-white text-black`}>
                                 <td>1.06.05.2.01.01</td>
                                 <td className='text-left'>
                                     Penjangkauan anak-anak terlantar
@@ -127,7 +127,7 @@ export default function PemerintahDaerah () {
                                     </div>
                                 </td>
                             </tr>
-                            <tr className={`h-14 text-center bg-slate-100 text-black`}>
+                            <tr className={`h-14 text-center bg-white text-black`}>
                                 <td>1.06.05.2.01.03</td>
                                 <td className='text-left'>
                                     Pemantauan terhadap pelaksanaan pemeliharaan anak terlantar
