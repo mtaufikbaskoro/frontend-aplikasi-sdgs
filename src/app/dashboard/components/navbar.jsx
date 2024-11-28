@@ -32,7 +32,7 @@ export default function Navbar (props) {
     }, [])
 
     return (
-        <nav className={`sticky top-0 flex justify-between items-center bg-white z-30 px-16 transition-all ease-in ease-out py-4 border-b-4 border-green-900 bg-white`}>
+        <nav className={`sticky top-0 flex justify-between items-center bg-white z-30 px-16 transition-all ease-in ease-out py-4 border-b-4 border-green-900`}>
             { isOpen ? (
                 <div>
                     <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-1" : "ml-0"} w-6 h-6 text-white`}>

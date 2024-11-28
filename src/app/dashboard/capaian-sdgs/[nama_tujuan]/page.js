@@ -15,8 +15,8 @@ import Tooltip from '@/components/ui/tooltip';
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
 
 export default function Detail({params}) {
-    const router = useRouter();
     const { nama_tujuan } = params;
+    const router = useRouter();
     const kode_tujuan = nama_tujuan.split('-')[1];
 
     if (kode_tujuan === undefined) router.push('/404')
@@ -53,22 +53,19 @@ export default function Detail({params}) {
     return (
         <DashboardLayout>
             <Table columns={tableColumns}>
-                {
-                    indikatorsData.length > 0 ?
+                { indikatorsData.length > 0 ?
                     indikatorsData.map((dummy) => (
                         <Fragment key={dummy.id}>
                             <tr key={dummy.id} className='text-left h-14 font-semibold bg-green-700 text-white'>
                                 <td className='text-center'>{dummy.kode}</td>
-                                <td colSpan={tableColumns.length - 2}>{dummy.kriteria}</td>
-                                <td></td>
+                                <td colSpan={tableColumns.length - 1}>{dummy.kriteria}</td>
                             </tr>
                             {
                                 dummy.indikators.map((indikator, idx) => (
                                     <Fragment key={idx}>
                                     <tr key={idx} className='text-left h-14 font-medium bg-green-200'>
                                         <td className='text-center'>{indikator.kode}</td>
-                                        <td colSpan={!indikator.subindikator.length < 1 ? tableColumns.length - 2 : 0}>{indikator.kriteria}</td>
-                                        {!indikator.subindikator.length < 1 && <td></td>}
+                                        <td colSpan={!indikator.subindikator.length < 1 ? tableColumns.length - 1 : 0}>{indikator.kriteria}</td>
                                         {
                                             indikator.subindikator.length === 0 && (
                                                     <td className='text-center'>  
@@ -99,7 +96,7 @@ export default function Detail({params}) {
                                                     indikator.subindikator.map((point, idx) => (
                                                         <tr key={idx} className='text-left h-14 bg-green-100'>
                                                             <td></td>
-                                                            <td>{point.kode}. {point.kriteria}</td>
+                                                            <td><span className='font-semibold'>{point.kode}.</span> {point.kriteria}</td>
                                                             <td className='text-center'>
                                                                 <Tooltip text={getInfo(point.target_capaian_status, point.capaian_status)}>
                                                                 {

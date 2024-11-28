@@ -2,12 +2,12 @@
 export default function Table (props) {
     const {columns, children} = props;
     return (
-        <table className="table-auto w-full text-sm text-center text-green-950 drop-shadow-xl">
+        <table className="min-w-full text-sm text-center text-green-950 drop-shadow-xl">
             <thead className="text-xs uppercase bg-green-950 text-white">
                 <tr>
                     {
                         columns.map((column, idx) => (
-                            <th key={idx} scope="col" className="px-6 py-3">
+                            <th key={idx} scope="col" className="px-3 py-2.5">
                                 {column}
                             </th>
                         ))
