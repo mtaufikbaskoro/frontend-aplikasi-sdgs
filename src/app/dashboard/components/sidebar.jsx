@@ -59,7 +59,7 @@ export default function Sidebar (props) {
     };
 
     return (
-        <div className={`${isOpen ? "" : "-translate-x-72"} w-72 fixed top-[64px] left-0 h-[calc(100vh-64px)] py-6 bg-slate-100 drop-shadow-xl rounded transition-all ease-in ease-out`}>
+        <div className={`${isOpen ? "" : "-translate-x-72"} z-10 w-72 fixed top-[64px] left-0 h-[calc(100vh-64px)] py-6 bg-slate-100 drop-shadow-xl rounded transition-all ease-in ease-out`}>
             <ul className={`${isOpen ? '' : '-translate-x-72'} space-y-4 transition-all ease-in ease-out`}>
                 <li onClick={() => handleLink("/dashboard")} className={`pl-6 py-3 hover:bg-slate-300 transition-all ease-in ease-out cursor-pointer ${menuActive == 'dashboard' ? 'bg-slate-400' : ''}`}>
                     <div className='flex gap-5 justify-start items-center'>
@@ -77,7 +77,7 @@ export default function Sidebar (props) {
                     <div className='flex gap-5 justify-start items-center'>
                         <FontAwesomeIcon size='sm' icon={faWindowMaximize} />
                         <span className="sm">Realisasi Program</span>
-                        <FontAwesomeIcon size='xs' icon={submenu == 'realisasi-program' ? faChevronDown : faChevronRight} />
+                        <FontAwesomeIcon className='pl-6' size='xs' icon={submenu == 'realisasi-program' ? faChevronDown : faChevronRight} />
                     </div>
                 </li>
                 <li className={`${submenu == 'realisasi-program' ? '' : 'hidden'}`}>

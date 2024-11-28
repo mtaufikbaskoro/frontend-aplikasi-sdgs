@@ -65,7 +65,7 @@ export default function CapaianSdgs () {
         const { data, error, message } = result
         if (!error) {
             const { complete, total } = data
-            return (complete/total).toFixed(2) * 100
+            return Math.ceil((complete/total) * 100)
         }
         return message
     }
@@ -93,17 +93,17 @@ export default function CapaianSdgs () {
                         items.map(dummy => (
                             <tr key={dummy.id} className={`border-b ${dummy.id % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}>
                                 <td>
-                                    <div className="flex justify-center items-center">
+                                    <div className="flex justify-center items-center mx-auto">
                                         <Image src={`/assets/img/sdgs_icons/E_SDG_PRINT-${dummy.kode}.jpg`} width={56} height={56} alt="goal image" />
                                     </div>
                                 </td>
                                 <td scope="row" className="px-6 py-4">
                                     <div className="font-bold flex flex-col justify-center items-start gap-2">
-                                        <Link href={`/dashboard/capaian-sdgs/${createSlug(dummy.kode, dummy.nama)}`} className="hover:underline">{dummy.kode}. {dummy.nama.toUpperCase()}</Link>
+                                        <Link href={`/dashboard/capaian-sdgs/${createSlug(dummy.kode, dummy.nama)}`} className="text-left hover:underline">{dummy.kode}. {dummy.nama.toUpperCase()}</Link>
                                         <div className="w-full bg-gray-300 rounded-full h-2.5">
                                             <div className="bg-blue-400 h-2.5 rounded-full" style={{width: `${dummy.progress}%`}}></div>
                                         </div>
-                                        <span className="font-light text-xs">{`Progress : ${dummy.progress}%`}</span>
+                                        <span className="font-light text-xs">{`Progress : ${isNaN(dummy.progress) ? 100 : dummy.progress}%`}</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">

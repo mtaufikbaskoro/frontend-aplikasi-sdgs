@@ -1,10 +1,9 @@
 
-import Link from 'next/link';
 import Card from './components/card';
 import DashboardLayout from './components/layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const statuses = [
     {
@@ -26,7 +25,7 @@ const statuses = [
         'name': 'Indikator telah selesai',
         'total': 7,
         'icon': faFileCircleCheck,
-        'color': 'green'
+        'color': '#166534'
     }
 ]
 
@@ -34,7 +33,7 @@ export default function Dashboard () {
 
     return (
         <DashboardLayout>
-            <div className='grid max-w-[1620px] grid-cols-4 gap-x-2 gap-y-4'>
+            <div className='grid max-w-[1620px] xl:grid-cols-3 gap-x-2 gap-y-4'>
                 {
                     statuses.map(status => (
                         <Card key={status.id} color={status.color}>

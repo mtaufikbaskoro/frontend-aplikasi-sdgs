@@ -32,27 +32,31 @@ export default function Navbar (props) {
     }, [])
 
     return (
-        <nav className={`sticky top-0 flex justify-between items-center bg-white z-10 ${isOpen ? "pl-64" : "pl-16"} transition-all ease-in ease-out py-6 border-b-4 border-green-900 bg-white`}>
-            <div className={`${isOpen ? "hidden" : ""}`}>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-1" : "ml-0"} w-6 h-6 text-white`}>
-                    <FontAwesomeIcon icon={faBars} color='black' />
-                </button>
-            </div>
-            <div className={`${isOpen ? "" : "hidden"}`}>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-1" : "ml-0"} w-6 h-6 text-white`}>
-                    <FontAwesomeIcon icon={faClose} color='black' />
-                </button>
-            </div>
-            <div className="flex justify-center items-center">
-                <div className='w-6 h-6'>
-                    <Image src={logoPemko} width="auto" height="auto" alt="logo pemko medan" />
+        <nav className={`sticky top-0 flex justify-between items-center bg-white z-30 px-16 transition-all ease-in ease-out py-4 border-b-4 border-green-900 bg-white`}>
+            { isOpen ? (
+                <div>
+                    <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-1" : "ml-0"} w-6 h-6 text-white`}>
+                        <FontAwesomeIcon icon={faClose} color='black' />
+                    </button>
                 </div>
-                <div className="flex flex-col">
+            ) : (
+                <div>
+                    <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-1" : "ml-0"} w-6 h-6 text-white`}>
+                        <FontAwesomeIcon icon={faBars} color='black' />
+                    </button>
+                </div>
+            ) }
+            <div className='grow flex flex-col items-end md:flex-row md:items-center md:justify-between gap-1'>
+                <div></div>
+                <div className='flex justify-center items-center'>
+                    <div className='w-6'>
+                        <Image src={logoPemko} width="auto" height="auto" alt="logo pemko medan" />
+                    </div>
                     <p className="ml-4 text-lg font-bold uppercase">astra</p>
                 </div>
-            </div>
-            <div className="pr-16 flex justify-end items-center gap-12 min-w-80">
-                <p className='text-sm'>Selamat datang, <span className='font-bold'>{username}</span></p>
+                <div>
+                    <p className='text-sm'>Selamat datang, <span className='font-bold'>{username}</span></p>
+                </div>
             </div>
         </nav>
     )
