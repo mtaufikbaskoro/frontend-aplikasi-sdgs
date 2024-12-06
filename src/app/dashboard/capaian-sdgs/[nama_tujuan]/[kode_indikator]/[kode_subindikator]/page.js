@@ -155,7 +155,7 @@ export default function Detail ({ params }) {
         <DashboardLayout>
             { isLoading && (<Loading />) }
             { indikator == {} && <div>No Data...</div>}
-            <div className="flex flex-col gap-4 p-6 border-2 border-green-900 rounded-md">
+            <div className="flex flex-col gap-4 px-2.5 py-3 border-2 border-green-900 rounded-md">
                 <Modal isOpen={capaianModal} setIsOpen={setCapaianModal}>
                     <EditCapaian 
                         targetCapaianId={targetCapaian.id}
@@ -243,7 +243,7 @@ export default function Detail ({ params }) {
                         </tr>
                     </tbody>
                 </table>
-                <h1 className="p-2 font-medium border rounded border-green-900 text-center">Target / Capaian / %Capaian / Status</h1>
+                <h1 className="py-2 font-medium border rounded border-green-900 text-center">Target / Capaian / %Capaian / Status</h1>
                 <hr />
                 <table className="table text-sm text-center">
                     <thead>
@@ -264,18 +264,18 @@ export default function Detail ({ params }) {
                     </tbody>
                 </table>
                 <br />
-                <div className="flex gap-6">
+                <div className="flex gap-2">
                     <button 
-                        className={`flex flex-1 items-center min-w-[240px] justify-center gap-3 bg-yellow-300 py-2.5 rounded-sm text-black text-sm hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 ${role === 'admin' ? '' : 'hidden'} transition-all ease-in ease-out`}
+                        className={`flex flex-1 items-center justify-center gap-3 bg-yellow-300 py-1.5 rounded-sm text-black text-xs hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 ${role === 'admin' ? '' : 'hidden'} transition-all ease-in ease-out`}
                         onClick={() => handleTargetCapaianModal(kode_indikator, kode_subindikator)}
                         disabled={role === 'admin' ? false : true} >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Atur Target Capaian</span>
                     </button>
                     <button 
-                        className="flex flex-1 items-center min-w-[240px] justify-center gap-3 bg-sky-500 py-2.5 rounded-sm text-white text-sm hover:text-sky-500 hover:bg-white hover:ring-2 hover:ring-sky-500 disabled:bg-slate-300 disabled:hover:ring-0 disabled:hover:text-white transition-all ease-in ease-out"
+                        className="flex flex-1 items-center justify-center gap-3 bg-sky-500 py-1.5 rounded-sm text-white text-xs hover:text-sky-500 hover:bg-white hover:ring-2 hover:ring-sky-500 disabled:bg-slate-300 disabled:hover:ring-0 disabled:hover:text-white transition-all ease-in ease-out"
                         onClick={() => handleCapaianModal()}
-                        disabled={!targetCapaian && true} >
+                        disabled={targetCapaian == '' ? true : false} >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Atur Capaian</span>
                     </button>   

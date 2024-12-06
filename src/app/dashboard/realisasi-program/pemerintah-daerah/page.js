@@ -8,6 +8,8 @@ import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAdd, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import Table from "../../components/table"
+import Modal from "../../components/modal"
+import Detail from "./components/detail"
 
 const goalColors = {
     1: 'text-tujuan-1',
@@ -35,6 +37,8 @@ export default function PemerintahDaerah () {
     const [ goals, setGoals ] = useState([])
     const [ selectedGoal, setSelectedGoal ] = useState(null)
     const [ color, setColor ] = useState('')
+    const [ detailModal, setDetailModal ] = useState(false)
+    const [ isLoading, setIsLoading ] = useState(false)
     const { register, watch } = useForm({
         defaultValues: {goal: ''}
     })
@@ -42,6 +46,7 @@ export default function PemerintahDaerah () {
     const goalInput = watch('goal')
 
     const fetchGoals = async () => {
+        setIsLoading(true)
         const res = await fetch(`/api/sdgs`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
@@ -50,12 +55,11 @@ export default function PemerintahDaerah () {
             const result = await res.json()
             const { data, error, message } = result
             if (!error) setGoals(data.items)
+            setIsLoading(false)
         }
     }
 
-    useEffect(() => {
-        fetchGoals()
-    }, [])
+    useEffect(() => { fetchGoals() }, [])
 
     useEffect(() => {
         const goal = goals.find(goal => goal.id == goalInput)
@@ -67,6 +71,7 @@ export default function PemerintahDaerah () {
     return (
         <DashboardLayout Content={<Breadcrumb />}>
             <div className="flex flex-col gap-8">
+                <Modal isOpen={detailModal} setIsOpen={setDetailModal}><Detail /></Modal>
                 <form className="mt-6 px-2 flex flex-none justify-between">
                     <Link 
                         className="flex items-center justify-center w-[240px] py-2.5 gap-3 bg-sky-400 rounded-sm text-white drop-shadow-lg text-sm hover:text-sky-400 hover:bg-white hover:ring-2 hover:ring-sky-400 transition-all ease-in ease-out" 
@@ -78,7 +83,8 @@ export default function PemerintahDaerah () {
                         <select 
                             className="mt-2 px-1.5 py-2 text-sm border-b-4 border-slate-800 focus:outline-none"
                             {...register('goal')} >
-                            <option value=''>Pilih Tujuan SDGs</option>
+                            {isLoading ? (<option value=''>Sedang Memuat...</option>) : (<option value=''>Pilih Tujuan SDGs</option>)}
+                            
                             {goals.length > 0 ? goals.map(goal => (
                                 <option 
                                     key={goal.kode} 
@@ -95,11 +101,11 @@ export default function PemerintahDaerah () {
                     <div className="mx-3 drop-shadow-md">
                         <Table columns={TableColumns}>
                             <tr className={`h-14 ${color} bg-slate-300 text-center text-black font-semibold`}>
-                                <td className="px-4">1.1.1*</td>
+                                <td className="text-left pl-4">1.1.1*</td>
                                 <td className="text-left" colSpan={TableColumns.length-1} >Tingkat kemiskinan ekstrim</td>
                             </tr>
                             <tr className={`h-14 bg-slate-300 text-center text-black`}>
-                                <td>1.06.05</td>
+                                <td className="text-left pl-4">1.06.05</td>
                                 <td 
                                     className='text-left'
                                     colSpan={TableColumns.length-1} >
@@ -107,7 +113,7 @@ export default function PemerintahDaerah () {
                                 </td>
                             </tr>
                             <tr className={`h-14 bg-slate-200 text-center text-black`}>
-                                <td>1.06.05.2.01</td>
+                                <td className="text-left pl-4">1.06.05.2.01</td>
                                 <td 
                                     className='text-left'
                                     colSpan={TableColumns.length-1} >
@@ -115,29 +121,25 @@ export default function PemerintahDaerah () {
                                 </td>
                             </tr>
                             <tr className={`h-14 text-center bg-white text-black`}>
-                                <td>1.06.05.2.01.01</td>
+                                <td className="text-left pl-4">1.06.05.2.01.01</td>
                                 <td className='text-left'>
                                     Penjangkauan anak-anak terlantar
                                 </td>
                                 <td>
-                                    <div className="py-2">
-                                        <Link href={`/`} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                        </Link>
-                                    </div>
+                                    <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                    </button>
                                 </td>
                             </tr>
                             <tr className={`h-14 text-center bg-white text-black`}>
-                                <td>1.06.05.2.01.03</td>
+                                <td className="text-left pl-4">1.06.05.2.01.03</td>
                                 <td className='text-left'>
                                     Pemantauan terhadap pelaksanaan pemeliharaan anak terlantar
                                 </td>
                                 <td>
-                                    <div className="py-2">
-                                        <Link href={`/`} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                        </Link>
-                                    </div>
+                                    <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                    </button>
                                 </td>
                             </tr>
 

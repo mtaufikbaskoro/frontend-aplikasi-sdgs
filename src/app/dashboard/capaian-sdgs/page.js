@@ -54,8 +54,6 @@ export default function CapaianSdgs () {
         fetchGoals(currentPage)
     }, [currentPage])
 
-    console.log(items)
-
     const findProgress = async (kode) => {
         const res = await fetch(`/api/sdgs/goalProgress?kode=${kode}`, {
             method: 'GET',

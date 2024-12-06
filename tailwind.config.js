@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export const darkMode = false
+export const darkMode = 'media'
 
 export const content = [
   "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
