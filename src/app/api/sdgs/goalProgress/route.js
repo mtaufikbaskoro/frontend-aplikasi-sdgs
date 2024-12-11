@@ -11,12 +11,13 @@ export async function GET (request) {
     })
     const { searchParams } = new URL(request.url)
     const kode = searchParams.get('kode')
+    const year = searchParams.get('year')
     if (!kode) return NextResponse.json({
         message: 'Kode not found.',
         error: true,
         data: null
     })
-    const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-goal-progress?kode=${kode}`, {
+    const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-goal-progress?kode=${kode}&year=${year}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,

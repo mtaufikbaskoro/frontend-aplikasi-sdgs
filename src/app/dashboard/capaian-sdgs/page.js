@@ -17,11 +17,11 @@ const ITEMS_PER_PAGE = 5;
 const TableColumns = ['', 'Nama Tujuan', 'Aksi'];
 
 export default function CapaianSdgs () {
-    const [items, setItems] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(0)
-    const [error, setError] = useState('')
+    const [ items, setItems ] = useState([])
+    const [ isLoading, setIsLoading ] = useState(true)
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [ totalPages, setTotalPages ] = useState(0)
+    const [ error, setError ] = useState('')
 
     useEffect(() => {
         const fetchGoals = async (page) => {
@@ -37,7 +37,8 @@ export default function CapaianSdgs () {
                     const { data } = await res.json()
                     const progressData = await Promise.all(
                         data.items.map(async (item) => {
-                            const progress = await findProgress(item.kode)
+                            const year = sessionStorage.getItem('year')
+                            const progress = await findProgress(item.kode, year)
                             return { ...item, progress }
                         })
                     )
@@ -50,12 +51,11 @@ export default function CapaianSdgs () {
                 setIsLoading(false)
             }
         }
-
         fetchGoals(currentPage)
     }, [currentPage])
 
-    const findProgress = async (kode) => {
-        const res = await fetch(`/api/sdgs/goalProgress?kode=${kode}`, {
+    const findProgress = async (kode, year) => {
+        const res = await fetch(`/api/sdgs/goalProgress?kode=${kode}&year=${year}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })

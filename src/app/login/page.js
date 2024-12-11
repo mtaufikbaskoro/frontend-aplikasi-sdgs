@@ -48,6 +48,7 @@ export default function Login () {
         const { error, message } = result
         if (!error) {
             setShowAlert(true)
+            sessionStorage.setItem('year', year)
             router.push('/dashboard')
         } else {
             setNotification(error)

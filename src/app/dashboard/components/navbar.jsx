@@ -29,10 +29,7 @@ export default function Navbar (props) {
     }
 
     const fetchYear = async () => {
-        const res = await fetch(`/api/cookie/year`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
-        })
+        const res = await fetch(`/api/cookie/year`, { method: 'GET', headers: {'Content-Type': 'application/json'}})
         if (res.ok) {
             const result = await res.json()
             const { data, error } = result

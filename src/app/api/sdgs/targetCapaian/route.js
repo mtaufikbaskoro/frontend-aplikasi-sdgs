@@ -11,11 +11,12 @@ export async function GET (request) {
         data: null
     })
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url)
     const kd_indikator = searchParams.get('kd_indikator')
     const kd_subindikator = searchParams.get('kd_subindikator')
+    const year = searchParams.get('year')
 
-    const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/view?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+    const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/view?year=${year}&kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,
@@ -34,11 +35,12 @@ export async function GET (request) {
 
 export async function POST (request) {
     try {
-        const cookieStore = cookies();
-        const token = cookieStore.get('token');
-        const data = await request.json();
+        const cookieStore = cookies()
+        const token = cookieStore.get('token')
+        const year = cookieStore.get('year').value
+        const data = await request.json()
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/create`, {
+        const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/create?year=${year}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token.value}`,
@@ -62,10 +64,11 @@ export async function POST (request) {
 
 export async function PUT (request) {
     try {
-        const cookieStore = cookies();
-        const token = cookieStore.get('token');
-        const { searchParams } = new URL(request.url);
-        const data = await request.json();
+        const cookieStore = cookies()
+        const token = cookieStore.get('token')
+        const data = await request.json()
+
+        const { searchParams } = new URL(request.url)
         const targetCapaianId = searchParams.get('targetCapaianId');
 
         const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/update?target_capaian_id=${targetCapaianId}`, {

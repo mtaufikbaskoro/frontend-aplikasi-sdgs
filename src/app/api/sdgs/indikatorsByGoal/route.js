@@ -19,8 +19,9 @@ export async function GET (request) {
 
     const { searchParams } = new URL(request.url)
     const kode = searchParams.get('kode')
+    const year = searchParams.get('year')
 
-    const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-indikators-by-goal?kode=${kode}&sub_unit_id=${sub_unit_id != 'admin' ? sub_unit_id : 0}`, {
+    const response = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-indikators-by-goal?kode=${kode}&year=${year}&sub_unit_id=${sub_unit_id != 'admin' ? sub_unit_id : 0}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,

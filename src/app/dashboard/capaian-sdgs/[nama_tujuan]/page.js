@@ -26,7 +26,8 @@ export default function Detail({params}) {
 
     const handleFetchIndikators = async (kode) => {
         setIsLoading(true);
-        const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}`, {
+        const year = sessionStorage.getItem('year')
+        const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}&year=${year}`, {
             method: 'GET',
             headers: {"Content-Type": 'application/json'},
             credentials: 'include'

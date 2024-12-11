@@ -1,16 +1,16 @@
-'use client';
+'use client'
 
-import Link from "next/link";
-import DashboardLayout from "@/app/dashboard/components/layout";
-import Loading from "@/app/dashboard/components/loading";
-import MathDisplay from "@/components/ui/mathdisplay";
-import Modal from "@/app/dashboard/components/modal";
-import EditCapaian from "../../components/editCapaian";
-import EditTargetCapaian from "../../components/editTargetCapaian";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link"
+import DashboardLayout from "@/app/dashboard/components/layout"
+import Loading from "@/app/dashboard/components/loading"
+import MathDisplay from "@/components/ui/mathdisplay"
+import Modal from "@/app/dashboard/components/modal"
+import EditCapaian from "../../components/editCapaian"
+import EditTargetCapaian from "../../components/editTargetCapaian"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEdit } from "@fortawesome/free-solid-svg-icons"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 
 export default function Detail ({ params }) {
@@ -19,6 +19,7 @@ export default function Detail ({ params }) {
     const [ role, setRole ] = useState('')
     const [ indikator, setIndikator ] = useState({})
     const [ subindikator, setSubindikator ] = useState({})
+    const [ year, setYear ] = useState(null)
     const [ detail, setDetail ] = useState({})
     const [ targetCapaianForm, setTargetCapaianForm ] = useState([])
     const [ targetCapaian, setTargetCapaian ] = useState('')
@@ -50,22 +51,9 @@ export default function Detail ({ params }) {
         setIsLoading(false);
     }
 
-    const fetchRole = async () => {
-        const res = await fetch(`/api/auth/role`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include'
-        })
-        if (res.ok) {
-            const { data } = await res.json()
-            const { role } = data
-            setRole(role)
-        }
-    }
-
     const fetchTargetCapaian = async (detailId) => {
         setIsLoading(true)
-        const res = await fetch(`/api/sdgs/detailTargetCapaian?detail_id=${detailId}`, {
+        const res = await fetch(`/api/sdgs/detailTargetCapaian?year=${year}&detail_id=${detailId}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
@@ -86,9 +74,22 @@ export default function Detail ({ params }) {
         setIsLoading(false)
     }
 
+    const fetchRole = async () => {
+        const res = await fetch(`/api/auth/role`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+        })
+        if (res.ok) {
+            const { data } = await res.json()
+            const { role } = data
+            setRole(role)
+        }
+    }
+
     const fetchTargetCapaianForm = async (kode_indikator, kode_subindikator) => {
         setIsLoading(true);
-        const res = await fetch(`/api/sdgs/targetCapaian?kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
+        const res = await fetch(`/api/sdgs/targetCapaian?year=${year}&kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
@@ -137,9 +138,12 @@ export default function Detail ({ params }) {
     }
 
     useEffect(() => {
-        fetchAllInstansis();
-        fetchRole();
-    }, [])
+        setYear(sessionStorage.getItem('year'))
+        if (!year) {
+            fetchAllInstansis()
+            fetchRole()
+        }
+    }, [year])
     
     useEffect(() => {
         if (targetCapaianModal === false || capaianModal === false) fetchDetail(kode_indikator, kode_subindikator)
@@ -184,7 +188,7 @@ export default function Detail ({ params }) {
                             <td colSpan={2}>{detail.satuan}</td>
                         </tr>
                         <tr>
-                            <th className="text-left">Baseline (2022)</th>
+                            <th className="text-left">Baseline ({year - 1})</th>
                             <td colSpan={2}>2.18</td>
                         </tr>
                         {

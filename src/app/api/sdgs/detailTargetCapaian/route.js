@@ -13,6 +13,7 @@ export async function GET (request) {
 
     const { searchParams } = new URL(request.url)
     const detailId = searchParams.get('detail_id')
+    const year = searchParams.get('year')
 
     if (!detailId) return NextResponse.json({
         message: 'detailId not found.',
@@ -20,7 +21,7 @@ export async function GET (request) {
         data: null
     }, {status: 404})
 
-    const res = await fetch(`http://v3.test/api/index/v1/astra/detail/view-target-capaian?sdgs_detail_id=${detailId}`, {
+    const res = await fetch(`http://v3.test/api/index/v1/astra/detail/view-target-capaian?year=${year}&sdgs_detail_id=${detailId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,
