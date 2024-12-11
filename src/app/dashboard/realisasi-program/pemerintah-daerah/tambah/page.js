@@ -13,10 +13,69 @@ export default function Add () {
             selectedSubkegiatan: []
         }
     })
+    const [ subUnitId, setSubUnitId ] = useState('')
+    const [ goals, setGoals ] = useState([])
+    const [ indikators, setIndikators ] = useState([]) 
+    const [ isLoading, setIsLoading ] = useState(false)
 
+    const fetchSubUnit = async () => {
+        setIsLoading(true)
+        const res = await fetch('/api/auth/role', {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error, message } = result
+            if (!error) return data
+        }
+    }
+
+    const fetchGoals = async () => {
+        setIsLoading(true)
+        const res = await fetch(`/api/sdgs`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error } = result
+            if (!error) setGoals(data.items)
+            setIsLoading(false)
+        }
+    }
+
+    const fetchIndikators = async (kode) => {
+        setIsLoading(true)
+        const res = await fetch(`/api/sdgs/indikators?kode=${kode}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error } = result
+            console.log(data)
+            if (!error) return setIndikators(data)
+            setIsLoading(false)
+        }
+    }
+
+    const selectedGoal = watch('goal')
+    const selectedTargetSdgs = watch('indikator_sdgs')
     const selectedSubkegiatans = watch('selectedSubkegiatan') 
 
     const onSubmit = (form) => console.log(form)
+
+    useEffect(() => {
+        const user = fetchSubUnit()
+        const { role, username, sub_unit_id } = user
+        setSubUnitId(isNaN(sub_unit_id) ? sub_unit_id : 0) 
+        fetchGoals()
+    }, [])
+
+    useEffect(() => {
+        if (selectedGoal) fetchIndikators(selectedGoal)
+    }, [selectedGoal])
 
     return (
         <DashboardLayout Content={<Breadcrumb />}>
@@ -30,23 +89,43 @@ export default function Add () {
                                 <label className="font-semibold">Pilih Tujuan SDGs</label>
                                 <select 
                                     className="w-full bg-transparent text-slate-700 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                    {...register("tujuan-sdgs")}>
-                                    <option value="1">pilih tujuan sdgs...</option>
-                                    <option value="1">Tujuan Sdgs nomor 1</option>
-                                    <option value="2">Tujuan Sdgs nomor 2</option>
+                                    {...register("goal")}>
+                                    <option value="">pilih tujuan sdgs...</option>
+                                    {
+                                        goals && goals.map(goal => (
+                                            <option key={goal.id} value={goal.kode}>{`Tujuan ${goal.kode} - ${goal.nama}`}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="flex flex-col items-center w-full gap-2">
-                                <label className="font-semibold">Pilih Indikator SDGs</label>
+                                <label className="font-semibold">Pilih Target SDGs</label>
                                 <select 
                                     className="w-full bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                    {...register("target-sdgs")}>
+                                    {...register("indikator_sdgs")}>
                                     <option value="1">pilih indikator sdgs...</option>
-                                    <option value="1">Indikator Sdgs nomor 1</option>
-                                    <option value="2">Indikator Sdgs nomor 2</option>
+                                    {
+                                        indikators && indikators.map(indikator => (
+                                            <option key={indikator.id} value={indikator.id}>{indikator.kriteria}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                         </div>
+                        {
+                            subUnitId !== 0 && (
+                                <div className="flex flex-col items-center gap-2 w-full">
+                                    <label className="font-semibold">Pilih OPD</label>
+                                    <select 
+                                        className="w-1/2 bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
+                                        {...register("sub_unit")}>
+                                        <option value="">pilih opd...</option>
+                                        <option value="1">opd 1</option>
+                                        <option value="2">opd 2</option>
+                                    </select>
+                                </div>
+                            )
+                        }
                         <div className="flex flex-col items-center gap-2 w-full">
                             <label className="font-semibold">Pilih Program</label>
                             <select 

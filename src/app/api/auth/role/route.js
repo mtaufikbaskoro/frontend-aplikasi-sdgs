@@ -14,6 +14,6 @@ export async function GET () {
     return NextResponse.json({
         message: 'Role didapat.',
         error: false,
-        data: {role: role, username: username}
+        data: {role: role, username: username, sub_unit_id: sub_unit_id}
     })
 }

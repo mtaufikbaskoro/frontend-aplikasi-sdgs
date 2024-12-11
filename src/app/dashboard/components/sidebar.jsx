@@ -17,6 +17,7 @@ export default function Sidebar (props) {
     const [ submenuActive, setSubmenuActive ] = useState('');
 
     async function handleLogout () {
+        sessionStorage.removeItem('year')
         const response = await fetch('/api/auth/logout', {
             method: 'GET',
             headers: {
@@ -120,12 +121,12 @@ export default function Sidebar (props) {
                         <span className="sm">Atur Pengguna</span>
                     </div>
                 </li>
-                <li className='pl-6 py-3 hover:bg-slate-300'>
+                {/* <li className='pl-6 py-3 hover:bg-slate-300'>
                     <div className='flex gap-5 justify-start items-center transition-all ease-in ease-out cursor-pointer'>
                         <FontAwesomeIcon size='sm' icon={faWrench} />
                         <span className="sm">Atur Instansi</span>
                     </div>
-                </li>
+                </li> */}
                 <li onClick={() => handleLogout()} className='pl-6 py-3 hover:bg-slate-300 cursor-pointer'>
                     <div className='flex gap-5 justify-start items-center'>
                         <FontAwesomeIcon size='sm' icon={faSignOut} />

@@ -9,8 +9,9 @@ import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 import logoPemko from '@assets/img/logo_pemko_medan.png';
 
 export default function Navbar (props) {
-    const { isOpen, setIsOpen } = props;
-    const [ username, setUsername ] = useState();
+    const { isOpen, setIsOpen } = props
+    const [ username, setUsername ] = useState()
+    const [ year, setYear ] = useState('')
 
     const fetchUser = async () => {
         const res = await fetch(`/api/auth/role`, {
@@ -27,8 +28,30 @@ export default function Navbar (props) {
         }
     }
 
+    const fetchYear = async () => {
+        const res = await fetch(`/api/cookie/year`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error } = result
+            if (!error) {
+                sessionStorage.setItem('year', data)
+                setYear(sessionStorage.getItem('year'))
+            }
+            
+        } else {
+            console.log(res)
+        }
+        return true
+    }
+
     useEffect(() => {
-        fetchUser();
+        const year = sessionStorage.getItem('year')
+        if (!year) fetchYear()
+        else setYear(sessionStorage.getItem('year'))
+        fetchUser()
     }, [])
 
     return (
@@ -52,7 +75,7 @@ export default function Navbar (props) {
                     <div className='w-6'>
                         <Image src={logoPemko} width="auto" height="auto" alt="logo pemko medan" />
                     </div>
-                    <p className="ml-4 text-lg font-bold uppercase">astra</p>
+                    <p className="ml-4 text-lg font-bold uppercase">astra <span>({year})</span></p>
                 </div>
                 <div>
                     <p className='text-sm'>Selamat datang, <span className='font-bold'>{username}</span></p>

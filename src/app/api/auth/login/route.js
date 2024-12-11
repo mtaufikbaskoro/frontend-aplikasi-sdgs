@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST (request) {
-    const { username, password } = await request.json();
+    const { username, password, year } = await request.json();
     const res = await fetch('http://v3.test/api/index/v1/astra/auth/masuk', {
         method: 'POST',
         headers: { "Content-Type": 'application/json'},
@@ -36,6 +36,12 @@ export async function POST (request) {
             path: '/'
         })
         result.cookies.set('user', JSON.stringify({username: username, sub_unit_id: sub_unit_id}), {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24,
+            path: '/'
+        })
+        result.cookies.set('year', year, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 60 * 24,
