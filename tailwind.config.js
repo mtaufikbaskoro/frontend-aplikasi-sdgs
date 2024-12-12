@@ -6,6 +6,7 @@ export const content = [
   "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 ];
+
 export const safeList = [
   'bg-tujuan-1',
   'bg-tujuan-2',
@@ -25,6 +26,7 @@ export const safeList = [
   'bg-tujuan-16',
   'bg-tujuan-17',
 ];
+
 export const theme = {
   extend: {
     colors: {
@@ -57,4 +59,7 @@ export const theme = {
     }
   },
 };
-export const plugins = [];
+
+export const plugins = [
+  require('tailwind-scrollbar'),
+];

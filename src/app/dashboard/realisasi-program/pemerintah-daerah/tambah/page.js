@@ -5,29 +5,56 @@ import { useForm } from "react-hook-form";
 
 import DashboardLayout from "@/app/dashboard/components/layout";
 import Breadcrumb from "@/components/ui/breadcrumb";
+import Loading from "@/app/dashboard/components/loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronCircleDown, faChevronCircleUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Add () {
-    const { register, handleSubmit, formState: {errors}, setError, clearErrors, watch } = useForm({
+    const [ currentSubUnit, setCurrentSubUnit ] = useState(0)
+    const [ subUnits, setSubUnits ] = useState([])
+    const [ goals, setGoals ] = useState([])
+    const [ indikators, setIndikators ] = useState([])
+    const [ subkegiatans, setSubkegiatans ] = useState([]) 
+    const [ indikatorDropdown, setIndikatorDropdown ] = useState(false)
+    const [ goalDropdown, setGoalDropdown ] = useState(false)
+    const [ selectedGoal, setSelectedGoal ] = useState(0)
+    const [ selectedIndikator, setSelectedIndikator ] = useState(0)
+    const [ isLoading, setIsLoading ] = useState(false)
+
+    const { register, handleSubmit, formState: {errors}, setError, clearErrors, setValue, watch } = useForm({
         defaultValues: {
-            selectedSubkegiatan: []
+            selectedSubkegiatan: [],
+            sub_unit: currentSubUnit ? currentSubUnit : ''
         }
     })
-    const [ subUnitId, setSubUnitId ] = useState('')
-    const [ goals, setGoals ] = useState([])
-    const [ indikators, setIndikators ] = useState([]) 
-    const [ isLoading, setIsLoading ] = useState(false)
+
+    const selectedSubUnit = watch('sub_unit')
 
     const fetchSubUnit = async () => {
         setIsLoading(true)
-        const res = await fetch('/api/auth/role', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
+        const res = await fetch(`/api/auth/role`, {method: 'GET', headers: {'Content-Type': 'application/json'}})
+        if (res.ok) {
+            const result = await res.json()
+            const { data } = result
+            const { sub_unit_id } = data
+            setCurrentSubUnit(sub_unit_id)
+            setValue('sub_unit', sub_unit_id)
+            if (isNaN(sub_unit_id)) fetchSubUnits()
+        }
+        setIsLoading(false)
+    }
+
+    const fetchSubUnits = async () => {
+        const res = await fetch(`/api/auth/sotkSubunits`, {
+            method: 'GET', 
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
         })
         if (res.ok) {
             const result = await res.json()
-            const { data, error, message } = result
-            if (!error) return data
+            const { data, error } = result
+            if (!error) setSubUnits(data)
         }
     }
 
@@ -40,13 +67,13 @@ export default function Add () {
         if (res.ok) {
             const result = await res.json()
             const { data, error } = result
-            if (!error) setGoals(data.items)
-            setIsLoading(false)
+            const { items } = data
+            if (!error) setGoals(items)
         }
+        setIsLoading(false)
     }
 
     const fetchIndikators = async (kode) => {
-        setIsLoading(true)
         const res = await fetch(`/api/sdgs/indikators?kode=${kode}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
@@ -54,132 +81,160 @@ export default function Add () {
         if (res.ok) {
             const result = await res.json()
             const { data, error } = result
-            console.log(data)
             if (!error) return setIndikators(data)
-            setIsLoading(false)
-        }
+        } else setIndikators([])
     }
 
-    const selectedGoal = watch('goal')
-    const selectedTargetSdgs = watch('indikator_sdgs')
-    const selectedSubkegiatans = watch('selectedSubkegiatan') 
+    const fetchSubkegiatan = async (sub_unit_id) => {
+        setIsLoading(true)
+        const res = await fetch(`/api/realisasi/subKegiatanDaerah?sub_unit_id=${sub_unit_id}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error } = result
+            if (!error) setSubkegiatans(data)
+        }
+        setIsLoading(false)
+    }
 
     const onSubmit = (form) => console.log(form)
 
     useEffect(() => {
-        const user = fetchSubUnit()
-        const { role, username, sub_unit_id } = user
-        setSubUnitId(isNaN(sub_unit_id) ? sub_unit_id : 0) 
         fetchGoals()
+        fetchSubUnit()
     }, [])
 
     useEffect(() => {
-        if (selectedGoal) fetchIndikators(selectedGoal)
+        if (selectedGoal) fetchIndikators(selectedGoal.kode)
     }, [selectedGoal])
+
+    useEffect(() => {
+        fetchSubkegiatan(isNaN(currentSubUnit) ? selectedSubUnit : currentSubUnit)
+    }, [currentSubUnit, selectedSubUnit])
 
     return (
         <DashboardLayout Content={<Breadcrumb />}>
+            { isLoading && (<Loading />) }
             <div>
-                <div className="flex flex-col items-center mt-6 py-12 gap-6 border-2 border-slate-700 rounded-md bg-white drop-shadow-md">
-                    <h1 className="px-2 py-1.5 font-bold text-lg text-center text-sky-800 border-2 border-sky-800 bg-sky-200 rounded-md w-1/2 drop-shadow-sm">Tambah Sub-Kegiatan</h1>
-                    <hr className="bg-green-950" />
-                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 w-full">
-                        <div className="flex flex-col md:flex-row justify-evenly mx-auto w-1/2 gap-4">
-                            <div className="flex flex-col items-center w-full gap-2">
-                                <label className="font-semibold">Pilih Tujuan SDGs</label>
-                                <select 
-                                    className="w-full bg-transparent text-slate-700 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                    {...register("goal")}>
-                                    <option value="">pilih tujuan sdgs...</option>
-                                    {
-                                        goals && goals.map(goal => (
-                                            <option key={goal.id} value={goal.kode}>{`Tujuan ${goal.kode} - ${goal.nama}`}</option>
-                                        ))
+                <div className="flex flex-col items-center mt-6 px-4 py-12 gap-6 border-2 border-slate-700 rounded-md bg-white drop-shadow-md">
+                    <h1 className="px-2 py-1.5 font-bold text-lg text-center text-sky-800 border-2 border-sky-800 bg-sky-200 rounded-md w-full drop-shadow-sm">Tambah Sub-Kegiatan</h1>
+                    <div className="w-full flex flex-col md:flex-row justify-evenly gap-4">
+                        <div className="flex flex-col items-center w-full gap-2">
+                            <div 
+                                className="w-full flex justify-between items-center py-1.5 px-3 text-sm text-slate-700 font-bold text-center border border-slate-300 hover:border-slate-400 appearance-none rounded cursor-pointer"
+                                role="input"
+                                tabIndex={0}
+                                onClick={() => {
+                                    setGoalDropdown(!goalDropdown)
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        setGoalDropdown(!goalDropdown)
                                     }
-                                </select>
+                                }}
+                                aria-expanded={goalDropdown}
+                                aria-haspopup="listbox" >
+                                <span>{selectedGoal ? `Tujuan ${selectedGoal.kode} - ${selectedGoal.name}` : 'Pilih tujuan SDGs...'}</span>
+                                <FontAwesomeIcon icon={ goalDropdown ? faChevronCircleUp : faChevronCircleDown } />
                             </div>
-                            <div className="flex flex-col items-center w-full gap-2">
-                                <label className="font-semibold">Pilih Target SDGs</label>
-                                <select 
-                                    className="w-full bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                    {...register("indikator_sdgs")}>
-                                    <option value="1">pilih indikator sdgs...</option>
-                                    {
-                                        indikators && indikators.map(indikator => (
-                                            <option key={indikator.id} value={indikator.id}>{indikator.kriteria}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
+                            <ul 
+                                className={`w-full px-1.5 py-1 bg-slate-100 overflow-auto shadow-md scrollbar-thin transition-all duration-300 ${goalDropdown ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                                role="listbox" >
+                                {
+                                    goalDropdown && goals && goals.map(goal => (
+                                        <li 
+                                            key={goal.kode} 
+                                            value={goal.kode}
+                                            className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
+                                            onClick={() => {
+                                                setSelectedGoal({kode: goal.kode, name: goal.nama})
+                                                setGoalDropdown(!goalDropdown)
+                                            }} >
+                                            {`Tujuan ${goal.kode} - ${goal.nama}`}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
                         </div>
+                        <div className="flex flex-col items-center w-full gap-2">
+                            <div 
+                                className={`w-full flex justify-between items-center py-1.5 px-3 ${selectedIndikator == 0 ? 'bg-red-100' : 'bg-green-100'} text-sm text-slate-700 font-bold text-center border border-slate-300 hover:border-slate-400 appearance-none rounded cursor-pointer`}
+                                role="input"
+                                tabIndex={0}
+                                onClick={() => {
+                                    setIndikatorDropdown(!indikatorDropdown)
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        setIndikatorDropdown(!indikatorDropdown)
+                                    }
+                                }}
+                                aria-expanded={indikatorDropdown}
+                                aria-haspopup="listbox" >
+                                <span>{selectedIndikator ? selectedIndikator.kode : 'Pilih indikator SDGs...'}</span>
+                                <FontAwesomeIcon icon={ indikatorDropdown ? faChevronCircleUp : faChevronCircleDown } />
+                            </div>
+                            <ul 
+                                className={`w-full px-1.5 py-1 bg-slate-100 overflow-auto shadow-md scrollbar-thin transition-all duration-300 ${indikatorDropdown ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                                role="listbox" >
+                                {
+                                    indikatorDropdown && indikators.length > 0 ? indikators.map(indikator => (
+                                        <li 
+                                            key={indikator.id} 
+                                            value={indikator.id}
+                                            className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
+                                            onClick={() => {
+                                                setSelectedIndikator({id: indikator.id, kode: indikator.kode})
+                                                setIndikatorDropdown(!indikatorDropdown)
+                                            }} >
+                                            {indikator.kode} - {indikator.kriteria}
+                                        </li>
+                                    )) : <li className="my-2 p-1 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer">tidak ada data</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <hr className="w-full border-2 rounded border-slate-500" />
+                    <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-8">
                         {
-                            subUnitId !== 0 && (
+                            isNaN(currentSubUnit) && (
                                 <div className="flex flex-col items-center gap-2 w-full">
                                     <label className="font-semibold">Pilih OPD</label>
                                     <select 
-                                        className="w-1/2 bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
+                                        className="w-full bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
                                         {...register("sub_unit")}>
                                         <option value="">pilih opd...</option>
-                                        <option value="1">opd 1</option>
-                                        <option value="2">opd 2</option>
+                                        {
+                                            subUnits && subUnits.map(opd => (
+                                                <option key={opd.id} value={opd.id}>{opd.sub_unit}</option>
+                                            ))
+                                        }
                                     </select>
                                 </div>
                             )
                         }
-                        <div className="flex flex-col items-center gap-2 w-full">
-                            <label className="font-semibold">Pilih Program</label>
-                            <select 
-                                className="w-1/2 bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                {...register("program")}>
-                                <option value="">pilih program...</option>
-                                <option value="1">program nomor 1</option>
-                                <option value="2">program nomor 2</option>
-                            </select>
-                        </div>
-                        <div className="flex flex-col items-center gap-2">
-                            <label className="font-semibold">Pilih Kegiatan</label>
-                            <select 
-                                className="w-1/2 bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                {...register("kegiatan")}>
-                                <option value="">pilih kegiatan...</option>
-                                <option value="1">kegiatan nomor 1</option>
-                                <option value="2">kegiatan nomor 2</option>
-                            </select>
-                        </div>
-                        <div className="flex flex-col items-center px-2 gap-2">
+                        <div className="flex flex-col items-center">
                             <span className="font-semibold">Pilih Sub-kegiatan</span>
-                            <ul className="flex flex-col w-1/2 gap-4">
-                                <li className="border-b-2 border-b-slate-300 py-2">
-                                    <label className="flex justify-between">
-                                        <span className="text-sm">Nama Sub kegiatan 1</span>
-                                        <input 
-                                            type='checkbox' 
-                                            value={1}
-                                            {...register('selectedSubkegiatan')} />
-                                    </label>
-                                </li>
-                                <li className="border-b-2 border-b-slate-300 py-2">
-                                    <label className="flex justify-between">
-                                        <span className="text-sm">Nama Sub kegiatan 2</span>
-                                        <input 
-                                            type='checkbox' 
-                                            value={2}
-                                            {...register('selectedSubkegiatan')} />
-                                    </label>
-                                </li>
-                                <li className="border-b-2 border-b-slate-300 py-2">
-                                    <label className="flex justify-between">
-                                        <span className="text-sm">Nama Sub kegiatan 3</span>
-                                        <input 
-                                            type='checkbox' 
-                                            value={3}
-                                            {...register('selectedSubkegiatan')} />
-                                    </label>
-                                </li>
+                            <ul className="flex flex-col px-2.5 w-full max-h-72 overflow-y-auto scrollbar-thin gap-4">
+                                {
+                                    subkegiatans.map((subkegiatan, index) => (
+                                        <li key={index} className="border-b-2 border-b-slate-300 py-2">
+                                            <label className="flex justify-between">
+                                                <span className="text-sm">{subkegiatan.nama_subkegiatan}</span>
+                                                <input 
+                                                    type='checkbox' 
+                                                    value={subkegiatan.renja_subkegiatan.id}
+                                                    {...register('selectedSubkegiatan', { valueAsArray: true })} />
+                                            </label>
+                                        </li>
+                                    ))
+                                }
                             </ul>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <button type="submit" className="px-4 py-1.5 w-1/2 font-medium text-gray-100 bg-sky-500 rounded-sm transition-all ease-in ease-out hover:bg-white hover:text-sky-500 hover:ring-2 hover:ring-sky-500">Submit</button>
+                        <div className="flex flex-col items-center mt-4">
+                            <button type="submit" className="px-4 py-1.5 w-full font-medium text-gray-100 bg-sky-500 rounded-sm transition-all ease-in ease-out hover:text-slate-800 hover:ring-2 hover:ring-slate-800">Submit</button>
                         </div>
                     </form>
                 </div>
