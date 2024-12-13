@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import DashboardLayout from "@/app/dashboard/components/layout";
@@ -8,6 +9,7 @@ import Breadcrumb from "@/components/ui/breadcrumb";
 import Loading from "@/app/dashboard/components/loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleDown, faChevronCircleUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import Alert from "@/components/ui/alert";
 
 
 export default function Add () {
@@ -21,15 +23,20 @@ export default function Add () {
     const [ selectedGoal, setSelectedGoal ] = useState(0)
     const [ selectedIndikator, setSelectedIndikator ] = useState(0)
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ indikatorStatus, setIndikatorStatus ] = useState(true)
+    const [ showAlert, setShowAlert ] = useState(false)
+    const [ messageAlert, setMessageAlert ] = useState('')
+    const [ errorAlert, setErrorAlert ] = useState(false)
+    const router = useRouter()
 
     const { register, handleSubmit, formState: {errors}, setError, clearErrors, setValue, watch } = useForm({
         defaultValues: {
-            selectedSubkegiatan: [],
-            sub_unit: currentSubUnit ? currentSubUnit : ''
+            selectedSubkegiatans: [],
+            sub_unit_id: currentSubUnit ? currentSubUnit : ''
         }
     })
 
-    const selectedSubUnit = watch('sub_unit')
+    const selectedSubUnit = watch('sub_unit_id')
 
     const fetchSubUnit = async () => {
         setIsLoading(true)
@@ -39,7 +46,7 @@ export default function Add () {
             const { data } = result
             const { sub_unit_id } = data
             setCurrentSubUnit(sub_unit_id)
-            setValue('sub_unit', sub_unit_id)
+            setValue('sub_unit_id', sub_unit_id)
             if (isNaN(sub_unit_id)) fetchSubUnits()
         }
         setIsLoading(false)
@@ -87,7 +94,7 @@ export default function Add () {
 
     const fetchSubkegiatan = async (sub_unit_id) => {
         setIsLoading(true)
-        const res = await fetch(`/api/realisasi/subKegiatanDaerah?sub_unit_id=${sub_unit_id}`, {
+        const res = await fetch(`/api/realisasi/daerah/subKegiatan?sub_unit_id=${sub_unit_id}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
@@ -99,7 +106,34 @@ export default function Add () {
         setIsLoading(false)
     }
 
-    const onSubmit = (form) => console.log(form)
+    const onSubmit = async (form) => {
+        setIsLoading(true)
+        if (!selectedIndikator) {
+            setIndikatorStatus(false)
+            setIsLoading(false)
+            return false
+        }
+        const fixData = { sdgs_indikator_id: selectedIndikator.id, ...form }
+        const res = await fetch(`/api/realisasi/daerah/action`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(fixData)
+        })
+
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error, message } = result
+            setMessageAlert(message)
+            setShowAlert(!error)
+            setErrorAlert(error)
+            setTimeout(() => {
+                setShowAlert(false)
+                router.push('/dashboard/realisasi-program/pemerintah-daerah')
+            }, 3000)
+        } 
+        
+        setIsLoading(false)
+    }
 
     useEffect(() => {
         fetchGoals()
@@ -160,7 +194,7 @@ export default function Add () {
                         </div>
                         <div className="flex flex-col items-center w-full gap-2">
                             <div 
-                                className={`w-full flex justify-between items-center py-1.5 px-3 ${selectedIndikator == 0 ? 'bg-red-100' : 'bg-green-100'} text-sm text-slate-700 font-bold text-center border border-slate-300 hover:border-slate-400 appearance-none rounded cursor-pointer`}
+                                className={`w-full flex justify-between items-center py-1.5 px-3 ${selectedIndikator == 0 ? 'bg-red-100' : 'bg-green-100'} text-sm text-slate-700 font-bold text-center border ${indikatorStatus ? 'border-slate-300' : 'border-red-700'} hover:border-slate-400 appearance-none rounded cursor-pointer`}
                                 role="input"
                                 tabIndex={0}
                                 onClick={() => {
@@ -176,6 +210,7 @@ export default function Add () {
                                 <span>{selectedIndikator ? selectedIndikator.kode : 'Pilih indikator SDGs...'}</span>
                                 <FontAwesomeIcon icon={ indikatorDropdown ? faChevronCircleUp : faChevronCircleDown } />
                             </div>
+                            { !indikatorStatus && (<span className="text-xs text-red-500">Mohon untuk diisi</span>) }
                             <ul 
                                 className={`w-full px-1.5 py-1 bg-slate-100 overflow-auto shadow-md scrollbar-thin transition-all duration-300 ${indikatorDropdown ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
                                 role="listbox" >
@@ -187,6 +222,7 @@ export default function Add () {
                                             className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
                                             onClick={() => {
                                                 setSelectedIndikator({id: indikator.id, kode: indikator.kode})
+                                                setIndikatorStatus(true)
                                                 setIndikatorDropdown(!indikatorDropdown)
                                             }} >
                                             {indikator.kode} - {indikator.kriteria}
@@ -204,7 +240,7 @@ export default function Add () {
                                     <label className="font-semibold">Pilih OPD</label>
                                     <select 
                                         className="w-full bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                        {...register("sub_unit")}>
+                                        {...register("sub_unit_id")}>
                                         <option value="">pilih opd...</option>
                                         {
                                             subUnits && subUnits.map(opd => (
@@ -226,7 +262,7 @@ export default function Add () {
                                                 <input 
                                                     type='checkbox' 
                                                     value={subkegiatan.renja_subkegiatan.id}
-                                                    {...register('selectedSubkegiatan', { valueAsArray: true })} />
+                                                    {...register('selectedSubkegiatans', { valueAsArray: true })} />
                                             </label>
                                         </li>
                                     ))
@@ -237,6 +273,11 @@ export default function Add () {
                             <button type="submit" className="px-4 py-1.5 w-full font-medium text-gray-100 bg-sky-500 rounded-sm transition-all ease-in ease-out hover:text-slate-800 hover:ring-2 hover:ring-slate-800">Submit</button>
                         </div>
                     </form>
+                    <Alert
+                        className={`${showAlert ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out`}
+                        message={messageAlert}
+                        type={ errorAlert ? 'failed' : 'success' }
+                        onClose={() => setShowAlert(false)} />
                 </div>
             </div>
         </DashboardLayout>
