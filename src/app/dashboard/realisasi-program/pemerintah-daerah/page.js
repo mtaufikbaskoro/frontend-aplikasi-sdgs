@@ -13,7 +13,7 @@ import Detail from "./components/detail"
 import goalColors from '@/app/data/textColorGoals.json'
 import Loading from "../../components/loading"
 
-
+const ITEMS_PER_PAGE = 3
 const TableColumns = ['kode', 'Program / Kegiatan / SubKegiatan', 'Aksi']
 
 export default function PemerintahDaerah () {
@@ -23,6 +23,8 @@ export default function PemerintahDaerah () {
     const [ color, setColor ] = useState('')
     const [ detailModal, setDetailModal ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [ totalPages, setTotalPages ] = useState(0)
     const { register, watch } = useForm({
         defaultValues: {goal: ''}
     })
@@ -43,9 +45,14 @@ export default function PemerintahDaerah () {
         }
     }
 
-    const fetchProgramsInIndikatorsByKode = async (goal) => {
+    const fetchProgramsInIndikatorsByKode = async (goal, page) => {
         setIsLoading(true)
-        const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}`, {
+        const pagination = {
+            limit: ITEMS_PER_PAGE,
+            page: page
+        }
+        const stringPagination = encodeURIComponent(JSON.stringify(pagination))
+        const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}&pagination=${stringPagination}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
@@ -67,8 +74,8 @@ export default function PemerintahDaerah () {
     }, [goalInput])
 
     useEffect(() => {
-        if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode)
-    }, [selectedGoal])
+        if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode, currentPage)
+    }, [selectedGoal, currentPage])
 
     return (
         <DashboardLayout Content={<Breadcrumb />}>
