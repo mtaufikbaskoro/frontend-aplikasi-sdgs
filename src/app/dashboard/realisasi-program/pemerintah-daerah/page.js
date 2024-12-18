@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react"
+import { Fragment, useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import DashboardLayout from "../../components/layout"
@@ -10,31 +10,15 @@ import { faAdd, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import Table from "../../components/table"
 import Modal from "../../components/modal"
 import Detail from "./components/detail"
+import goalColors from '@/app/data/textColorGoals.json'
+import Loading from "../../components/loading"
 
-const goalColors = {
-    1: 'text-tujuan-1',
-    2: 'text-tujuan-2',
-    3: 'text-tujuan-3',
-    4: 'text-tujuan-4',
-    5: 'text-tujuan-5',
-    6: 'text-tujuan-6',
-    7: 'text-tujuan-7',
-    8: 'text-tujuan-8',
-    9: 'text-tujuan-9',
-    10: 'text-tujuan-10',
-    11: 'text-tujuan-11',
-    12: 'text-tujuan-12',
-    13: 'text-tujuan-13',
-    14: 'text-tujuan-14',
-    15: 'text-tujuan-15',
-    16: 'text-tujuan-16',
-    17: 'text-tujuan-17',
-}
 
 const TableColumns = ['kode', 'Program / Kegiatan / SubKegiatan', 'Aksi']
 
 export default function PemerintahDaerah () {
     const [ goals, setGoals ] = useState([])
+    const [ indikators, setIndikators ] = useState(null)
     const [ selectedGoal, setSelectedGoal ] = useState(null)
     const [ color, setColor ] = useState('')
     const [ detailModal, setDetailModal ] = useState(false)
@@ -59,17 +43,36 @@ export default function PemerintahDaerah () {
         }
     }
 
+    const fetchProgramsInIndikatorsByKode = async (goal) => {
+        setIsLoading(true)
+        const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, error, message } = result
+            if (!error) setIndikators(data)
+            else setIndikators(null)
+        }
+        setIsLoading(false)
+    }
+
     useEffect(() => { fetchGoals() }, [])
 
     useEffect(() => {
         const goal = goals.find(goal => goal.id == goalInput)
         setSelectedGoal(goal || null)
-        setColor(goalColors[goalInput])
+        setColor(goalColors[0][goalInput])
     }, [goalInput])
 
+    useEffect(() => {
+        if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode)
+    }, [selectedGoal])
 
     return (
         <DashboardLayout Content={<Breadcrumb />}>
+            {isLoading && <Loading />}
             <div className="flex flex-col gap-8">
                 <Modal isOpen={detailModal} setIsOpen={setDetailModal}><Detail /></Modal>
                 <form className="mt-6 px-2 flex flex-none justify-between">
@@ -100,49 +103,58 @@ export default function PemerintahDaerah () {
                     </div>
                     <div className="mx-3 drop-shadow-md">
                         <Table columns={TableColumns}>
-                            <tr className={`h-14 ${color} bg-slate-300 text-center text-black font-semibold`}>
-                                <td className="text-left pl-4">1.1.1*</td>
-                                <td className="text-left" colSpan={TableColumns.length-1} >Tingkat kemiskinan ekstrim</td>
-                            </tr>
-                            <tr className={`h-14 bg-slate-300 text-center text-black`}>
-                                <td className="text-left pl-4">1.06.05</td>
-                                <td 
-                                    className='text-left'
-                                    colSpan={TableColumns.length-1} >
-                                    Program Perlindungan dan Jaminan Sosial
-                                </td>
-                            </tr>
-                            <tr className={`h-14 bg-slate-200 text-center text-black`}>
-                                <td className="text-left pl-4">1.06.05.2.01</td>
-                                <td 
-                                    className='text-left'
-                                    colSpan={TableColumns.length-1} >
-                                    Pemeliharaan anak-anak terlantar
-                                </td>
-                            </tr>
-                            <tr className={`h-14 text-center bg-white text-black`}>
-                                <td className="text-left pl-4">1.06.05.2.01.01</td>
-                                <td className='text-left'>
-                                    Penjangkauan anak-anak terlantar
-                                </td>
-                                <td>
-                                    <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr className={`h-14 text-center bg-white text-black`}>
-                                <td className="text-left pl-4">1.06.05.2.01.03</td>
-                                <td className='text-left'>
-                                    Pemantauan terhadap pelaksanaan pemeliharaan anak terlantar
-                                </td>
-                                <td>
-                                    <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                    </button>
-                                </td>
-                            </tr>
-
+                            {
+                                indikators ? indikators.map((indikator, index) => (
+                                    <Fragment key={index} >
+                                        <tr className={`h-14 ${color} bg-slate-300 text-center text-black font-semibold`}>
+                                            <td className="text-center pl-4">{indikator.kode_indikator}</td>
+                                            <td className="text-left" colSpan={TableColumns.length-1} >{indikator.nama_indikator}</td>
+                                        </tr>
+                                        {indikator.programs.map((program, index) => (
+                                            <Fragment key={index}>
+                                                <tr className={`h-14 bg-slate-300 text-center text-black`}>
+                                                    <td className="text-left pl-4"></td>
+                                                    <td 
+                                                        className='text-left font-bold'
+                                                        colSpan={TableColumns.length-1} >
+                                                        {program.nama_program}
+                                                    </td>
+                                                </tr>
+                                                {program.kegiatans.map((kegiatan, index) => (
+                                                    <Fragment key={index}>
+                                                        <tr className={`h-14 bg-slate-200 text-center text-black`}>
+                                                            <td className="text-left pl-4"></td>
+                                                            <td 
+                                                                className='text-left'
+                                                                colSpan={TableColumns.length-1} >
+                                                                {kegiatan.nama_kegiatan}
+                                                            </td>
+                                                        </tr>
+                                                        {kegiatan.sub_kegiatans.map((sub_kegiatan, index) => (
+                                                            <Fragment key={index}>
+                                                                <tr className={`h-14 text-center bg-white text-black`}>
+                                                                    <td className="text-left pl-4"></td>
+                                                                    <td className='text-left'>
+                                                                        {sub_kegiatan.nama_sub_kegiatan}
+                                                                    </td>
+                                                                    <td>
+                                                                        <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                            <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </Fragment>
+                                                        ))}
+                                                    </Fragment>                       
+                                                ))}
+                                            </Fragment>
+                                        ))}
+                                    </Fragment>
+                                )) : 
+                                (<tr className={`h-14 bg-slate-300 text-center text-black font-semibold`}>
+                                    <td colSpan={TableColumns.length} className="text-center pl-4">tidak ada data</td>
+                                </tr>)
+                            }
                         </Table>
                     </div>
                 </div>

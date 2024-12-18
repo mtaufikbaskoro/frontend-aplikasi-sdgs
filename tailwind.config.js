@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config}   */
+import tailwindScrollbar from 'tailwind-scrollbar';
 export const darkMode = 'media'
 
 export const content = [
@@ -61,5 +62,5 @@ export const theme = {
 };
 
 export const plugins = [
-  require('tailwind-scrollbar'),
+  tailwindScrollbar,
 ];
