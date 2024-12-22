@@ -33,7 +33,7 @@ export default function DashboardLayout (props) {
             <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="flex gap-4">
                 <Sidebar isOpen={isOpen} />
-                <div className={`flex-1 p-6 ${isOpen ? 'lg:ml-72' : ''} transition-all ease-in`}>
+                <div className={`flex-1 p-6 ${isOpen ? 'lg:ml-72' : ''} scrollbar-hide transition-all ease-in`}>
                     <Breadcrumb />
                     {children}
                 </div>

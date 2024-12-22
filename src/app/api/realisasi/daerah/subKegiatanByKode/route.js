@@ -12,8 +12,17 @@ export async function GET (request) {
     
     const { searchParams } = new URL(request.url)
     const sdgs_tujuan_kode = searchParams.get('sdgs_tujuan_kode')
+    const pagination = searchParams.get('pagination')
+    
+    const filters = { 
+        year: year,
+        sub_unit_id: sub_unit_id,
+        sdgs_tujuan_kode: sdgs_tujuan_kode,
+    }
 
-    const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/get-all-subkegiatan-by-goal-sdgs?year=${year}&sdgs_tujuan_kode=${sdgs_tujuan_kode}&sub_unit_id=${sub_unit_id}`, {
+    const stringFilters = encodeURIComponent(JSON.stringify(filters))
+
+    const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/get-all-subkegiatan-by-goal-sdgs?filters=${stringFilters}&pagination=${pagination}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,

@@ -6,14 +6,15 @@ import DashboardLayout from "../../components/layout"
 import Breadcrumb from "@/components/ui/breadcrumb"
 import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAdd, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { faAdd, faMagnifyingGlass, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import Table from "../../components/table"
 import Modal from "../../components/modal"
 import Detail from "./components/detail"
 import goalColors from '@/app/data/textColorGoals.json'
 import Loading from "../../components/loading"
+import Pagination from "../../components/pagination"
 
-
+const ITEMS_PER_PAGE = 10
 const TableColumns = ['kode', 'Program / Kegiatan / SubKegiatan', 'Aksi']
 
 export default function PemerintahDaerah () {
@@ -23,6 +24,8 @@ export default function PemerintahDaerah () {
     const [ color, setColor ] = useState('')
     const [ detailModal, setDetailModal ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [ totalPages, setTotalPages ] = useState(0)
     const { register, watch } = useForm({
         defaultValues: {goal: ''}
     })
@@ -43,19 +46,31 @@ export default function PemerintahDaerah () {
         }
     }
 
-    const fetchProgramsInIndikatorsByKode = async (goal) => {
+    const fetchProgramsInIndikatorsByKode = async (goal, page) => {
         setIsLoading(true)
-        const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}`, {
+        const pagination = {
+            limit: ITEMS_PER_PAGE,
+            page: page
+        }
+        const stringPagination = encodeURIComponent(JSON.stringify(pagination))
+        const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}&pagination=${stringPagination}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
         if (res.ok) {
-            const result = await res.json()
-            const { data, error, message } = result
-            if (!error) setIndikators(data)
+            const result = await res.json() 
+            const { data, pagination, error, message } = result
+            if (!error) {
+                setIndikators(data)
+                if (indikators) setTotalPages(Math.ceil(pagination.total_count / ITEMS_PER_PAGE))
+            }
             else setIndikators(null)
         }
         setIsLoading(false)
+    }
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
     }
 
     useEffect(() => { fetchGoals() }, [])
@@ -64,11 +79,12 @@ export default function PemerintahDaerah () {
         const goal = goals.find(goal => goal.id == goalInput)
         setSelectedGoal(goal || null)
         setColor(goalColors[0][goalInput])
+        setCurrentPage(1)
     }, [goalInput])
 
     useEffect(() => {
-        if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode)
-    }, [selectedGoal])
+        if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode, currentPage)
+    }, [selectedGoal, currentPage])
 
     return (
         <DashboardLayout Content={<Breadcrumb />}>
@@ -138,9 +154,14 @@ export default function PemerintahDaerah () {
                                                                         {sub_kegiatan.nama_sub_kegiatan}
                                                                     </td>
                                                                     <td>
-                                                                        <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                                                            <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                                                        </button>
+                                                                        <div className="flex justify-evenly">
+                                                                            <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                                <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                                                            </button>
+                                                                            <button onClick={() => {alert('Konfirmasi, apakah anda yakin akan menghapus data tersebut ?')}} className="bg-red-400 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                                <FontAwesomeIcon icon={faTrashCan} color="white" />
+                                                                            </button>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             </Fragment>
@@ -156,6 +177,15 @@ export default function PemerintahDaerah () {
                                 </tr>)
                             }
                         </Table>
+                        {
+                            totalPages > 1 && <div className="mt-6">
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={handlePageChange}
+                                />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

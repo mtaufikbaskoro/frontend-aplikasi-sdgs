@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
 
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 const TableColumns = ['', 'Nama Tujuan', 'Aksi'];
 
 export default function CapaianSdgs () {

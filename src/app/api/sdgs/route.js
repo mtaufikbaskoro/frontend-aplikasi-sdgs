@@ -3,8 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function GET (request) {
     const cookieStore = cookies();
-    const token = cookieStore.get('token');
-    const user = cookieStore.get('user') || undefined;
+    const token = cookieStore.get('token')
+    const user = cookieStore.get('user') || undefined
+    const year = cookieStore.get('year').value
 
     if (!token) return NextResponse.json({
         message: 'No cookies found',
@@ -20,10 +21,10 @@ export async function GET (request) {
     const page = searchParams.get('page') ?? false
     const limit = searchParams.get('limit') ?? false
 
-    const url = page && limit ? sub_unit_id === 'admin' ? 
+    const url = page || limit ? isNaN(sub_unit_id) ? 
     `http://v3.test/api/index/v1/astra/sdgs?page=${page}&limit=${limit}` :
-    `http://v3.test/api/index/v1/astra/sdgs/get-goals-by-user?page=${page}&limit=${limit}&sub_unit_id=${sub_unit_id}` :
-    'http://v3.test/api/index/v1/astra/sdgs'
+    `http://v3.test/api/index/v1/astra/sdgs/get-goals-by-user?sub_unit_id=${sub_unit_id}&year=${year}&page=${page}&limit=${limit}` :
+    `http://v3.test/api/index/v1/astra/sdgs` 
 
     const response = await fetch(url, {
         method: 'GET',
@@ -34,11 +35,13 @@ export async function GET (request) {
         credentials: 'include',
     })
 
-    if (!response.ok) return NextResponse.json({
-        message: 'Internal Server Error.',
-        error: true,
-        data: null
-    })
+    if (!response.ok) {
+        return NextResponse.json({
+            message: url,
+            error: true,
+            data: response
+        })
+    }
 
     const result = await response.json()
     const { data, error, message } = result

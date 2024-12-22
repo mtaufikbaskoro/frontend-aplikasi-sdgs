@@ -73,9 +73,11 @@ export default function Add () {
         })
         if (res.ok) {
             const result = await res.json()
-            const { data, error } = result
-            const { items } = data
-            if (!error) setGoals(items)
+            const { message, data, error } = result
+            if (!error) {
+                const { items } = data
+                setGoals(items)
+            } 
         }
         setIsLoading(false)
     }
