@@ -13,24 +13,35 @@ import Detail from "./components/detail"
 import goalColors from '@/app/data/textColorGoals.json'
 import Loading from "../../components/loading"
 import Pagination from "../../components/pagination"
+import Confirmation from "@/components/confirmation"
+import Alert from "@/components/ui/alert"
 
 const ITEMS_PER_PAGE = 10
-const TableColumns = ['kode', 'Program / Kegiatan / SubKegiatan', 'Aksi']
+const TableColumns = ['kode', 'Program / Kegiatan / SubKegiatan', 'Aksi', 'Pilih']
 
 export default function PemerintahDaerah () {
     const [ goals, setGoals ] = useState([])
     const [ indikators, setIndikators ] = useState(null)
     const [ selectedGoal, setSelectedGoal ] = useState(null)
     const [ color, setColor ] = useState('')
+    const [ confirm, setConfirm ] = useState(false)
+    const [ alert, setAlert ] = useState(false)
+    const [ error, setError ] = useState(false)
+    const [ message, setMessage ] = useState('')
     const [ detailModal, setDetailModal ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ deleteButton, setDeleteButton ] = useState(false)
     const [ currentPage, setCurrentPage ] = useState(1)
     const [ totalPages, setTotalPages ] = useState(0)
-    const { register, watch } = useForm({
-        defaultValues: {goal: ''}
+    const { register, watch, setValue } = useForm({
+        defaultValues: {
+            goal: '',
+            selectedSubkegiatans: []
+        }
     })
 
     const goalInput = watch('goal')
+    const selectedSubkegiatans = watch('selectedSubkegiatans')
 
     const fetchGoals = async () => {
         setIsLoading(true)
@@ -69,6 +80,27 @@ export default function PemerintahDaerah () {
         setIsLoading(false)
     }
 
+    const deleteSubKegiatans = async (selectedSubkegiatans) => {
+        setIsLoading(true)
+        const res = await fetch(`/api/realisasi/daerah/action`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({'subkegiatan_daerah_ids': selectedSubkegiatans})
+        })
+        if (res.ok) {
+            const result = await res.json()
+            const { data, message, error } = result
+            setIsLoading(false)
+            setAlert(true)
+            setError(error)
+            setMessage(message)
+            setTimeout(() => {
+                setAlert(false)
+            }, 3000)
+            setValue('selectedSubkegiatans', [])
+        } 
+    }
+
     const handlePageChange = (page) => {
         setCurrentPage(page)
     }
@@ -80,25 +112,51 @@ export default function PemerintahDaerah () {
         setSelectedGoal(goal || null)
         setColor(goalColors[0][goalInput])
         setCurrentPage(1)
-    }, [goalInput])
+        setValue('selectedSubkegiatans', [])
+    }, [goalInput, setValue, goals])
 
     useEffect(() => {
         if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode, currentPage)
-    }, [selectedGoal, currentPage])
+    }, [selectedGoal, currentPage, alert])
+
+    useEffect(() => {
+        selectedSubkegiatans.length < 1 ? setDeleteButton(true) : setDeleteButton(false) 
+    }, [selectedSubkegiatans])
 
     return (
         <DashboardLayout Content={<Breadcrumb />}>
             {isLoading && <Loading />}
             <div className="flex flex-col gap-8">
                 <Modal isOpen={detailModal} setIsOpen={setDetailModal}><Detail /></Modal>
+                <Confirmation 
+                    open={confirm}
+                    data={selectedSubkegiatans} 
+                    setOpen={setConfirm} 
+                    action={deleteSubKegiatans} >
+                    Apakah anda yakin ?
+                </Confirmation>
                 <form className="mt-6 px-2 flex flex-none justify-between">
-                    <Link 
-                        className="flex items-center justify-center w-[240px] py-2.5 gap-3 bg-sky-400 rounded-sm text-white drop-shadow-lg text-sm hover:text-sky-400 hover:bg-white hover:ring-2 hover:ring-sky-400 transition-all ease-in ease-out" 
-                        href="/dashboard/realisasi-program/pemerintah-daerah/tambah" >
-                            <FontAwesomeIcon icon={faAdd} />
-                            Tambah Sub Kegiatan
-                    </Link>
+                    <div className="flex items-center gap-4">
+                        <Link 
+                            className="flex items-center justify-center w-[240px] py-2.5 gap-3 bg-sky-400 rounded-sm text-white drop-shadow-lg text-sm hover:text-sky-400 hover:bg-white hover:ring-2 hover:ring-sky-400 transition-all ease-in ease-out" 
+                            href="/dashboard/realisasi-program/pemerintah-daerah/tambah" >
+                                <FontAwesomeIcon icon={faAdd} />
+                                Tambah Sub Kegiatan
+                        </Link>
+                        <button 
+                            onClick={(e) => {e.preventDefault();setConfirm(!confirm)}} 
+                            disabled={deleteButton}
+                            className="flex justify-between items-center gap-2 bg-red-400 p-2.5 rounded-sm shadow hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 disabled:bg-slate-300 disabled:hover:ring-0 transition-all ease-in ease-out">
+                            <FontAwesomeIcon icon={faTrashCan} color="white" size="sm" />
+                            <span className="text-sm text-white">Hapus Sub Kegiatan</span>
+                        </button>
+                    </div>
                     <div className="flex flex-col">
+                        <Alert
+                        className={`${alert ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out z-50`}
+                        type={!error ? 'success' : ''}
+                        message={message}
+                        onClose={() => setAlert(false)} />
                         <select 
                             className="mt-2 px-1.5 py-2 text-sm border-b-4 border-slate-800 focus:outline-none"
                             {...register('goal')} >
@@ -154,14 +212,15 @@ export default function PemerintahDaerah () {
                                                                         {sub_kegiatan.nama_sub_kegiatan}
                                                                     </td>
                                                                     <td>
-                                                                        <div className="flex justify-evenly">
-                                                                            <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                                                                <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
-                                                                            </button>
-                                                                            <button onClick={() => {alert('Konfirmasi, apakah anda yakin akan menghapus data tersebut ?')}} className="bg-red-400 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
-                                                                                <FontAwesomeIcon icon={faTrashCan} color="white" />
-                                                                            </button>
-                                                                        </div>
+                                                                        <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                            <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            value={sub_kegiatan.subkegiatan_daerah_id}
+                                                                            {...register('selectedSubkegiatans', { valueAsArray: true })} />
                                                                     </td>
                                                                 </tr>
                                                             </Fragment>

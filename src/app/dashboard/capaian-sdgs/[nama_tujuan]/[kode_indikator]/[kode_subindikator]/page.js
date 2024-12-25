@@ -147,11 +147,11 @@ export default function Detail ({ params }) {
     
     useEffect(() => {
         if (targetCapaianModal === false || capaianModal === false) fetchDetail(kode_indikator, kode_subindikator)
-    }, [targetCapaianModal, capaianModal])
+    }, [targetCapaianModal, capaianModal, kode_indikator, kode_subindikator])
 
     useEffect(() => {
         if (detail.id != undefined) fetchTargetCapaian(detail.id)
-    }, [detail])
+    }, [detail, fetchTargetCapaian])
 
     if (isError) router.push('/404')
 

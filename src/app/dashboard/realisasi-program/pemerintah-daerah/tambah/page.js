@@ -169,9 +169,7 @@ export default function Add () {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                         setGoalDropdown(!goalDropdown)
                                     }
-                                }}
-                                aria-expanded={goalDropdown}
-                                aria-haspopup="listbox" >
+                                }}>
                                 <span>{selectedGoal ? `Tujuan ${selectedGoal.kode} - ${selectedGoal.name}` : 'Pilih tujuan SDGs...'}</span>
                                 <FontAwesomeIcon icon={ goalDropdown ? faChevronCircleUp : faChevronCircleDown } />
                             </div>
@@ -206,9 +204,7 @@ export default function Add () {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                         setIndikatorDropdown(!indikatorDropdown)
                                     }
-                                }}
-                                aria-expanded={indikatorDropdown}
-                                aria-haspopup="listbox" >
+                                }} >
                                 <span>{selectedIndikator ? selectedIndikator.kode : 'Pilih indikator SDGs...'}</span>
                                 <FontAwesomeIcon icon={ indikatorDropdown ? faChevronCircleUp : faChevronCircleDown } />
                             </div>

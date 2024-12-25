@@ -29,11 +29,11 @@ export async function GET (request) {
             error: true,
             data: null
         })
-
-        const result = await res.json()
-        const { data, error, message } = result
-        return NextResponse.json(result, {status: error ? 500 : 200})
-
+        else {
+            const result = await res.json()
+            const { data, error, message } = result
+            return NextResponse.json(result, {status: error ? 500 : 200})
+        }
     } catch (error) {
         console.error(error.message)
     }

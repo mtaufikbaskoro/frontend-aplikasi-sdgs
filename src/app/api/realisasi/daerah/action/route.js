@@ -38,7 +38,37 @@ export async function POST (request) {
             data: null
         }, { status: 500 })
     }
+}
 
-    
+export async function DELETE (request) {
+    try {
+        const cookieStore = cookies()
+        const token = cookieStore.get('token').value
+        const formData = await request.json()
+
+        const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/delete-subkegiatans`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': `application/json`
+            },
+            body: JSON.stringify(formData),
+            credentials: 'include'
+        })
+        
+        if (!response.ok) {
+            return NextResponse.json({
+                message: 'Terjadi kesalahan.',
+                error: true,
+                data: null
+            })
+        }
+
+        const result = await response.json()
+        return NextResponse.json(result)
+
+    } catch (error) {
+        console.error('Request failed: ', error)
+    }
 
 }
