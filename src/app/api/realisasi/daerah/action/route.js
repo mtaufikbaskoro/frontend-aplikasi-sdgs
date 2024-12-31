@@ -1,6 +1,35 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
+export async function GET (request) {
+    const cookieStore = cookies()
+    const token = cookieStore.get('token').value
+    const year = cookieStore.get('year').value
+
+    const { searchParams } = new URL(request.url)
+    const renjaSubkegiatanId = searchParams.get('renjaSubkegiatanId') 
+    
+    try {
+        const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/get-detail-renja-subkegiatan?year=${year}&renja_subkegiatan_id=${renjaSubkegiatanId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': `application/json`
+            },
+            credentials: 'include'
+        })
+
+        if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`)
+        
+        const result = await response.json()
+
+        return NextResponse.json(result) 
+    } catch (error) {
+        console.error(error)
+    }
+
+}
+
 export async function POST (request) {
     const cookieStore = cookies()
     const token = cookieStore.get('token').value

@@ -16,7 +16,7 @@ export async function GET (request) {
     
     const filters = { 
         year: year,
-        sub_unit_id: sub_unit_id,
+        sub_unit_id: sub_unit_id === 'admin' ? 0 : sub_unit_id,
         sdgs_tujuan_kode: sdgs_tujuan_kode,
     }
 

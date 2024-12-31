@@ -23,6 +23,7 @@ export default function PemerintahDaerah () {
     const [ goals, setGoals ] = useState([])
     const [ indikators, setIndikators ] = useState(null)
     const [ selectedGoal, setSelectedGoal ] = useState(null)
+    const [ detail, setDetail ] = useState({})
     const [ color, setColor ] = useState('')
     const [ confirm, setConfirm ] = useState(false)
     const [ alert, setAlert ] = useState(false)
@@ -80,6 +81,27 @@ export default function PemerintahDaerah () {
         setIsLoading(false)
     }
 
+    const fetchDetailSubKegiatanById = async (subkegiatanId) => {
+        setIsLoading(true)
+        const res = await fetch (`/api/realisasi/daerah/action?renjaSubkegiatanId=${subkegiatanId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        if (!res.ok) {
+             console.error(res.statusText)
+        } else {
+            const result = await res.json()
+            const { data, error, message } = result
+            if (error) console.error(message)
+            else {
+                setDetail(data)
+                setDetailModal(true)
+            }
+            setIsLoading(false)
+        }
+        
+    }
+
     const deleteSubKegiatans = async (selectedSubkegiatans) => {
         setIsLoading(true)
         const res = await fetch(`/api/realisasi/daerah/action`, {
@@ -127,7 +149,9 @@ export default function PemerintahDaerah () {
         <DashboardLayout Content={<Breadcrumb />}>
             {isLoading && <Loading />}
             <div className="flex flex-col gap-8">
-                <Modal isOpen={detailModal} setIsOpen={setDetailModal}><Detail /></Modal>
+                <Modal isOpen={detailModal} setIsOpen={setDetailModal}>
+                    <Detail data={detail} />
+                </Modal>
                 <Confirmation 
                     open={confirm}
                     data={selectedSubkegiatans} 
@@ -212,7 +236,7 @@ export default function PemerintahDaerah () {
                                                                         {sub_kegiatan.nama_sub_kegiatan}
                                                                     </td>
                                                                     <td>
-                                                                        <button onClick={() => {setDetailModal(!detailModal)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                        <button onClick={() => {fetchDetailSubKegiatanById(sub_kegiatan.renja_subkegiatan_id)}} className="bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                             <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                         </button>
                                                                     </td>
