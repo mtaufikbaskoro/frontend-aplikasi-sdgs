@@ -38,20 +38,6 @@ export default function Add () {
 
     const selectedSubUnit = watch('sub_unit_id')
 
-    const fetchSubUnit = async () => {
-        setIsLoading(true)
-        const res = await fetch(`/api/auth/role`, {method: 'GET', headers: {'Content-Type': 'application/json'}})
-        if (res.ok) {
-            const result = await res.json()
-            const { data } = result
-            const { sub_unit_id } = data
-            setCurrentSubUnit(sub_unit_id)
-            setValue('sub_unit_id', sub_unit_id)
-            if (isNaN(sub_unit_id)) fetchSubUnits()
-        }
-        setIsLoading(false)
-    }
-
     const fetchSubUnits = async () => {
         const res = await fetch(`/api/auth/sotkSubunits`, {
             method: 'GET', 
@@ -138,6 +124,19 @@ export default function Add () {
     }
 
     useEffect(() => {
+        const fetchSubUnit = async () => {
+            setIsLoading(true)
+            const res = await fetch(`/api/auth/role`, {method: 'GET', headers: {'Content-Type': 'application/json'}})
+            if (res.ok) {
+                const result = await res.json()
+                const { data } = result
+                const { sub_unit_id } = data
+                setCurrentSubUnit(sub_unit_id)
+                setValue('sub_unit_id', sub_unit_id)
+                if (isNaN(sub_unit_id)) fetchSubUnits()
+            }
+            setIsLoading(false)
+        }
         fetchGoals()
         fetchSubUnit()
     }, [])

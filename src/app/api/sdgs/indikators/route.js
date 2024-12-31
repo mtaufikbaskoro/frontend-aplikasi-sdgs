@@ -21,7 +21,6 @@ export async function GET (request) {
                 'Authorization': `Bearer ${token.value}`,
                 'Content-Type': 'application/json'
             },
-            credentials: 'include'
         })
 
         if (!res.ok) return NextResponse.json({
@@ -29,12 +28,16 @@ export async function GET (request) {
             error: true,
             data: null
         })
-        else {
-            const result = await res.json()
-            const { data, error, message } = result
-            return NextResponse.json(result, {status: error ? 500 : 200})
-        }
+
+        const result = await res.json()
+        const { data, error, message } = result
+        return NextResponse.json(result, {status: error ? 500 : 200})
+
     } catch (error) {
-        console.error(error.message)
+        return NextResponse.json({
+            message: 'server error.',
+            error: true,
+            data: null
+        }, {status: 500})
     }
 }

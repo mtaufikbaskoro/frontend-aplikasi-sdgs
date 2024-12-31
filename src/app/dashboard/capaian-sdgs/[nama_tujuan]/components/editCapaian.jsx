@@ -15,7 +15,7 @@ export default function EditCapaian (props) {
     useEffect(() => {
         setApi(capaian != false ? `/api/sdgs/capaian/update?capaianId=${capaian.id}` : `/api/sdgs/capaian/post`)
         setOldFiles(files != false ? files : [])
-    }, [])
+    }, [capaian, files])
 
     const handleFileChange = (e, fieldName, maxFileSize = MAX_FILE_SIZE) => {
         const files = e.target.files;

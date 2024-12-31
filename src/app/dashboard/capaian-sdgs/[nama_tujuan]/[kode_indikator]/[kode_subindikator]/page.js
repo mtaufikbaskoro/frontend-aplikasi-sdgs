@@ -51,29 +51,6 @@ export default function Detail ({ params }) {
         setIsLoading(false);
     }
 
-    const fetchTargetCapaian = async (detailId) => {
-        setIsLoading(true)
-        const res = await fetch(`/api/sdgs/detailTargetCapaian?year=${year}&detail_id=${detailId}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include'
-        });
-        if (res.ok) {
-            const result = await res.json()
-            const { data, error, message } = result
-            if (!error) {
-                const { target_capaian, capaian } = data
-                setTargetCapaian(target_capaian ?? '')
-                setUnits(target_capaian.units ?? [])
-                if (capaian != undefined) {
-                    setCapaian(capaian ?? '')
-                    setFiles(capaian.files ?? [])
-                }
-            } 
-        }
-        setIsLoading(false)
-    }
-
     const fetchRole = async () => {
         const res = await fetch(`/api/auth/role`, {
             method: 'GET',
@@ -150,8 +127,30 @@ export default function Detail ({ params }) {
     }, [targetCapaianModal, capaianModal, kode_indikator, kode_subindikator])
 
     useEffect(() => {
+        const fetchTargetCapaian = async (detailId) => {
+            setIsLoading(true)
+            const res = await fetch(`/api/sdgs/detailTargetCapaian?year=${year}&detail_id=${detailId}`, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
+            });
+            if (res.ok) {
+                const result = await res.json()
+                const { data, error, message } = result
+                if (!error) {
+                    const { target_capaian, capaian } = data
+                    setTargetCapaian(target_capaian ?? '')
+                    setUnits(target_capaian.units ?? [])
+                    if (capaian != undefined) {
+                        setCapaian(capaian ?? '')
+                        setFiles(capaian.files ?? [])
+                    }
+                } 
+            }
+            setIsLoading(false)
+        }
         if (detail.id != undefined) fetchTargetCapaian(detail.id)
-    }, [detail, fetchTargetCapaian])
+    }, [detail, year])
 
     if (isError) router.push('/404')
 

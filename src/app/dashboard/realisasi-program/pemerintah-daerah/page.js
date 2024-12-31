@@ -58,29 +58,6 @@ export default function PemerintahDaerah () {
         }
     }
 
-    const fetchProgramsInIndikatorsByKode = async (goal, page) => {
-        setIsLoading(true)
-        const pagination = {
-            limit: ITEMS_PER_PAGE,
-            page: page
-        }
-        const stringPagination = encodeURIComponent(JSON.stringify(pagination))
-        const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}&pagination=${stringPagination}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
-        })
-        if (res.ok) {
-            const result = await res.json() 
-            const { data, pagination, error, message } = result
-            if (!error) {
-                setIndikators(data)
-                if (indikators) setTotalPages(Math.ceil(pagination.total_count / ITEMS_PER_PAGE))
-            }
-            else setIndikators(null)
-        }
-        setIsLoading(false)
-    }
-
     const fetchDetailSubKegiatanById = async (subkegiatanId) => {
         setIsLoading(true)
         const res = await fetch (`/api/realisasi/daerah/action?renjaSubkegiatanId=${subkegiatanId}`, {
@@ -138,6 +115,28 @@ export default function PemerintahDaerah () {
     }, [goalInput, setValue, goals])
 
     useEffect(() => {
+        const fetchProgramsInIndikatorsByKode = async (goal, page) => {
+            setIsLoading(true)
+            const pagination = {
+                limit: ITEMS_PER_PAGE,
+                page: page
+            }
+            const stringPagination = encodeURIComponent(JSON.stringify(pagination))
+            const res = await fetch(`/api/realisasi/daerah/subKegiatanByKode?sdgs_tujuan_kode=${goal}&pagination=${stringPagination}`, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+            if (res.ok) {
+                const result = await res.json() 
+                const { data, pagination, error, message } = result
+                if (!error) {
+                    setIndikators(data)
+                    if (indikators) setTotalPages(Math.ceil(pagination.total_count / ITEMS_PER_PAGE))
+                }
+                else setIndikators(null)
+            }
+            setIsLoading(false)
+        }
         if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode, currentPage)
     }, [selectedGoal, currentPage, alert])
 

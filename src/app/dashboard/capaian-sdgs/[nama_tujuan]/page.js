@@ -49,7 +49,7 @@ export default function Detail({params}) {
 
     useEffect(() => {
         handleFetchIndikators(kode_tujuan);
-    }, []);
+    }, [kode_tujuan]);
 
     return (
         <DashboardLayout>
