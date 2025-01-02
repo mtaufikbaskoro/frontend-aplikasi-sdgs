@@ -1,13 +1,14 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 
 export async function POST (request) {
-    const cookieStore = cookies();
-    const token = cookieStore.get('token');
-    const formData = await request.formData();
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')
+    const formData = await request.formData()
+    const url = process.env.NEXT_PUBLIC_API_URL
 
     try {
-        const response = await fetch(`http://v3.test/api/index/v1/astra/detail/create-capaian`, {
+        const response = await fetch(`${url}/detail/create-capaian`, {
             method: 'POST',
             headers: {'Authorization': `Bearer ${token.value}`},
             body: formData

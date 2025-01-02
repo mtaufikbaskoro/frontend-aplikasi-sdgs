@@ -1,11 +1,12 @@
 import { cookies } from "next/headers"
-import { NextResponse } from "next/server";
+import { NextResponse } from "next/server"
 
 export async function GET (request) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies()
     const token = cookieStore.get('token')
     const user = cookieStore.get('user') || undefined
     const year = cookieStore.get('year').value
+    const url = process.env.NEXT_PUBLIC_API_URL + '/sdgs'
 
     if (!token) return NextResponse.json({
         message: 'No cookies found',
@@ -21,12 +22,12 @@ export async function GET (request) {
     const page = searchParams.get('page') ?? false
     const limit = searchParams.get('limit') ?? false
 
-    const url = page || limit ? isNaN(sub_unit_id) ? 
-    `http://v3.test/api/index/v1/astra/sdgs?page=${page}&limit=${limit}` :
-    `http://v3.test/api/index/v1/astra/sdgs/get-goals-by-user?sub_unit_id=${sub_unit_id}&year=${year}&page=${page}&limit=${limit}` :
-    `http://v3.test/api/index/v1/astra/sdgs` 
+    const fetchUrl = page || limit ? isNaN(sub_unit_id) ?
+    `${url}?page=${page}&limit=${limit}` :
+    `${url}/get-goals-by-user?sub_unit+id=${sub_unit_id}&year=${year}&page=${page}&limit=${limit}` :
+    url
 
-    const response = await fetch(url, {
+    const response = await fetch(fetchUrl, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,

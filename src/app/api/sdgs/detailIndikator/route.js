@@ -1,10 +1,11 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 
 
 export async function GET (request) {
-    const cookieStore = cookies();
-    const token = cookieStore.get('token');
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')
+    const url = process.env.NEXT_PUBLIC_API_URL
 
     if (!token) return NextResponse.json({
         message: 'Token tidak ditemukan.',
@@ -22,7 +23,7 @@ export async function GET (request) {
         data: null
     }, {status: 400}) 
 
-    const response = await fetch(`http://v3.test/api/index/v1/astra/detail/view?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+    const response = await fetch(`${url}/detail/view?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,

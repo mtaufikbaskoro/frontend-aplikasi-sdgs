@@ -2,10 +2,11 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 export async function GET (request) {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('token').value
     const user = cookieStore.get('user').value
     const year = cookieStore.get('year').value
+    const url = process.env.NEXT_PUBLIC_API_URL
 
     const parseUser = JSON.parse(user)
     const { sub_unit_id } = parseUser
@@ -22,7 +23,7 @@ export async function GET (request) {
 
     const stringFilters = encodeURIComponent(JSON.stringify(filters))
 
-    const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/get-all-subkegiatan-by-goal-sdgs?filters=${stringFilters}&pagination=${pagination}`, {
+    const response = await fetch(`${url}/program/renja/get-all-subkegiatan-by-goal-sdgs?filters=${stringFilters}&pagination=${pagination}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,

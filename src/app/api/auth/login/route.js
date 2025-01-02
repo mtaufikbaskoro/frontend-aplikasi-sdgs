@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function POST (request) {
     const { username, password, year } = await request.json();
-    const res = await fetch('http://v3.test/api/index/v1/astra/auth/masuk', {
+    const url = process.env.NEXT_PUBLIC_API_URL
+    
+    const res = await fetch(`${url}/auth/masuk`, {
         method: 'POST',
         headers: { "Content-Type": 'application/json'},
         body: JSON.stringify({ username, password }),

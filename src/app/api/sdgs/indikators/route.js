@@ -3,8 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function GET (request) {
     try {
-        const cookieStore = cookies()
+        const cookieStore = await cookies()
         const token = cookieStore.get('token')
+        const url = process.env.NEXT_PUBLIC_API_URL
         
         if (!token) return NextResponse.json({
             message: 'No Cookie Found.',
@@ -15,7 +16,7 @@ export async function GET (request) {
         const { searchParams } = new URL(request.url)
         const kode = searchParams.get('kode')
 
-        const res = await fetch(`http://v3.test/api/index/v1/astra/sdgs/get-indikators-by-kode?kode=${kode}`, {
+        const res = await fetch(`${url}/sdgs/get-indikators-by-kode?kode=${kode}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,

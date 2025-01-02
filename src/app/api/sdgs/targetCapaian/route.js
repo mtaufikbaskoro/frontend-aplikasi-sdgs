@@ -1,9 +1,10 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 
 export async function GET (request) {
-    const cookieStore = cookies();
-    const token = cookieStore.get('token');
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')
+    const url = process.env.NEXT_PUBLIC_API_URL
 
     if (!token) return NextResponse.json({
         message: 'No token found.',
@@ -16,7 +17,7 @@ export async function GET (request) {
     const kd_subindikator = searchParams.get('kd_subindikator')
     const year = searchParams.get('year')
 
-    const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/view?year=${year}&kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+    const response = await fetch(`${url}/target-capaian/view?year=${year}&kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,
@@ -35,12 +36,13 @@ export async function GET (request) {
 
 export async function POST (request) {
     try {
-        const cookieStore = cookies()
+        const cookieStore = await cookies()
         const token = cookieStore.get('token')
         const year = cookieStore.get('year').value
+        const url = process.env.NEXT_PUBLIC_API_URL
         const data = await request.json()
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/create?year=${year}`, {
+        const response = await fetch(`${url}/target-capaian/create?year=${year}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token.value}`,
@@ -64,14 +66,15 @@ export async function POST (request) {
 
 export async function PUT (request) {
     try {
-        const cookieStore = cookies()
+        const cookieStore = await cookies()
         const token = cookieStore.get('token')
+        const url = process.env.NEXT_PUBLIC_API_URL
         const data = await request.json()
 
         const { searchParams } = new URL(request.url)
         const targetCapaianId = searchParams.get('targetCapaianId');
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/target-capaian/update?target_capaian_id=${targetCapaianId}`, {
+        const response = await fetch(`${url}/target-capaian/update?target_capaian_id=${targetCapaianId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token.value}`,

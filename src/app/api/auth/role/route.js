@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 
 
 export async function GET () {
-    const cookieStore = cookies();
-    const user = cookieStore.get('user')?.value
+    const cookieStore = await cookies()
+    const user = cookieStore.get('user').value
 
     const parseUser = JSON.parse(user)
     const { username, sub_unit_id } = parseUser

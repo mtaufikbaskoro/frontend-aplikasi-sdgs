@@ -1,17 +1,17 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import Footer from './components/footer';
-import Alert from '@/components/ui/alert';
+import Image from 'next/image'
+import Link from 'next/link'
+import Footer from './components/footer'
+import Alert from '@/components/ui/alert'
 
-import logoPemko from '@assets/img/logo_pemko_medan.png';
-import logoSDGs from '@assets/img/logo_sdgs.png';
-import Loading from '../dashboard/components/loading';
+import logoPemko from '@assets/img/logo_pemko_medan.png'
+import logoSDGs from '@assets/img/logo_sdgs.png'
+import Loading from '../dashboard/components/loading'
 
 export default function Login () {
     const { register, handleSubmit, formState: { errors }, watch } = useForm()

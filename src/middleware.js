@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
-    const cookieStore = cookies()
+export async function middleware(request) {
+    const cookieStore = await cookies()
     const token = cookieStore.get('token')
 
     const loginUrl = `${request.nextUrl.origin}/login?isLogin=${false}`

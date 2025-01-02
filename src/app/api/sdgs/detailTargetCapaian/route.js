@@ -1,9 +1,10 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 
 export async function GET (request) {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('token')
+    const url = process.env.NEXT_PUBLIC_API_URL
 
     if (!token) return NextResponse.json({
         message: 'No cookies found.',
@@ -21,7 +22,7 @@ export async function GET (request) {
         data: null
     }, {status: 404})
 
-    const res = await fetch(`http://v3.test/api/index/v1/astra/detail/view-target-capaian?year=${year}&sdgs_detail_id=${detailId}`, {
+    const res = await fetch(`${url}/detail/view-target-capaian?year=${year}&sdgs_detail_id=${detailId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,

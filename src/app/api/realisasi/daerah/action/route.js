@@ -2,15 +2,16 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 export async function GET (request) {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('token').value
     const year = cookieStore.get('year').value
+    const url = process.env.NEXT_PUBLIC_API_URL
 
     const { searchParams } = new URL(request.url)
     const renjaSubkegiatanId = searchParams.get('renjaSubkegiatanId') 
     
     try {
-        const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/get-detail-renja-subkegiatan?year=${year}&renja_subkegiatan_id=${renjaSubkegiatanId}`, {
+        const response = await fetch(`${url}/program/renja/get-detail-renja-subkegiatan?year=${year}&renja_subkegiatan_id=${renjaSubkegiatanId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -31,13 +32,14 @@ export async function GET (request) {
 }
 
 export async function POST (request) {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('token').value
     const year = cookieStore.get('year').value
+    const url = process.env.NEXT_PUBLIC_API_URL
     const data = await request.json()
     
     try {
-        const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/insert-subkegiatan?year=${year}`, {
+        const response = await fetch(`${url}/program/renja/insert-subkegiatan?year=${year}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -71,11 +73,12 @@ export async function POST (request) {
 
 export async function DELETE (request) {
     try {
-        const cookieStore = cookies()
+        const cookieStore = await cookies()
         const token = cookieStore.get('token').value
+        const url = process.env.NEXT_PUBLIC_API_URL
         const formData = await request.json()
 
-        const response = await fetch(`http://v3.test/api/index/v1/astra/program/renja/delete-subkegiatans`, {
+        const response = await fetch(`${url}/program/renja/delete-subkegiatans`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
