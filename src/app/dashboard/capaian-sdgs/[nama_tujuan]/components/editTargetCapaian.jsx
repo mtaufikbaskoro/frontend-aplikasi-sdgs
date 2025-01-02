@@ -1,14 +1,14 @@
-import { useForm, useFieldArray } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
-import Alert from '@/components/ui/alert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons'
+import Alert from '@/components/ui/alert'
 
 export default function EditTargetCapaian (props) {
-    const { instansis, targetCapaian } = props; 
-    const [method, setMethod] = useState('POST');
-    const [showAlert, setShowAlert] = useState(false);
+    const { instansis, targetCapaian } = props 
+    const [method, setMethod] = useState('POST')
+    const [showAlert, setShowAlert] = useState(false)
     
     const { register, handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -16,12 +16,12 @@ export default function EditTargetCapaian (props) {
             target: '',
             units: [{id: ''}],
         }
-    });
+    })
 
     const {fields, append, remove, replace} = useFieldArray({
         control,
         name: 'units',
-    });
+    })
 
     useEffect(() => {
         if (targetCapaian.target_capaian) {
@@ -46,11 +46,11 @@ export default function EditTargetCapaian (props) {
             })
 
             if(res.ok) {
-                const data = await res.json();
-                setShowAlert(data.success);
+                const data = await res.json()
+                setShowAlert(data.success)
             }
         } catch (err) {
-            console.log(err.message);
+            console.log(err.message)
         }
     }
 
@@ -62,7 +62,7 @@ export default function EditTargetCapaian (props) {
                 <input 
                     className='border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-slate-400 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm transition-all ease-in ease-out'
                     type="text" 
-                    {...register('detail_id', {required: true})}
+                    {...register('detail_id', { required: true })}
                     disabled
                     hidden 
                 />
@@ -76,7 +76,7 @@ export default function EditTargetCapaian (props) {
                     className='border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-slate-400 focus:ring-1 placeholder:text-gray-400 placeholder:text-sm transition-all ease-in ease-out'
                     type="text" 
                     placeholder="Masukkan target capaian..."
-                    {...register('target', {required: true})} 
+                    {...register('target', { required: true })} 
                 />
                 <label 
                     className='text-sm' 
@@ -89,7 +89,7 @@ export default function EditTargetCapaian (props) {
                         <div key={field.id} className='mb-3 grid grid-cols-4 gap-2'>
                             <select
                                 className='col-span-3 bg-transparent text-slate-600 text-sm border border-slate-200 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer'
-                                {...register(`units.${index}.id`, { required: true})}
+                                {...register(`units.${index}.id`, { required: true })}
                                  
                             >
                                 <option value="" disabled>Pilih Instansi Pelaksana</option>
@@ -107,7 +107,7 @@ export default function EditTargetCapaian (props) {
                                         <button 
                                             className='bg-sky-500 px-3 rounded-sm text-white hover:bg-sky-400 shadow-sm transition-all ease-in ease-out' 
                                             type='button'
-                                            onClick={() => append({id: ''})}
+                                            onClick={() => append({ id: '' })}
                                         >
                                             <FontAwesomeIcon icon={faAdd} size='sm'/>
                                         </button>

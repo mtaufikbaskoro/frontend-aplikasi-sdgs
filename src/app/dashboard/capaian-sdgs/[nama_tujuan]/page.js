@@ -1,37 +1,40 @@
 'use client';
 
-import { Fragment, useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { Fragment, useState, useEffect, use } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-import DashboardLayout from "@/app/dashboard/components/layout";
-import Table from "@/app/dashboard/components/table";
+import DashboardLayout from "@/app/dashboard/components/layout"
+import Table from "@/app/dashboard/components/table"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import Tooltip from '@/components/ui/tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import Tooltip from '@/components/ui/tooltip'
 
 
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
 
-export default function Detail({params}) {
-    const { nama_tujuan } = params;
-    const router = useRouter();
-    const kode_tujuan = nama_tujuan.split('-')[1];
+export default function Detail({ params }) {
+    const resolvedParams = use(params)
+    const { nama_tujuan } = resolvedParams
+    const router = useRouter()
+    const kode_tujuan = nama_tujuan.split('-')[1]
 
     if (kode_tujuan === undefined) router.push('/404')
 
-    const [ indikatorsData, setIndikatorsData ] = useState([]);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ indikatorsData, setIndikatorsData ] = useState([])
+    const [ isLoading, setIsLoading ] = useState(false)
 
     const handleFetchIndikators = async (kode) => {
-        setIsLoading(true);
+        setIsLoading(true)
         const year = sessionStorage.getItem('year')
+
         const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}&year=${year}`, {
             method: 'GET',
             headers: {"Content-Type": 'application/json'},
             credentials: 'include'
         })
+
         const result = await res.json()
         const { data, error } = result
 

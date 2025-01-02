@@ -9,12 +9,13 @@ import EditCapaian from "../../components/editCapaian"
 import EditTargetCapaian from "../../components/editTargetCapaian"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 
 export default function Detail ({ params }) {
-    const { kode_indikator, kode_subindikator } = params
+    const resolvedParams = use(params)
+    const { kode_indikator, kode_subindikator } = resolvedParams
     const router = useRouter()
     const [ role, setRole ] = useState('')
     const [ indikator, setIndikator ] = useState({})
