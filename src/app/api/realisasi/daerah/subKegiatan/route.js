@@ -6,7 +6,7 @@ export async function GET (request) {
     const token = cookieStore.get('token').value
     const user = cookieStore.get('user').value
     const year = cookieStore.get('year').value
-    const url = process.env.NEXT_PUBLIC_API_URL
+    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
 
     const parseUser = JSON.parse(user)
     const { sub_unit_id } = parseUser

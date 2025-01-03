@@ -5,7 +5,7 @@ export async function GET (request) {
     const cookieStore = await cookies()
     const token = cookieStore.get('token').value
     const year = cookieStore.get('year').value
-    const url = process.env.NEXT_PUBLIC_API_URL
+    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
 
     const { searchParams } = new URL(request.url)
     const renjaSubkegiatanId = searchParams.get('renjaSubkegiatanId') 

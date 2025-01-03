@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 export async function POST (request) {
     const cookieStore = await cookies()
     const token = cookieStore.get('token')
-    const url = process.env.NEXT_PUBLIC_API_URL
+    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
 
     const formData = await request.formData()
 

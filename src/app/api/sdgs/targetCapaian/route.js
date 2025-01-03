@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 export async function GET (request) {
     const cookieStore = await cookies()
     const token = cookieStore.get('token')
-    const url = process.env.NEXT_PUBLIC_API_URL
+    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
 
     if (!token) return NextResponse.json({
         message: 'No token found.',
@@ -39,7 +39,7 @@ export async function POST (request) {
         const cookieStore = await cookies()
         const token = cookieStore.get('token')
         const year = cookieStore.get('year').value
-        const url = process.env.NEXT_PUBLIC_API_URL
+        const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
         const data = await request.json()
 
         const response = await fetch(`${url}/target-capaian/create?year=${year}`, {
@@ -68,7 +68,7 @@ export async function PUT (request) {
     try {
         const cookieStore = await cookies()
         const token = cookieStore.get('token')
-        const url = process.env.NEXT_PUBLIC_API_URL
+        const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
         const data = await request.json()
 
         const { searchParams } = new URL(request.url)

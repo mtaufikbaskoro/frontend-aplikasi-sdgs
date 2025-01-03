@@ -6,7 +6,8 @@ export async function GET (request) {
     const token = cookieStore.get('token')
     const user = cookieStore.get('user') || undefined
     const year = cookieStore.get('year').value
-    const url = process.env.NEXT_PUBLIC_API_URL + '/sdgs'
+    const baseUrl = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
+    const url = baseUrl + '/sdgs'
 
     if (!token) return NextResponse.json({
         message: 'No cookies found',
