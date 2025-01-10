@@ -1,20 +1,21 @@
 'use client'
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import Image from "next/image"
 
-import DashboardLayout from "../components/layout";
-import Table from "../components/table";
-import Pagination from "../components/pagination";
-import Loading from "../components/loading";
+import DashboardLayout from "../components/layout"
+import Table from "../components/table"
+import Pagination from "../components/pagination"
+import Loading from "../components/loading"
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPrint } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPrint } from "@fortawesome/free-solid-svg-icons"
+import { getUrl } from "@/lib/utils"
 
 
-const ITEMS_PER_PAGE = 10;
-const TableColumns = ['', 'Nama Tujuan', 'Aksi'];
+const ITEMS_PER_PAGE = 10
+const TableColumns = ['', 'Nama Tujuan', 'Aksi']
 
 export default function CapaianSdgs () {
     const [ items, setItems ] = useState([])
@@ -27,9 +28,9 @@ export default function CapaianSdgs () {
         const fetchGoals = async (page) => {
             setIsLoading(true)
             try {
-                const res = await fetch(`/api/sdgs?page=${page}&limit=${ITEMS_PER_PAGE}`, {
+                const res = await fetch(getUrl(`/api/sdgs?page=${page}&limit=${ITEMS_PER_PAGE}`), {
                     method: 'GET',
-                    headers: {"Content-Type": 'application/json'},
+                    headers: { "Content-Type": 'application/json' },
                     credentials: 'include'
                 })
         
@@ -55,7 +56,7 @@ export default function CapaianSdgs () {
     }, [currentPage])
 
     const findProgress = async (kode, year) => {
-        const res = await fetch(`/api/sdgs/goalProgress?kode=${kode}&year=${year}`, {
+        const res = await fetch(getUrl(`/api/sdgs/goalProgress?kode=${kode}&year=${year}`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
@@ -68,16 +69,13 @@ export default function CapaianSdgs () {
         return message
     }
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page)
-    }
+    const handlePageChange = (page) => setCurrentPage(page)
 
     const createSlug = (kode, nama) => {
         let slug = `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
         return slug
     }
     
-
     if (error) {
         return (<Loading>Error : {error}</Loading>)
     }
@@ -92,7 +90,7 @@ export default function CapaianSdgs () {
                             <tr key={dummy.id} className={`border-b ${dummy.id % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}>
                                 <td>
                                     <div className="flex justify-center items-center mx-auto">
-                                        <Image src={`/assets/img/sdgs_icons/E_SDG_PRINT-${dummy.kode}.jpg`} width={56} height={56} alt="goal image" />
+                                        <Image src={getUrl(`/assets/img/sdgs_icons/E_SDG_PRINT-${dummy.kode}.jpg`)} width={56} height={56} alt="goal image" />
                                     </div>
                                 </td>
                                 <td scope="row" className="px-6 py-4">

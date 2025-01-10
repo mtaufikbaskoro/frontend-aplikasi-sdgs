@@ -1,31 +1,25 @@
+import { getApi } from "@/lib/utils"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 export async function POST (request) {
     const cookieStore = await cookies()
-    const token = cookieStore.get('token')
-    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
-
+    const token = cookieStore.get('token').value
     const formData = await request.formData()
 
     const { searchParams } = new URL(request.url)
     const capaianId = searchParams.get('capaianId')
 
-    try {
-        const response = await fetch(`${url}/detail/update-capaian?sdgs_capaian_id=${capaianId}`, {
-            method: 'POST',
-            headers: {'Authorization': `Bearer ${token.value}`},
-            body: formData
-        })
-
-        if (response) {
-            const data = await response.json()
-            return NextResponse.json({success: true})
-        } else {
-            console.log('gagal')
-        } 
-
-    } catch (error) {
-        console.log(error.message)
-    }
+    const response = await fetch(getApi(`/detail/update-capaian?sdgs_capaian_id=${capaianId}`), {
+        method: 'POST',
+        headers: {'Authorization': `Bearer ${token}`},
+        body: formData
+    })
+    return NextResponse.json(response.ok ? {
+        success: true,
+        message: 'Data berhasil disimpan.'
+    } : {
+        success: false,
+        message: 'Data gagal disimpan.'
+    })
 }

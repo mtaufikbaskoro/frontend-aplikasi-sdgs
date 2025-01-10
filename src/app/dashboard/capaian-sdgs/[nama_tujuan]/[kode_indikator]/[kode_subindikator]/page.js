@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import { use, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { getUrl } from "@/lib/utils"
 
 
 export default function Detail ({ params }) {
@@ -35,13 +36,13 @@ export default function Detail ({ params }) {
 
     const fetchDetail = async (kd_indikator, kd_subindikator = 0) => {
         setIsLoading(true)
-        const res = await fetch(`/api/sdgs/detailIndikator?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`, {
+        const res = await fetch(getUrl(`/api/sdgs/detailIndikator?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
         })
         const result = await res.json()
-        const { data, error, message } = result
+        const { data, error } = result
         if (res.ok) {
             setDetail(data.detail);
             setIndikator(data.indikator);
@@ -49,11 +50,11 @@ export default function Detail ({ params }) {
         } else {
             if (error) setIsError(error)
         }
-        setIsLoading(false);
+        setIsLoading(false)
     }
 
     const fetchRole = async () => {
-        const res = await fetch(`/api/auth/role`, {
+        const res = await fetch(getUrl(`/api/auth/role`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
@@ -66,15 +67,15 @@ export default function Detail ({ params }) {
     }
 
     const fetchTargetCapaianForm = async (kode_indikator, kode_subindikator) => {
-        setIsLoading(true);
-        const res = await fetch(`/api/sdgs/targetCapaian?year=${year}&kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`, {
+        setIsLoading(true)
+        const res = await fetch(getUrl(`/api/sdgs/targetCapaian?year=${year}&kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
         })
         if(res.ok) {
             const result = await res.json()
-            const { data, error, message } = result
+            const { data, error } = result
             if (!error) setTargetCapaianForm(data)
         }
         setIsLoading(false)
@@ -83,7 +84,7 @@ export default function Detail ({ params }) {
     }
 
     const fetchAllInstansis = async () => {
-        const res = await fetch('/api/auth/sotkSubunits', {
+        const res = await fetch(getUrl('/api/auth/sotkSubunits'), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include'
@@ -97,23 +98,16 @@ export default function Detail ({ params }) {
 
     const calculatePercentage = (capaian, target) => {
         if (!capaian || !target) return 0
-        const targetValue = parseFloat(target);
-        const capaianValue = parseFloat(capaian);
+        const targetValue = parseFloat(target)
+        const capaianValue = parseFloat(capaian)
         if (isNaN(targetValue) && isNaN(capaianValue)) {
             if (capaian === "tidak ada") return 0
             else if (capaian === "ada") return 100
-        } else {
-            return ((capaianValue / targetValue) * 100).toFixed(2)
-        }
+        } else return ((capaianValue / targetValue) * 100).toFixed(3)
     }
 
-    const handleCapaianModal = () => {
-        setCapaianModal(!capaianModal);
-    }
-
-    const handleTargetCapaianModal = async (kd_indikator, kd_subindikator = 0) => {
-        await fetchTargetCapaianForm(kd_indikator, kd_subindikator);
-    }
+    const handleCapaianModal = () => setCapaianModal(!capaianModal)
+    const handleTargetCapaianModal = async (kd_indikator, kd_subindikator = 0) => await fetchTargetCapaianForm(kd_indikator, kd_subindikator)
 
     useEffect(() => {
         setYear(sessionStorage.getItem('year'))
@@ -130,14 +124,14 @@ export default function Detail ({ params }) {
     useEffect(() => {
         const fetchTargetCapaian = async (detailId) => {
             setIsLoading(true)
-            const res = await fetch(`/api/sdgs/detailTargetCapaian?year=${year}&detail_id=${detailId}`, {
+            const res = await fetch(getUrl(`/api/sdgs/detailTargetCapaian?year=${year}&detail_id=${detailId}`), {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include'
             });
             if (res.ok) {
                 const result = await res.json()
-                const { data, error, message } = result
+                const { data, error } = result
                 if (!error) {
                     const { target_capaian, capaian } = data
                     setTargetCapaian(target_capaian ?? '')
@@ -154,12 +148,11 @@ export default function Detail ({ params }) {
     }, [detail, year])
 
     if (isError) router.push('/404')
-
     return (
         <DashboardLayout>
             { isLoading && (<Loading />) }
             { indikator == {} && <div>No Data...</div>}
-            <div className="flex flex-col gap-4 px-2.5 py-3 border-2 border-green-900 rounded-md">
+            <div className="flex flex-col gap-4 px-2.5 py-3 border-2 border-green-900 rounded-md drop-shadow-xl">
                 <Modal isOpen={capaianModal} setIsOpen={setCapaianModal}>
                     <EditCapaian 
                         targetCapaianId={targetCapaian.id}
@@ -170,14 +163,14 @@ export default function Detail ({ params }) {
                     <EditTargetCapaian instansis={instansis} targetCapaian={targetCapaianForm} />
                 </Modal>
                 <h1 className="font-semibold">Indikator {indikator.kode}</h1>
-                <p className="text-sm text-justify">{indikator.kriteria}</p>
-                {
-                    subindikator && (
-                        <p className="text-sm text-justify">{subindikator.kode}. {subindikator.kriteria}</p>
-                    )
-                } 
+                <div>
+                    <p className="text-sm text-justify">{indikator.kriteria}</p>
+                    { subindikator && (
+                        <p className="text-sm text-justify"><span className="font-bold">{subindikator.kode}.</span> {subindikator.kriteria}</p>
+                    )} 
+                </div>
                 <hr />
-                <table className="table px-2 border-2 border-slate-200 border-separate rounded-sm border-spacing-y-4 text-sm">
+                <table className="table px-2 border-separate border-spacing-y-4 text-sm">
                     <tbody>
                         <tr>
                             <th className="text-left">Sumber Data</th>
@@ -191,42 +184,34 @@ export default function Detail ({ params }) {
                             <th className="text-left">Baseline ({year - 1})</th>
                             <td colSpan={2}>2.18</td>
                         </tr>
-                        {
-                            detail.rumus != undefined && (
-                                <tr>
-                                    <th className="text-left">Rumus</th>
-                                    <td colSpan={2}>
-                                        <MathDisplay formula={detail.rumus} />
-                                    </td>
-                                </tr>   
-                            )
-                        }
-                        {
-                            detail.variabel != undefined && (
-                                <tr>
-                                    <th className="align-top text-left">Keterangan Rumus</th>
-                                    <td colSpan={2}>
-                                        <ul>
-                                            {
-                                                Object.entries(JSON.parse(detail.variabel)).map(([key, value]) => (
-                                                    <li key={key}><strong>{key}</strong> = {value}</li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </td>
-                                </tr>
-                            )
-                        }
+                        { detail.rumus != undefined && (
+                            <tr>
+                                <th className="text-left">Rumus</th>
+                                <td colSpan={2}>
+                                    <MathDisplay formula={detail.rumus} />
+                                </td>
+                            </tr>   
+                        )}
+                        { detail.variabel != undefined && (
+                            <tr>
+                                <th className="align-top text-left">Keterangan Rumus</th>
+                                <td colSpan={2}>
+                                    <ul>
+                                        { Object.entries(JSON.parse(detail.variabel)).map(([key, value]) => (
+                                            <li key={key}><strong>{key}</strong> = {value}</li>
+                                        ))}
+                                    </ul>
+                                </td>
+                            </tr>
+                        )}
                         <tr>
                             <th className="align-top text-left">Instansi Pelaksana</th>
                             <td colSpan={2}>
                                 <ul>
-                                    {
-                                        units != false ?
+                                    { units != false ?
                                         units.map((unit, index) => (
                                             <li key={index}>{unit}</li>
-                                        )) : (<li>-</li>)
-                                    }
+                                    )) : (<li>-</li>)}
                                 </ul>
                             </td>
                         </tr>
@@ -234,20 +219,17 @@ export default function Detail ({ params }) {
                             <th className="align-top text-left">Dokumen Pendukung</th>
                             <td colSpan={2}>
                                 <ul className="flex flex-col gap-2">
-                                    {
-                                        files != false ? 
+                                    { files != false ? 
                                         files.map((file, index) => (
                                             <li key={index} className="font-medium text-sky-500 hover:text-gray-400 transition-all ease-in ease-out cursor-pointer">
                                                 <Link rel="preload" href={file.url} as={file.url}>{file.nama_file_asli}</Link>
                                             </li>
-                                        )) : (<li>-</li>)
-                                    }
+                                    )) : (<li>-</li>)}
                                 </ul>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <h1 className="py-2 font-medium border rounded border-green-900 text-center">Target / Capaian / %Capaian / Status</h1>
                 <hr />
                 <table className="table text-sm text-center">
                     <thead>
@@ -270,14 +252,14 @@ export default function Detail ({ params }) {
                 <br />
                 <div className="flex gap-2">
                     <button 
-                        className={`flex flex-1 items-center justify-center gap-3 bg-yellow-300 py-1.5 rounded-sm text-black text-xs hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 ${role === 'admin' ? '' : 'hidden'} transition-all ease-in ease-out`}
+                        className={`flex flex-1 items-center justify-center gap-3 py-2.5 bg-yellow-300 rounded-sm text-black text-sm hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 ${role === 'admin' ? '' : 'hidden'} transition-all ease-in ease-out`}
                         onClick={() => handleTargetCapaianModal(kode_indikator, kode_subindikator)}
                         disabled={role === 'admin' ? false : true} >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Atur Target Capaian</span>
                     </button>
                     <button 
-                        className="flex flex-1 items-center justify-center gap-3 bg-sky-500 py-1.5 rounded-sm text-white text-xs hover:text-sky-500 hover:bg-white hover:ring-2 hover:ring-sky-500 disabled:bg-slate-300 disabled:hover:ring-0 disabled:hover:text-white transition-all ease-in ease-out"
+                        className="flex flex-1 items-center justify-center gap-3 py-2.5 bg-sky-500 rounded-sm text-white text-sm hover:text-sky-500 hover:bg-white hover:ring-2 hover:ring-sky-500 disabled:bg-slate-300 disabled:hover:ring-0 disabled:hover:text-white transition-all ease-in ease-out"
                         onClick={() => handleCapaianModal()}
                         disabled={targetCapaian == '' ? true : false} >
                         <FontAwesomeIcon icon={faEdit} />

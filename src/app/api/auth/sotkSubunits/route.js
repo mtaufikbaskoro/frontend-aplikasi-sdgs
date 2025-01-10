@@ -1,10 +1,10 @@
+import { getApi } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET (request) {
+export async function GET () {
     const cookieStore = await cookies()
     const token = cookieStore.get('token')
-    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
 
     if (!token) return NextResponse.json({
         message: 'No cookies found.',
@@ -12,7 +12,7 @@ export async function GET (request) {
         data: null
     })
 
-    const response = await fetch(`${url}/auth/get-subunits`, {
+    const response = await fetch(getApi(`/auth/get-subunits`), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token.value}`,
@@ -20,11 +20,9 @@ export async function GET (request) {
         },
         credentials: 'include'
     })
-
     if (response.ok) {
         const result = await response.json()
-        const { data, error, message } = result
-        if (error) return NextResponse.json(result, {status: 404})
-        return NextResponse.json(result)
+        const { error } = result
+        return NextResponse.json(result, { status: error ? 404 : 200 })
     }
 }

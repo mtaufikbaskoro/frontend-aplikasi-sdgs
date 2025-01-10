@@ -10,6 +10,7 @@ import Table from "@/app/dashboard/components/table"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faCrosshairs, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import Tooltip from '@/components/ui/tooltip'
+import { getUrl } from '@/lib/utils';
 
 
 const tableColumns = ['Kode Indikator', 'Kriteria', 'Status', 'Aksi Detail'];
@@ -29,9 +30,9 @@ export default function Detail({ params }) {
         setIsLoading(true)
         const year = sessionStorage.getItem('year')
 
-        const res = await fetch(`/api/sdgs/indikatorsByGoal?kode=${kode}&year=${year}`, {
+        const res = await fetch(getUrl(`/api/sdgs/indikatorsByGoal?kode=${kode}&year=${year}`), {
             method: 'GET',
-            headers: {"Content-Type": 'application/json'},
+            headers: { "Content-Type": 'application/json' },
             credentials: 'include'
         })
 
@@ -41,7 +42,7 @@ export default function Detail({ params }) {
         if (res.ok) {
             if (!error) setIndikatorsData(data)
         }
-        setIsLoading(false);
+        setIsLoading(false)
     }
 
     const getInfo = (targetCapaianStatus, capaianStatus) => {

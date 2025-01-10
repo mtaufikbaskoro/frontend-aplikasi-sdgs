@@ -1,24 +1,28 @@
-'use client';
+'use client'
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react';
-import Alert from '@/components/ui/alert';
-import Link from 'next/link';
+import { useEffect, useState } from 'react'
+import Alert from '@/components/ui/alert'
+import Link from 'next/link'
+import { getUrl } from '@/lib/utils'
+
+const MAX_FILE_SIZE = 1 * 1024 * 1024 // 1MB
 
 export default function EditCapaian (props) {
-    const [ showAlert, setShowAlert ] = useState(false);
-    const [ api, setApi ] = useState(''); 
-    const [ oldFiles, setOldFiles ] = useState([]);
-    const { targetCapaianId, capaian, files } = props;
-    const { register, handleSubmit, formState: {errors}, setError, clearErrors } = useForm();
-    const MAX_FILE_SIZE = 1 * 1024 * 1024 // 1MB
+    const [ showAlert, setShowAlert ] = useState(false)
+    const [ success, setSuccess ] = useState(false)
+    const [ message, setMessage ] = useState('')
+    const [ api, setApi ] = useState('')
+    const [ oldFiles, setOldFiles ] = useState([])
+    const { targetCapaianId, capaian, files } = props
+    const { register, handleSubmit, formState: {errors}, setError, clearErrors } = useForm()
 
     useEffect(() => {
-        setApi(capaian != false ? `/api/sdgs/capaian/update?capaianId=${capaian.id}` : `/api/sdgs/capaian/post`)
+        setApi(capaian != false ? getUrl(`/api/sdgs/capaian/update?capaianId=${capaian.id}`) : getUrl(`/api/sdgs/capaian/post`))
         setOldFiles(files != false ? files : [])
     }, [capaian, files])
 
     const handleFileChange = (e, fieldName, maxFileSize = MAX_FILE_SIZE) => {
-        const files = e.target.files;
+        const files = e.target.files
         if (files.length > 0 && files[0].size > maxFileSize) {
             setError(fieldName, {
                 type: 'manual',
@@ -26,7 +30,6 @@ export default function EditCapaian (props) {
             })
             return
         }
-
         clearErrors(fieldName)
     }
 
@@ -38,17 +41,15 @@ export default function EditCapaian (props) {
         if (data.file2[0]) formData.append('file2', data.file2[0])
         if (data.file3[0]) formData.append('file3', data.file3[0])
 
-        try {
-            const response = await fetch(api, {
-                method: 'POST',
-                body: formData
-            })
-            if (response.ok) {
-                const data = await response.json()   
-                setShowAlert(data.success);
-            }
-        } catch (err) {
-            console.error('Error uploading files: ', err)
+        const response = await fetch(api, {
+            method: 'POST',
+            body: formData
+        })
+        if (response.ok) {
+            const data = await response.json()   
+            setSuccess(data.success)
+            setMessage(data.message)
+            setShowAlert(true)
         }
     }
 
@@ -77,13 +78,10 @@ export default function EditCapaian (props) {
                     defaultValue={capaian ? capaian.capaian : ''}
                     {...register('capaian', {required: 'Capaian belum diisi'})}
                 />
-                {errors.capaian && <p className='pl-2 text-xs text-red-400'>{errors.capaian.message}</p>}
+                { errors.capaian && <p className='pl-2 text-xs text-red-400'>{errors.capaian.message}</p> }
             </div>
             <div className='mb-5'>
-                <label 
-                    className='text-sm font-medium'
-                    htmlFor="file1"
-                >
+                <label className='text-sm font-medium' htmlFor="file1">
                     Dokumen Pendukung 1
                 </label>
                 <input 
@@ -94,26 +92,21 @@ export default function EditCapaian (props) {
                     onChange={(e) => handleFileChange(e, 'file1')} 
                 />
                 {errors.file1 && <p className='pl-2 mt-2 text-xs text-red-400'>{errors.file1.message}</p>}
-                {
-                    oldFiles[0] && (
-                        <div className='text-xs mt-2'>
-                            <span>Dokumen Sebelumnya : </span> 
-                            <Link 
-                                className='text-blue-500 hover:underline' 
-                                rel='preload' 
-                                as={oldFiles[0].url} 
-                                href={oldFiles[0].url} >
-                                    {oldFiles[0].nama_file_asli}
-                            </Link>
-                        </div>
-                    )
-                }
+                { oldFiles[0] && (
+                    <div className='text-xs mt-2'>
+                        <span>Dokumen Sebelumnya : </span> 
+                        <Link 
+                            className='text-blue-500 hover:underline' 
+                            rel='preload' 
+                            as={oldFiles[0].url} 
+                            href={oldFiles[0].url} >
+                                {oldFiles[0].nama_file_asli}
+                        </Link>
+                    </div>
+                )}
             </div>
             <div className='mb-5'>
-                <label 
-                    className='text-sm font-medium'
-                    htmlFor="file2"
-                >
+                <label className='text-sm font-medium' htmlFor="file2">
                     Dokumen Pendukung 2
                 </label>
                 <input 
@@ -123,21 +116,19 @@ export default function EditCapaian (props) {
                     {...register('file2')}
                     onChange={(e) => handleFileChange(e, 'file2')}
                 />
-                {errors.file2 && <p className='pl-2 mt-2 text-xs text-red-400'>{errors.file2.message}</p>}
-                {
-                    oldFiles[1] && (
-                        <div className='text-xs mt-2'>
-                            <span>Dokumen Sebelumnya : </span> 
-                            <Link 
-                                className='text-blue-500 hover:underline' 
-                                rel='preload' 
-                                as={oldFiles[1].url} 
-                                href={oldFiles[1].url} >
-                                    {oldFiles[1].nama_file_asli}
-                            </Link>
-                        </div>
-                    )
-                }
+                { errors.file2 && <p className='pl-2 mt-2 text-xs text-red-400'>{errors.file2.message}</p> }
+                { oldFiles[1] && (
+                    <div className='text-xs mt-2'>
+                        <span>Dokumen Sebelumnya : </span> 
+                        <Link 
+                            className='text-blue-500 hover:underline' 
+                            rel='preload' 
+                            as={oldFiles[1].url} 
+                            href={oldFiles[1].url} >
+                                {oldFiles[1].nama_file_asli}
+                        </Link>
+                    </div>
+                )}
             </div>
             <div className='mb-5'>
                 <label htmlFor="file3">Dokumen Pendukung 3</label>
@@ -149,20 +140,18 @@ export default function EditCapaian (props) {
                     onChange={(e) => handleFileChange(e, 'file3')}
                 />
                 {errors.file3 && <p className='pl-2 mt-2 text-xs text-red-400'>{errors.file3.message}</p>}
-                {
-                    oldFiles[2] && (
-                        <div className='text-xs mt-2'>
-                            <span>Dokumen Sebelumnya : </span> 
-                            <Link 
-                                className='text-blue-500 hover:underline' 
-                                rel='preload' 
-                                as={oldFiles[2].url} 
-                                href={oldFiles[2].url} >
-                                    {oldFiles[2].nama_file_asli}
-                            </Link>
-                        </div>
-                    )
-                }
+                { oldFiles[2] && (
+                    <div className='text-xs mt-2'>
+                        <span>Dokumen Sebelumnya : </span> 
+                        <Link 
+                            className='text-blue-500 hover:underline' 
+                            rel='preload' 
+                            as={oldFiles[2].url} 
+                            href={oldFiles[2].url} >
+                                {oldFiles[2].nama_file_asli}
+                        </Link>
+                    </div>
+                )}
             </div>
             <div className="mt-8 flex flex-col">
                 <button 
@@ -176,8 +165,8 @@ export default function EditCapaian (props) {
             {showAlert && (
                 <Alert
                     className={`${showAlert ? 'opacity-100' : 'opacity-0'} transition-all ease-in ease-out`}
-                    message="Data saved successfully!"
-                    type="success"
+                    message={message}
+                    type={success ? 'success' : 'fail'}
                     onClose={() => setShowAlert(false)} />
             )}
         </form>

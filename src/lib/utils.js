@@ -4,6 +4,6 @@ export const getUrl = (route) => {
 }
 
 export const getApi = (route) => {
-    const base = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_API_URL : process.env.DEVELOPMENT_API_URL
+    const base = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
     return `${base}${route}`
 }

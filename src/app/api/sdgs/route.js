@@ -1,61 +1,47 @@
+import { getApi } from "@/lib/utils"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 export async function GET (request) {
     const cookieStore = await cookies()
-    const token = cookieStore.get('token')
-    const user = cookieStore.get('user') || undefined
+    const token = cookieStore.get('token').value
     const year = cookieStore.get('year').value
-    const baseUrl = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL
-    const url = baseUrl + '/sdgs'
+    const user = cookieStore.get('user') || undefined
 
     if (!token) return NextResponse.json({
         message: 'No cookies found',
         error: true,
         data: null,
-    }, {status: 404})
+    }, { status: 404 })
 
     const parseUser = user ? JSON.parse(user.value) : undefined 
     const { sub_unit_id } = parseUser
 
-    // extract queries parameter for pagination
-    const { searchParams } = new URL(request.url);
+    // Extract query from pagination
+    const { searchParams } = new URL(request.url)
     const page = searchParams.get('page') ?? false
     const limit = searchParams.get('limit') ?? false
 
     const fetchUrl = page || limit ? isNaN(sub_unit_id) ?
-    `${url}?page=${page}&limit=${limit}` :
-    `${url}/get-goals-by-user?sub_unit+id=${sub_unit_id}&year=${year}&page=${page}&limit=${limit}` :
-    url
+    getApi(`/sdgs?page=${page}&limit=${limit}`) :
+    getApi(`/sdgs/get-goals-by-user?sub_unit+id=${sub_unit_id}&year=${year}&page=${page}&limit=${limit}`) :
+    getApi('/sdgs')
 
     const response = await fetch(fetchUrl, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token.value}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         credentials: 'include',
     })
-
-    if (!response.ok) {
-        return NextResponse.json({
-            message: url,
-            error: true,
-            data: response
-        })
-    }
+    if (!response.ok) return NextResponse.json({
+        message: 'Internal server error.',
+        error: true,
+        data: response
+    }, { status: 500 })
 
     const result = await response.json()
-    const { data, error, message } = result
-    if (error) return NextResponse.json({
-        message: message,
-        error: error,
-        data: data
-    }, {status: 404})
-    return NextResponse.json({
-        message: message,
-        error: error,
-        data: data 
-    })
-
+    const { error } = result
+    return NextResponse.json(result, { status: error ? 404 : 200 })
 }
