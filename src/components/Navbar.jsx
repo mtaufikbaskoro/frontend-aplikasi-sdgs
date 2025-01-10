@@ -8,11 +8,11 @@ import LinkButton from "@components/ui/button";
 
 
 export default function Navbar (props) {
-    const { color } = props;
+    const { color } = props
     
     return (
         <nav style={{borderColor: color}} className="flex justify-between px-36 py-6 border-b-4">
-            <div className="flex justify-center">
+            <div className="flex justify-center items-center">
                 <div>
                     <Image src={logoPemko} width={24} height={24} alt="logo pemko medan" />
                 </div>

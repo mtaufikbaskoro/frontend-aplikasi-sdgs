@@ -1,17 +1,23 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 
 export async function middleware(request) {
     const cookieStore = await cookies()
     const token = cookieStore.get('token')
-
-    const loginUrl = `${request.nextUrl.origin}/login?isLogin=${false}`
-
-    if (!token) return NextResponse.redirect(loginUrl)
+    
+    const url = request.nextUrl.clone()
+    
+    if (!token) {
+        url.pathname = `/login`
+        url.searchParams.set('isLogin', false)
+        return NextResponse.redirect(url)
+    } 
 
     return NextResponse.next()
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*'],
+    matcher: [
+        '/dashboard/:path*',
+    ],
 }

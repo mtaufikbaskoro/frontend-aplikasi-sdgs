@@ -1,13 +1,22 @@
 'use client'
+// react
 import { use } from 'react'
 
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css'
+import 'swiper/css/autoplay'
+
+// components
 import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/footer'
 
 import goals from '@/app/data/goals.json'
 
-export default function Metadata ({params}) {
+export default function Metadata ({ params }) {
+    const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_PATH : ''
     const resolvedParams = use(params)
     const { slug } = resolvedParams
 
@@ -16,31 +25,42 @@ export default function Metadata ({params}) {
     );
     
     return (
-        <div className='min-h-full'>
+        <div className='relative'>
             <Navbar color={goal.color} />
-            <main className='flex flex-col px-36 mt-32'>
-                <div className="relative flex justify-center items-center gap-10 row-start-2 items-center sm:items-start">
-                    <div className="my-auto">
-                        <Image src={`/assets/img/sdgs_icons${goal.img}`} width={240} height={240} alt="tujuan logo" loading='eager' priority />
+            <main className='flex flex-col p-36'>
+                <div className="flex justify-start gap-6 sm:items-start">
+                    <div>
+                        <Image src={`${baseUrl}/assets/img/sdgs_icons${goal.img}`} width={720} height={720} alt="tujuan logo" loading='eager' priority />
                     </div>
-                    <div className="max-w-[800px] my-auto">
+                    <div className="flex grow flex-col gap-4">
                         <h1 style={{color: goal.color}} className="text-4xl font-bold uppercase">{goal.name}</h1>
-                        <p className="mt-6 font-medium text-justify tracking-wide">
+                        <p className="font-medium text-justify tracking-wide">
                             {goal.desc}
                         </p>
+                        <div style={{borderColor: goal.color}} className='max-w-[1260px] mt-4 p-4 border-2 rounded-md'>
+                            <Swiper
+                                modules={[ Autoplay ]}
+                                autoplay={{delay: 3000}}
+                                spaceBetween={50}
+                                slidesPerView={8} >
+                                {
+                                    goal.targets.map((target, index) => (
+                                        <SwiperSlide key={index}>
+                                                <Image
+                                                    src={`${baseUrl}/assets/img/sdgs_icons/goal_${goal.id}_target${target}`} 
+                                                    width={132} 
+                                                    height={132} 
+                                                    alt={`image ${index}`}
+                                                    priority />
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
+                        </div>
                     </div>
                 </div>
-                <div className='grid grid-cols-6 grid-row gap-10 my-32'>
-                    {
-                        goal.targets.map((target, index) => (
-                            <div className="transition-all ease-in ease-out hover:scale-[1.2]" key={index}>
-                                <Image src={`/assets/img/sdgs_icons/goal_${goal.id}_target${target}`} width={240} height={240} alt={`image ${index}`} />
-                            </div>
-                        ))
-                    }
-                </div>
             </main>
-            <Footer />
+            <Footer className="fixed" />
         </div>
     )
 }

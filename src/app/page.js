@@ -1,25 +1,24 @@
 //essential needs
-import Footer from "@/components/footer";
-import HomeHeader from "@/components/homeHeader";
-import Image from "next/image";
-import Link from "next/link";
+import Footer from "@/components/footer"
+import HomeHeader from "@/components/homeHeader"
+import Image from "next/image"
+import Link from "next/link"
 
 //static data
-import goals from "@/app/data/goals.json";
+import goals from "@/app/data/goals.json"
 
 //image
-import aboutImage from '@assets/img/about_image.png';
-import sdg_wheel from '@assets/img/sdg_wheel.png';
-
+import aboutImage from '@assets/img/about_image.png'
+import sdg_wheel from '@assets/img/sdg_wheel.png'
 
 export default function Home() {
-
+  const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_PATH : ''
   return (
-    <div className="relative min-h-screen">
+    <div className="relative">
       <Image src={sdg_wheel} className="absolute top-32 -left-20 opacity-25 -z-10" width="auto" height={"auto"} alt="backdrop logo sdgs" />
       <HomeHeader />
       <main className="">
-        <div className="flex justify-between items-center gap-8 row-start-2 items-center sm:items-start px-48 py-12 mt-32">
+        <div className="flex justify-between items-center gap-8 row-start-2 items-center sm:items-start px-48 py-10 mt-26">
           <div className="max-w-[800px] my-auto">
             <h1 className="text-4xl font-bold text-green-900">Apa itu SDGs?</h1>
             <p className="mt-6 font-medium text-justify">
@@ -32,13 +31,13 @@ export default function Home() {
             <Image src={aboutImage} width={450} height={600} alt="about logo" priority />
           </div>
         </div>
-        <div id="metadata" className="grid grid-cols-6 grid-row mt-32">
+        <div id="metadata" className="grid grid-cols-6 grid-row mt-28">
           {
             goals.map((goal) => {
               return (
                 <div className="transition-all ease-in ease-out hover:opacity-25" key={goal.id}>
                   <Link href={`/metadata/${goal.name.replace(/\s+/g, '-').toLowerCase()}`}>
-                    <Image src={`/assets/img/sdgs_icons${goal.img}`} width={320} height={320} alt={goal.name} loading="eager" />
+                    <Image src={`${baseUrl}/assets/img/sdgs_icons${goal.img}`} width={320} height={320} alt={goal.name} loading="eager" />
                   </Link>
                 </div>
               )
