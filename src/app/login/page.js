@@ -4,47 +4,44 @@ import './style.css'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import Footer from './components/footer'
 import Alert from '@/components/ui/alert'
-
 import logoPemko from '@assets/img/logo_pemko_medan.png'
 import logoSDGs from '@assets/img/logo_sdgs.png'
 import Loading from '../dashboard/components/loading'
+import { getUrl } from '@/lib/utils'
 
 export default function Login () {
-    const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_PATH : ''
-    const apiUrl = `${baseUrl}/api/auth/login`
     const { register, handleSubmit, formState: { errors }, watch } = useForm()
     const [ isLoading, setIsLoading ] = useState(false)
     const [ showAlert, setShowAlert ] = useState(false)
     const [ message, setMessage ] = useState('')
     const [ notification, setNotification ] = useState(false)
-    const router = useRouter();
+    const router = useRouter()
 
     const year = watch('year')
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         if (params.get('isLogin')) {
-            setNotification(params.get('isLogin'));
-            setMessage('Anda Perlu login terlebih dahulu');
+            setNotification(params.get('isLogin'))
+            setMessage('Anda Perlu login terlebih dahulu')
         }
     }, [])
 
     async function onSubmit (form) {
         setIsLoading(true)
         const { username, password } = form
-        const response = await fetch(apiUrl, {
+        const response = await fetch(getUrl('/api/auth/login'), {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password, year})
+            body: JSON.stringify({ username, password, year })
         })
         const result = await response.json()
         if (!response.ok) {
-            const { data, error, message } = result
+            const { error, message } = result
             setNotification(error)
             setMessage(message)
         } 
@@ -61,7 +58,12 @@ export default function Login () {
     }
 
     return (
-        <div className='backgroundImage'>
+        <div style={{
+            backgroundImage: `url(${getUrl('/assets/background/bg-login.jpg')})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+        }}>
             <div className="flex flex-col justify-center items-center px-6 py-36 lg:px-8">
                 {isLoading && (<Loading />)}
                 <div className="flex items-center justify-center h-32 sm:mx-auto sm:w-full sm:max-w-sm">

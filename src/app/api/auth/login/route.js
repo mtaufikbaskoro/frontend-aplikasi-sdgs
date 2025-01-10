@@ -1,17 +1,17 @@
+import { getApi } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export async function POST (request) {
-    const { username, password, year } = await request.json();
-    const url = process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_API_URL : process.env.PRODUCTION_API_URL 
+    const { username, password, year } = await request.json()
     
-    const res = await fetch(`${url}/auth/masuk`, {
+    const res = await fetch(getApi('/auth/masuk'), {
         method: 'POST',
         headers: { "Content-Type": 'application/json'},
         body: JSON.stringify({ username, password }),
         credentials: 'include'
     })
 
-    if (!res.ok) NextResponse.json({
+    if (!res.ok) return NextResponse.json({
         message: 'Internal server error',
         error: true,
         data: null
@@ -23,8 +23,8 @@ export async function POST (request) {
         error: true,
         data: null
     }, {status: 404})
-
     const { token, sub_unit_id } = data
+
     if (token) {
         const result = NextResponse.json({
             message: 'Berhasil login.',

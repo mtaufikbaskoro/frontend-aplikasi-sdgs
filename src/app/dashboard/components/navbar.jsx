@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 
 import logoPemko from '@assets/img/logo_pemko_medan.png';
+import { getUrl } from '@/lib/utils';
 
 export default function Navbar (props) {
     const { isOpen, setIsOpen } = props
@@ -14,9 +15,9 @@ export default function Navbar (props) {
     const [ year, setYear ] = useState('')
 
     const fetchUser = async () => {
-        const res = await fetch(`/api/auth/role`, {
+        const res = await fetch(getUrl('/api/auth/role'), {
             method: 'GET',
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         })
         if (res.ok) {
             const result = await res.json()
@@ -29,17 +30,19 @@ export default function Navbar (props) {
     }
 
     const fetchYear = async () => {
-        const res = await fetch(`/api/cookie/year`, { method: 'GET', headers: {'Content-Type': 'application/json'}})
+        const res = await fetch(getUrl('/api/cookie/year'), { 
+            method: 'GET', 
+            headers: { 'Content-Type': 'application/json' }
+        })
         if (res.ok) {
             const result = await res.json()
             const { data, error } = result
             if (!error) {
                 sessionStorage.setItem('year', data)
                 setYear(sessionStorage.getItem('year'))
-            }
-            
-        } else {
-            console.log(res)
+            } else {
+                console.log('gagal mengambil tahun.')
+            }   
         }
         return true
     }
@@ -52,7 +55,7 @@ export default function Navbar (props) {
     }, [])
 
     return (
-        <nav className={`sticky top-0 flex justify-between items-center bg-white z-30 px-16 transition-all ease-in ease-out py-4 border-b-4 border-green-900`}>
+        <nav className="sticky top-0 flex justify-between items-center bg-white z-30 px-16 transition-all ease-in ease-out py-4 border-b-4 border-green-900">
             { isOpen ? (
                 <div>
                     <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? "ml-1" : "ml-0"} w-6 h-6 text-white`}>

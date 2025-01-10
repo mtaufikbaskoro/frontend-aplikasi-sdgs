@@ -3,15 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function GET () {
     const cookieStore = await cookies()
-    const year = cookieStore.get('year')
-
+    const year = cookieStore.get('year').value
 
     if (year) return NextResponse.json({
         message: 'Berhasil',
         error: false,
-        data: year.value
+        data: year
     }) 
-
     return NextResponse.json({
         message: 'Gagal mengambil tahun.',
         error: true,

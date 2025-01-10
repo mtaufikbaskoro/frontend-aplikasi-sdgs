@@ -4,60 +4,44 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWrench, faWindowMaximize, faChevronRight, faChevronDown, faPuzzlePiece, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faChartBar, faSignOut, faTableColumns, faFileAlt, faUsers, faWindowMaximize, faChevronRight, faChevronDown, faPuzzlePiece, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { getUrl } from '@/lib/utils';
 
 
 export default function Sidebar (props) {
-    const { isOpen } = props;
-    const router = useRouter();
-    const pathname = usePathname();
-    const [ submenu, setSubmenu ] = useState('');
-    const [ menuActive, setMenuActive ] = useState('');
-    const [ submenuActive, setSubmenuActive ] = useState('');
+    const { isOpen } = props
+    const router = useRouter()
+    const pathname = usePathname()
+    const [ submenu, setSubmenu ] = useState('')
+    const [ menuActive, setMenuActive ] = useState('')
+    const [ submenuActive, setSubmenuActive ] = useState('')
 
     async function handleLogout () {
         sessionStorage.removeItem('year')
-        const response = await fetch('/api/auth/logout', {
+        const response = await fetch(getUrl('/api/auth/logout'), {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
         })
-
-        if (response.ok) {
-            router.push('/login')
-        } else {
-            console.log('gagal logout')
-        }
+        if (response.ok) router.push(`/login`) 
+        else console.log('gagal logout')
     }
 
     useEffect(() => {
-        const pathArray = pathname.split('/');
-        if (pathArray[2]) {
-            setMenuActive(pathArray[2]);
-        } else {
-            setMenuActive(pathArray[1]);
-        }
-        if (pathArray[3]) {
-            setSubmenuActive(pathArray[3]);
-        }
-        if (pathArray[2] == 'realisasi-program') {
-            setSubmenu(pathArray[2]);
-        }
+        const pathArray = pathname.split('/')
+        if (pathArray[2]) setMenuActive(pathArray[2]) 
+        else setMenuActive(pathArray[1])
+        if (pathArray[3]) setSubmenuActive(pathArray[3])
+        if (pathArray[2] == 'realisasi-program') setSubmenu(pathArray[2])
     }, [pathname])
 
     const handleLink = (route) => {
-        router.push(route);
-    };
+        router.push(route)
+    }
 
     const handleSubMenu = (menu) => {
-        if(submenu !== '') {
-            setSubmenu('');
-        } else {
-            setSubmenu(menu);
-        }
-    };
+        if(submenu !== '') setSubmenu('') 
+        else setSubmenu(menu)
+    }
 
     return (
         <div className={`${isOpen ? "" : "-translate-x-72"} z-10 w-72 fixed top-[64px] left-0 h-[calc(100vh-64px)] py-6 bg-slate-100 drop-shadow-xl rounded transition-all ease-in ease-out`}>
