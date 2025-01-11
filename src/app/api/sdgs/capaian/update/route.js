@@ -21,5 +21,5 @@ export async function POST (request) {
     } : {
         success: false,
         message: 'Data gagal disimpan.'
-    })
+    }, {status: 200})
 }

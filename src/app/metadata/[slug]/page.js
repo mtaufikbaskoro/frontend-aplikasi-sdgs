@@ -30,7 +30,7 @@ export default function Metadata ({ params }) {
             <main className='flex flex-col p-36'>
                 <div className="flex justify-start gap-6 sm:items-start">
                     <div>
-                        <Image src={`${baseUrl}/assets/img/sdgs_icons${goal.img}`} width={720} height={720} alt="tujuan logo" loading='eager' priority />
+                        <Image src={`${baseUrl}/assets/img/sdgs_icons${goal.img}`} width={380} height={380} alt="tujuan logo" loading='eager' priority />
                     </div>
                     <div className="flex grow flex-col gap-4">
                         <h1 style={{color: goal.color}} className="text-4xl font-bold uppercase">{goal.name}</h1>

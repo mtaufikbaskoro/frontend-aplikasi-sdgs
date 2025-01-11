@@ -104,7 +104,7 @@ export default function CapaianSdgs () {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex">
-                                        <Link className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out" href="/dashboard/capaian-sdgs/detail/1.1">
+                                        <Link href="/" className="mx-auto bg-gray-200 px-1 py-0.5 rounded-sm hover:bg-white hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                             <FontAwesomeIcon icon={faPrint} />
                                         </Link>
                                     </div>
