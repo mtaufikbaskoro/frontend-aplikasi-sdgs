@@ -1,23 +1,27 @@
-'use client'
+'use client' 
 
+import { useEffect, useState } from "react"
+import { getUrl } from "@/lib/utils"
+
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+
 import DashboardLayout from "@/app/dashboard/components/layout"
 import Loading from "@/app/dashboard/components/loading"
 import MathDisplay from "@/components/ui/mathdisplay"
 import Modal from "@/app/dashboard/components/modal"
-import EditCapaian from "../../components/editCapaian"
-import EditTargetCapaian from "../../components/editTargetCapaian"
+import EditCapaian from "../components/editCapaian"
+import EditTargetCapaian from "../components/editTargetCapaian"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
-import { use, useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { getUrl } from "@/lib/utils"
 
+export default function Detail () {
+    // params
+    const searchParams = useSearchParams()
+    const kode_indikator = searchParams.get('kode_indikator')
+    const kode_subindikator = searchParams.get('kode_subindikator')
 
-export default function Detail ({ params }) {
-    const resolvedParams = use(params)
-    const { kode_indikator, kode_subindikator } = resolvedParams
-    const router = useRouter()
     const [ role, setRole ] = useState('')
     const [ indikator, setIndikator ] = useState({})
     const [ subindikator, setSubindikator ] = useState({})
@@ -30,7 +34,6 @@ export default function Detail ({ params }) {
     const [ files, setFiles ] = useState([])
     const [ instansis, setInstansis ] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
-    const [ isError, setIsError ] = useState(false)
     const [ capaianModal, setCapaianModal ] = useState(false)
     const [ targetCapaianModal, setTargetCapaianModal ] = useState(false)
 
@@ -143,6 +146,7 @@ export default function Detail ({ params }) {
         }
         if (detail.id != undefined) fetchTargetCapaian(detail.id)
     }, [detail, year])
+    
 
     return (
         <DashboardLayout>

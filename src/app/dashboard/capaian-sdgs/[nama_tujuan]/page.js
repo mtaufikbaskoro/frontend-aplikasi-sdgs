@@ -87,7 +87,7 @@ export default function Detail({ params }) {
                                         {indikator.subindikator.length === 0 && (
                                             <td className='text-center'>
                                                 <div className='py-2'>
-                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}/0`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/detail?kode_indikator=${indikator.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                     </Link>
                                                 </div>
@@ -113,7 +113,7 @@ export default function Detail({ params }) {
                                                             </td>
                                                             <td className='text-center'>
                                                                 <div className='py-2'>
-                                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/${indikator.kode}/${point.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
+                                                                    <Link href={`/dashboard/capaian-sdgs/${nama_tujuan}/detail?kode_indikator=${indikator.kode}&kode_subindikator=${point.kode}`} className="mx-auto bg-sky-300 px-2 py-1 rounded-sm hover:ring-offset-0.5 hover:ring-2 hover:ring-green-950 transition-all ease-in ease-out">
                                                                         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" />
                                                                     </Link>
                                                                 </div>
