@@ -30,8 +30,7 @@ export async function GET (request) {
     })
     if (res.ok) {
         const result = await res.json()
-        const { error } = result
-        return NextResponse.json(result, { status: error ? 500 : 200 })
+        return NextResponse.json(result)
     } else {
         return NextResponse.json({
             message: 'Internal server error.',

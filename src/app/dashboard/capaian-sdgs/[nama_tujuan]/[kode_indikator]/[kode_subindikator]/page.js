@@ -24,8 +24,8 @@ export default function Detail ({ params }) {
     const [ year, setYear ] = useState(null)
     const [ detail, setDetail ] = useState({})
     const [ targetCapaianForm, setTargetCapaianForm ] = useState([])
-    const [ targetCapaian, setTargetCapaian ] = useState('')
-    const [ capaian, setCapaian ] = useState('')
+    const [ targetCapaian, setTargetCapaian ] = useState(0)
+    const [ capaian, setCapaian ] = useState(0)
     const [ units, setUnits ] = useState([])
     const [ files, setFiles ] = useState([])
     const [ instansis, setInstansis ] = useState([])
@@ -42,13 +42,11 @@ export default function Detail ({ params }) {
             credentials: 'include'
         })
         const result = await res.json()
-        const { data, error } = result
+        const { data } = result
         if (res.ok) {
-            setDetail(data.detail);
-            setIndikator(data.indikator);
-            setSubindikator(data.subindikator);
-        } else {
-            if (error) setIsError(error)
+            setDetail(data.detail)
+            setIndikator(data.indikator)
+            setSubindikator(data.subindikator)
         }
         setIsLoading(false)
     }
@@ -70,7 +68,7 @@ export default function Detail ({ params }) {
         setIsLoading(true)
         const res = await fetch(getUrl(`/api/sdgs/targetCapaian?year=${year}&kd_indikator=${kode_indikator}&kd_subindikator=${kode_subindikator}`), {
             method: 'GET',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
         })
         if(res.ok) {
@@ -80,7 +78,6 @@ export default function Detail ({ params }) {
         }
         setIsLoading(false)
         setTargetCapaianModal(true)
-        console.log(targetCapaianForm)
     }
 
     const fetchAllInstansis = async () => {
@@ -147,7 +144,6 @@ export default function Detail ({ params }) {
         if (detail.id != undefined) fetchTargetCapaian(detail.id)
     }, [detail, year])
 
-    if (isError) router.push('/404')
     return (
         <DashboardLayout>
             { isLoading && (<Loading />) }
