@@ -1,9 +1,9 @@
 
-import Card from './components/card';
-import DashboardLayout from './components/layout';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DashboardLayout from './components/layout'
+import Card from './components/card'
 
-import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFileCircleQuestion, faFileCircleCheck, faFileCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 
 const statuses = [
     {

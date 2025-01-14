@@ -8,7 +8,6 @@ export async function GET () {
 
     const parseUser = JSON.parse(user)
     const { username, sub_unit_id } = parseUser
-
     const role = sub_unit_id === 'admin' ? 'admin' : 'user'
 
     return NextResponse.json({

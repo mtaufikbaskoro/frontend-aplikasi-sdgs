@@ -9,7 +9,6 @@ export default function Confirmation (props) {
     const { children, open, setOpen, id, header, action, data } = props;
 
     const handleAction = async (item) => {
-        console.log(item)
         await action(item)
         setOpen(!open)
     }

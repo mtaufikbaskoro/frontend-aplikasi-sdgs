@@ -1,16 +1,16 @@
 'use client'
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { getUrl } from "@/lib/utils"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
 
-import DashboardLayout from "@/app/dashboard/components/layout";
-import Breadcrumb from "@/components/ui/breadcrumb";
-import Loading from "@/app/dashboard/components/loading";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronCircleDown, faChevronCircleUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import Alert from "@/components/ui/alert";
-
+import DashboardLayout from "@/app/dashboard/components/layout"
+import Breadcrumb from "@/components/ui/breadcrumb"
+import Loading from "@/app/dashboard/components/loading"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faChevronCircleDown, faChevronCircleUp } from "@fortawesome/free-solid-svg-icons"
+import Alert from "@/components/ui/alert"
 
 export default function Add () {
     const [ currentSubUnit, setCurrentSubUnit ] = useState(0)
@@ -29,7 +29,7 @@ export default function Add () {
     const [ errorAlert, setErrorAlert ] = useState(false)
     const router = useRouter()
 
-    const { register, handleSubmit, formState: {errors}, setError, clearErrors, setValue, watch } = useForm({
+    const { register, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
             selectedSubkegiatans: [],
             sub_unit_id: currentSubUnit ? currentSubUnit : ''
@@ -39,9 +39,9 @@ export default function Add () {
     const selectedSubUnit = watch('sub_unit_id')
 
     const fetchSubUnits = async () => {
-        const res = await fetch(`/api/auth/sotkSubunits`, {
+        const res = await fetch(getUrl(`/api/auth/sotkSubunits`), {
             method: 'GET', 
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
         })
         if (res.ok) {
@@ -53,13 +53,13 @@ export default function Add () {
 
     const fetchGoals = async () => {
         setIsLoading(true)
-        const res = await fetch(`/api/sdgs`, {
+        const res = await fetch(getUrl(`/api/sdgs`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
         if (res.ok) {
             const result = await res.json()
-            const { message, data, error } = result
+            const { data, error } = result
             if (!error) {
                 const { items } = data
                 setGoals(items)
@@ -69,7 +69,7 @@ export default function Add () {
     }
 
     const fetchIndikators = async (kode) => {
-        const res = await fetch(`/api/sdgs/indikators?kode=${kode}`, {
+        const res = await fetch(getUrl(`/api/sdgs/indikators?kode=${kode}`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
@@ -82,7 +82,7 @@ export default function Add () {
 
     const fetchSubkegiatan = async (sub_unit_id) => {
         setIsLoading(true)
-        const res = await fetch(`/api/realisasi/daerah/subKegiatan?sub_unit_id=${sub_unit_id}`, {
+        const res = await fetch(getUrl(`/api/realisasi/daerah/subKegiatan?sub_unit_id=${sub_unit_id}`), {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         })
@@ -102,7 +102,7 @@ export default function Add () {
             return false
         }
         const fixData = { sdgs_indikator_id: selectedIndikator.id, ...form }
-        const res = await fetch(`/api/realisasi/daerah/action`, {
+        const res = await fetch(getUrl(`/api/realisasi/daerah/action`), {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(fixData)
@@ -110,13 +110,13 @@ export default function Add () {
 
         if (res.ok) {
             const result = await res.json()
-            const { data, error, message } = result
+            const { error, message } = result
             setMessageAlert(message)
             setShowAlert(!error)
             setErrorAlert(error)
             setTimeout(() => {
                 setShowAlert(false)
-                router.push('/dashboard/realisasi-program/pemerintah-daerah')
+                router.push(getUrl('/dashboard/realisasi-program/pemerintah-daerah'))
             }, 3000)
         } 
         
@@ -126,7 +126,10 @@ export default function Add () {
     useEffect(() => {
         const fetchSubUnit = async () => {
             setIsLoading(true)
-            const res = await fetch(`/api/auth/role`, {method: 'GET', headers: {'Content-Type': 'application/json'}})
+            const res = await fetch(getUrl(`/api/auth/role`), {
+                method: 'GET', 
+                headers: {'Content-Type': 'application/json'}
+            })
             if (res.ok) {
                 const result = await res.json()
                 const { data } = result
@@ -161,34 +164,30 @@ export default function Add () {
                                 className="w-full flex justify-between items-center py-1.5 px-3 text-sm text-slate-700 font-bold text-center border border-slate-300 hover:border-slate-400 appearance-none rounded cursor-pointer"
                                 role="input"
                                 tabIndex={0}
-                                onClick={() => {
-                                    setGoalDropdown(!goalDropdown)
-                                }}
+                                onClick={() => { setGoalDropdown(!goalDropdown) }}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                         setGoalDropdown(!goalDropdown)
                                     }
                                 }}>
-                                <span>{selectedGoal ? `Tujuan ${selectedGoal.kode} - ${selectedGoal.name}` : 'Pilih tujuan SDGs...'}</span>
+                                <span>{ selectedGoal ? `Tujuan ${selectedGoal.kode} - ${selectedGoal.name}` : 'Pilih tujuan SDGs...' }</span>
                                 <FontAwesomeIcon icon={ goalDropdown ? faChevronCircleUp : faChevronCircleDown } />
                             </div>
                             <ul 
                                 className={`w-full px-1.5 py-1 bg-slate-100 overflow-auto shadow-md scrollbar-thin transition-all duration-300 ${goalDropdown ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
                                 role="listbox" >
-                                {
-                                    goalDropdown && goals && goals.map(goal => (
-                                        <li 
-                                            key={goal.kode} 
-                                            value={goal.kode}
-                                            className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
-                                            onClick={() => {
-                                                setSelectedGoal({kode: goal.kode, name: goal.nama})
-                                                setGoalDropdown(!goalDropdown)
-                                            }} >
-                                            {`Tujuan ${goal.kode} - ${goal.nama}`}
-                                        </li>
-                                    ))
-                                }
+                                { goalDropdown && goals && goals.map(goal => (
+                                    <li 
+                                        key={goal.kode} 
+                                        value={goal.kode}
+                                        className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
+                                        onClick={() => {
+                                            setSelectedGoal({kode: goal.kode, name: goal.nama})
+                                            setGoalDropdown(!goalDropdown)
+                                        }} >
+                                        {`Tujuan ${goal.kode} - ${goal.nama}`}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                         <div className="flex flex-col items-center w-full gap-2">
@@ -196,13 +195,9 @@ export default function Add () {
                                 className={`w-full flex justify-between items-center py-1.5 px-3 ${selectedIndikator == 0 ? 'bg-red-100' : 'bg-green-100'} text-sm text-slate-700 font-bold text-center border ${indikatorStatus ? 'border-slate-300' : 'border-red-700'} hover:border-slate-400 appearance-none rounded cursor-pointer`}
                                 role="input"
                                 tabIndex={0}
-                                onClick={() => {
-                                    setIndikatorDropdown(!indikatorDropdown)
-                                }}
+                                onClick={() => { setIndikatorDropdown(!indikatorDropdown) }}
                                 onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        setIndikatorDropdown(!indikatorDropdown)
-                                    }
+                                    if (e.key === 'Enter' || e.key === ' ') { setIndikatorDropdown(!indikatorDropdown) }
                                 }} >
                                 <span>{selectedIndikator ? selectedIndikator.kode : 'Pilih indikator SDGs...'}</span>
                                 <FontAwesomeIcon icon={ indikatorDropdown ? faChevronCircleUp : faChevronCircleDown } />
@@ -211,59 +206,53 @@ export default function Add () {
                             <ul 
                                 className={`w-full px-1.5 py-1 bg-slate-100 overflow-auto shadow-md scrollbar-thin transition-all duration-300 ${indikatorDropdown ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
                                 role="listbox" >
-                                {
-                                    indikatorDropdown && indikators.length > 0 ? indikators.map(indikator => (
-                                        <li 
-                                            key={indikator.id} 
-                                            value={indikator.id}
-                                            className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
-                                            onClick={() => {
-                                                setSelectedIndikator({id: indikator.id, kode: indikator.kode})
-                                                setIndikatorStatus(true)
-                                                setIndikatorDropdown(!indikatorDropdown)
-                                            }} >
-                                            {indikator.kode} - {indikator.kriteria}
-                                        </li>
-                                    )) : <li className="my-2 p-1 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer">tidak ada data</li>
-                                }
+                                { indikatorDropdown && indikators.length > 0 ? indikators.map(indikator => (
+                                    <li 
+                                        key={indikator.id} 
+                                        value={indikator.id}
+                                        className="my-1 px-1 py-1.5 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer"
+                                        onClick={() => {
+                                            setSelectedIndikator({id: indikator.id, kode: indikator.kode})
+                                            setIndikatorStatus(true)
+                                            setIndikatorDropdown(!indikatorDropdown)
+                                        }} >
+                                        {indikator.kode} - {indikator.kriteria}
+                                    </li>
+                                )) : (
+                                    <li className="my-2 p-1 text-xs rounded-md opacity-100 hover:bg-slate-200 transition-opacity duration-300 cursor-pointer">tidak ada data</li>
+                                )}
                             </ul>
                         </div>
                     </div>
                     <hr className="w-full border-2 rounded border-slate-500" />
                     <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-8">
-                        {
-                            isNaN(currentSubUnit) && (
-                                <div className="flex flex-col items-center gap-2 w-full">
-                                    <label className="font-semibold">Pilih OPD</label>
-                                    <select 
-                                        className="w-full bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
-                                        {...register("sub_unit_id")}>
-                                        <option value="">pilih opd...</option>
-                                        {
-                                            subUnits && subUnits.map(opd => (
-                                                <option key={opd.id} value={opd.id}>{opd.sub_unit}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
-                            )
-                        }
+                        { isNaN(currentSubUnit) && (
+                            <div className="flex flex-col items-center gap-2 w-full">
+                                <label className="font-semibold">Pilih OPD</label>
+                                <select 
+                                    className="w-full bg-transparent text-slate-600 text-sm border border-slate-300 rounded pl-3 py-1.5 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:drop-shadow-md appearance-none cursor-pointer"
+                                    { ...register("sub_unit_id") }>
+                                    <option value="">pilih opd...</option>
+                                    { subUnits && subUnits.map(opd => (
+                                        <option key={opd.id} value={opd.id}>{opd.sub_unit}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                         <div className="flex flex-col items-center">
                             <span className="font-semibold">Pilih Sub-kegiatan</span>
                             <ul className="flex flex-col px-2.5 w-full max-h-72 overflow-y-auto scrollbar-thin gap-4">
-                                {
-                                    subkegiatans.map((subkegiatan, index) => (
-                                        <li key={index} className="border-b-2 border-b-slate-300 py-2">
-                                            <label className="flex justify-between">
-                                                <span className="text-sm">{subkegiatan.nama_subkegiatan}</span>
-                                                <input 
-                                                    type='checkbox' 
-                                                    value={subkegiatan.renja_subkegiatan.id}
-                                                    {...register('selectedSubkegiatans', { valueAsArray: true })} />
-                                            </label>
-                                        </li>
-                                    ))
-                                }
+                                { subkegiatans.map((subkegiatan, index) => (
+                                    <li key={index} className="border-b-2 border-b-slate-300 py-2">
+                                        <label className="flex justify-between">
+                                            <span className="text-sm">{subkegiatan.nama_subkegiatan}</span>
+                                            <input 
+                                                type='checkbox' 
+                                                value={subkegiatan.renja_subkegiatan.id}
+                                                {...register('selectedSubkegiatans', { valueAsArray: true })} />
+                                        </label>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                         <div className="flex flex-col items-center mt-4">
