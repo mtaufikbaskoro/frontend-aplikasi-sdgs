@@ -118,7 +118,7 @@ export default function Detail () {
     }, [year])
     
     useEffect(() => {
-        if (targetCapaianModal === false || capaianModal === false) fetchDetail(kode_indikator, kode_subindikator)
+        if (targetCapaianModal === false || capaianModal === false) fetchDetail(kode_indikator, kode_subindikator ? kode_subindikator : 0)
     }, [targetCapaianModal, capaianModal, kode_indikator, kode_subindikator])
 
     useEffect(() => {
@@ -162,9 +162,11 @@ export default function Detail () {
                 <Modal isOpen={targetCapaianModal} setIsOpen={setTargetCapaianModal}>
                     <EditTargetCapaian instansis={instansis} targetCapaian={targetCapaianForm} />
                 </Modal>
-                <h1 className="font-semibold">Indikator {indikator.kode}</h1>
                 <div>
+                    <h1 className="font-semibold">Indikator {indikator.kode}</h1>
                     <p className="text-sm text-justify">{indikator.kriteria}</p>
+                </div>
+                <div>    
                     { subindikator && (
                         <p className="text-sm text-justify"><span className="font-bold">{subindikator.kode}.</span> {subindikator.kriteria}</p>
                     )} 
@@ -182,7 +184,7 @@ export default function Detail () {
                         </tr>
                         <tr>
                             <th className="text-left">Baseline ({year - 1})</th>
-                            <td colSpan={2}>2.18</td>
+                            <td colSpan={2}>-</td>
                         </tr>
                         { detail.rumus != undefined && (
                             <tr>
