@@ -116,7 +116,7 @@ export default function Add () {
             setErrorAlert(error)
             setTimeout(() => {
                 setShowAlert(false)
-                router.push(getUrl('/dashboard/realisasi-program/pemerintah-daerah'))
+                router.push('/dashboard/realisasi-program/pemerintah-daerah')
             }, 3000)
         } 
         
