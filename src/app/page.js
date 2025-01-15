@@ -32,17 +32,13 @@ export default function Home() {
           </div>
         </div>
         <div id="metadata" className="grid grid-cols-6 grid-row mt-28">
-          {
-            goals.map((goal) => {
-              return (
-                <div className="transition-all ease-in ease-out hover:opacity-25" key={goal.id}>
-                  <Link href={`/metadata/${goal.name.replace(/\s+/g, '-').toLowerCase()}`}>
-                    <Image src={`${baseUrl}/assets/img/sdgs_icons${goal.img}`} width={320} height={320} alt={goal.name} loading="eager" />
-                  </Link>
-                </div>
-              )
-            })
-          }
+          { goals.map((goal) => (
+              <div className="transition-all ease-in ease-out hover:opacity-25" key={goal.id}>
+                <Link href={`/metadata/${goal.name.replace(/\s+/g, '-').toLowerCase()}`}>
+                  <Image src={`${baseUrl}/assets/img/sdgs_icons${goal.img}`} width={320} height={320} alt={goal.name} loading="eager" />
+                </Link>
+              </div>
+          ))}
         </div>
       </main>
       <Footer />

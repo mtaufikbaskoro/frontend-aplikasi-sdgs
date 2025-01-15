@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 
 export default function Detail () {
-    // params
     const searchParams = useSearchParams()
     const kode_indikator = searchParams.get('kode_indikator')
     const kode_subindikator = searchParams.get('kode_subindikator')
@@ -96,16 +95,19 @@ export default function Detail () {
         }
     }
 
-    const calculatePercentage = (capaian, target) => {
-        if (!capaian || !target) return 0
-        const targetValue = parseFloat(target)
-        const capaianValue = parseFloat(capaian)
-        if (isNaN(targetValue) && isNaN(capaianValue)) {
-            if (capaian === "tidak ada") return 0
-            else if (capaian === "ada") return 100
-        } else return ((capaianValue / targetValue) * 100).toFixed(3)
+    const calculatePercentage = (type, capaian, target) => {
+        switch (type) {
+            case 0:
+                return ((target / capaian) * 100).toFixed(3)
+            case 1:
+                return ((capaian / target) * 100).toFixed(3) 
+            case 2:
+                return capaian === 'ada' ? 100 : 0
+            default:
+                return 'wrong case'
+        }
+        
     }
-
     const handleCapaianModal = () => setCapaianModal(!capaianModal)
     const handleTargetCapaianModal = async (kd_indikator, kd_subindikator = 0) => await fetchTargetCapaianForm(kd_indikator, kd_subindikator)
 
@@ -226,7 +228,7 @@ export default function Detail () {
                                             <li key={index} className="font-medium text-sky-500 hover:text-gray-400 transition-all ease-in ease-out cursor-pointer">
                                                 <Link rel="preload" href={file.url} as={file.url}>{file.nama_file_asli}</Link>
                                             </li>
-                                    )) : (<li>-</li>)}
+                                    )) : (<li>-</li>) }
                                 </ul>
                             </td>
                         </tr>
@@ -246,7 +248,7 @@ export default function Detail () {
                         <tr>
                             <td>{targetCapaian ? targetCapaian.target : 'Belum ada target'}</td>
                             <td>{capaian ? capaian.capaian : 'Belum ada capaian'}</td>
-                            <td>{capaian ? calculatePercentage(capaian.capaian, targetCapaian.target) : '-'}</td>
+                            <td>{capaian ? calculatePercentage(detail.tipe_capaian, capaian.capaian, targetCapaian.target) : '-'}</td>
                             <td>pending</td>
                         </tr>
                     </tbody>
