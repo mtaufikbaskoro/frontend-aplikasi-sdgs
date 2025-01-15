@@ -23,7 +23,7 @@ export async function GET (request) {
         data: null
     }, {status: 400}) 
 
-    const response = await fetch(getApi(`/detail/view?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`), {
+    const response = await fetch(getApi(`/detail?kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,

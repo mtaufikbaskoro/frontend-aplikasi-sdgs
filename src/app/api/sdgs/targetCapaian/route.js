@@ -16,7 +16,7 @@ export async function GET (request) {
     const kd_subindikator = searchParams.get('kd_subindikator')
     const year = searchParams.get('year')
 
-    const response = await fetch(getApi(`/target-capaian/view?year=${year}&kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`), {
+    const response = await fetch(getApi(`/target-capaian?year=${year}&kd_indikator=${kd_indikator}&kd_subindikator=${kd_subindikator}`), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,

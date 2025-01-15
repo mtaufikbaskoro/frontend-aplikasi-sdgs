@@ -20,7 +20,7 @@ export async function GET (request) {
         data: null
     }, { status: 404 })
 
-    const res = await fetch(getApi(`/detail/view-target-capaian?year=${year}&sdgs_detail_id=${detailId}`), {
+    const res = await fetch(getApi(`/detail/get-target-capaian?year=${year}&sdgs_detail_id=${detailId}`), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
