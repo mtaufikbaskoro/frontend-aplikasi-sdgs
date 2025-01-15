@@ -7,7 +7,6 @@ import Image from "next/image"
 import DashboardLayout from "../components/layout"
 import Table from "../components/table"
 import Pagination from "../components/pagination"
-import Loading from "../components/loading"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPrint } from "@fortawesome/free-solid-svg-icons"
@@ -22,35 +21,28 @@ export default function CapaianSdgs () {
     const [ isLoading, setIsLoading ] = useState(true)
     const [ currentPage, setCurrentPage ] = useState(1)
     const [ totalPages, setTotalPages ] = useState(0)
-    const [ error, setError ] = useState('')
 
     useEffect(() => {
         const fetchGoals = async (page) => {
             setIsLoading(true)
-            try {
-                const res = await fetch(getUrl(`/api/sdgs?page=${page}&limit=${ITEMS_PER_PAGE}`), {
-                    method: 'GET',
-                    headers: { "Content-Type": 'application/json' },
-                    credentials: 'include'
-                })
-        
-                if (res.ok) {
-                    const { data } = await res.json()
-                    const progressData = await Promise.all(
-                        data.items.map(async (item) => {
-                            const year = sessionStorage.getItem('year')
-                            const progress = await findProgress(item.kode, year)
-                            return { ...item, progress }
-                        })
-                    )
-                    setItems(progressData)
-                    setTotalPages(Math.ceil(data.totalItems / ITEMS_PER_PAGE))
-                }
-            } catch (error) {
-                setError(error.message)
-            } finally {
-                setIsLoading(false)
+            const res = await fetch(getUrl(`/api/sdgs?page=${page}&limit=${ITEMS_PER_PAGE}`), {
+                method: 'GET',
+                headers: { "Content-Type": 'application/json' },
+                credentials: 'include'
+            })
+            if (res.ok) {
+                const { data } = await res.json()
+                const progressData = await Promise.all(
+                    data.items.map(async (item) => {
+                        const year = sessionStorage.getItem('year')
+                        const progress = await findProgress(item.kode, year)
+                        return { ...item, progress }
+                    })
+                )
+                setItems(progressData)
+                setTotalPages(Math.ceil(data.totalItems / ITEMS_PER_PAGE))
             }
+            setIsLoading(false)
         }
         fetchGoals(currentPage)
     }, [currentPage])
@@ -71,14 +63,7 @@ export default function CapaianSdgs () {
 
     const handlePageChange = (page) => setCurrentPage(page)
 
-    const createSlug = (kode, nama) => {
-        let slug = `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
-        return slug
-    }
-    
-    if (error) {
-        return (<Loading>Error : {error}</Loading>)
-    }
+    const createSlug = (kode, nama) => `tujuan-${kode}-${nama.replace(/,/g, "").replace(/ /g, "-")}`
 
     return (
         <DashboardLayout>

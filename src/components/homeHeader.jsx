@@ -12,12 +12,12 @@ export default function HomeHeader () {
         <nav className="flex justify-between px-36 py-12 h-64 bg-white border-b-8 border-green-900">
             <div className="flex justify-center">
                 <div>
-                    <Image src={logoPemko} width={48} height={48} alt="logo pemko medan" />
+                    <Image src={logoPemko} width={48} height="auto" alt="logo pemko medan" />
                 </div>
                 <div className="flex flex-col">
                     <p className="ml-4 text-3xl font-bold uppercase">pemerintah kota medan</p>
                     <div>
-                        <Image src={horizontalLogoSdgs} width={640} height={120} alt="sdgs horizontal logo" />
+                        <Image src={horizontalLogoSdgs} width={640} height="auto" alt="sdgs horizontal logo" />
                     </div>
                 </div>
             </div>

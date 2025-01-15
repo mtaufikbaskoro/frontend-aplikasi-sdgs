@@ -1,6 +1,4 @@
 /** @type {import('tailwindcss').Config}   */
-import tailwindScrollbar from 'tailwind-scrollbar';
-export const darkMode = 'media'
 
 export const content = [
   "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -64,3 +62,5 @@ export const theme = {
 export const plugins = [
   require('tailwind-scrollbar'),
 ];
+
+export const darkMode = 'class';

@@ -15,7 +15,7 @@ export default function Home() {
   const baseUrl = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_PATH : ''
   return (
     <div className="relative">
-      <Image src={sdg_wheel} className="absolute top-32 -left-20 opacity-25 -z-10" width="auto" height={"auto"} alt="backdrop logo sdgs" />
+      <Image src={sdg_wheel} className="absolute top-32 -left-20 opacity-25 -z-10" width="auto" height="auto" alt="backdrop logo sdgs" />
       <HomeHeader />
       <main className="">
         <div className="flex justify-between items-center gap-8 row-start-2 items-center sm:items-start px-48 py-10 mt-26">
