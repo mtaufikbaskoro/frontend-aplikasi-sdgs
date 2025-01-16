@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config}   */
 
+export const darkMode = false;
+
 export const content = [
   "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
   "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-];
+]
 
 export const safeList = [
   'bg-tujuan-1',
@@ -24,7 +26,7 @@ export const safeList = [
   'bg-tujuan-15',
   'bg-tujuan-16',
   'bg-tujuan-17',
-];
+]
 
 export const theme = {
   extend: {
@@ -57,10 +59,9 @@ export const theme = {
       'spin-slow': 'spin 2s linear infinite'
     }
   },
-};
+}
 
 export const plugins = [
   require('tailwind-scrollbar'),
-];
+]
 
-export const darkMode = 'class';
