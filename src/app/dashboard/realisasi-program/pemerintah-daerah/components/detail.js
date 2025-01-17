@@ -4,10 +4,7 @@ import { useState, useEffect } from 'react'
 
 export const Detail = (props) => {
     const { data } = props
-
-    const formatNumber = (number) => {
-        return number.toLocaleString('id-ID')
-    }
+    const formatNumber = (number) => number.toLocaleString('id-ID')
 
     return (
         <div className="flex flex-col gap-2">
@@ -23,7 +20,7 @@ export const Detail = (props) => {
                         </tr>
                         <tr>
                             <td className='font-bold py-2'>Lokasi Kegiatan</td>
-                            <td>{ data && data.lokasi == 'semua_lokasi' ? 'Kota Medan' : data.lokasi }</td>
+                            <td>{ data && data.lokasi === 'semua_lokasi' ? 'Kota Medan' : data.lokasi }</td>
                         </tr>
                         <tr>
                             <td className='font-bold py-2'>Sumber Dana</td>

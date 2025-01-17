@@ -257,7 +257,7 @@ export default function Detail () {
                 <div className="flex gap-2">
                     <button 
                         className={`flex flex-1 items-center justify-center gap-3 py-2.5 bg-yellow-300 rounded-sm text-black text-sm hover:text-yellow-300 hover:bg-white hover:ring-2 hover:ring-yellow-300 ${role === 'admin' ? '' : 'hidden'} transition-all ease-in ease-out`}
-                        onClick={() => handleTargetCapaianModal(kode_indikator, kode_subindikator)}
+                        onClick={() => handleTargetCapaianModal(kode_indikator, kode_subindikator ? kode_subindikator : 0)}
                         disabled={role === 'admin' ? false : true} >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Atur Target Capaian</span>
