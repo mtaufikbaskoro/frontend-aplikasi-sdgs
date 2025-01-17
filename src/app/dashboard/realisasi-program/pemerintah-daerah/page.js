@@ -131,7 +131,7 @@ export default function PemerintahDaerah () {
             setIsLoading(false)
         }
         if (selectedGoal !== null) fetchProgramsInIndikatorsByKode(selectedGoal.kode, currentPage)
-    }, [selectedGoal, currentPage])
+    }, [selectedGoal, currentPage, confirm == true])
 
     useEffect(() => {
         selectedSubkegiatans.length < 1 ? setDeleteButton(true) : setDeleteButton(false) 
